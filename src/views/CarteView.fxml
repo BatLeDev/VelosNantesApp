@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.CarteController">
+    <fx:include source="NavbarView.fxml" /> <!-- Inclure la navbar commune ici -->
+
+    <center>
+        <ImageView fx:id="carteImageView" />
+    </center>
+    <bottom>
+        <HBox spacing="10" prefWidth="200" prefHeight="50">
+            <Button text="+" onAction="#zoomIn" />
+            <Button text="-" onAction="#zoomOut" />
+        </HBox>
+    </bottom>
+</BorderPane>

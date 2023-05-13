@@ -3,7 +3,7 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -12,7 +12,6 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
 
-    
     public static void main(String[] args) {
         launch(args); // Create and open the main stage (window)
     }
@@ -25,8 +24,8 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("views/CalendarView.fxml"));
-            FlowPane root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("views/GraphView.fxml"));
+            BorderPane root = loader.load();
             Scene scene = new Scene(root);
 
             primaryStage.setScene(scene);
@@ -36,5 +35,10 @@ public class MainApp extends Application {
         } catch (Exception e) { // Catch any exception and print the stack trace
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Closing the application");
     }
 }
