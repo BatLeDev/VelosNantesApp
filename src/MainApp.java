@@ -1,30 +1,40 @@
+
+// JavaFX imports
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
+/**
+ * Main class of the application
+ * Run this class to launch the application
+ */
 public class MainApp extends Application {
 
+    
     public static void main(String[] args) {
-        launch(args);
+        launch(args); // Create and open the main stage (window)
     }
 
+    /**
+     * Load the FXML file and display the scene
+     * 
+     * @param primaryStage the main stage (window)
+     */
     @Override
     public void start(Stage primaryStage) {
-        // Création du label
-        Label label = new Label("Hello, wordl!");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("views/CalendarView.fxml"));
+            FlowPane root = loader.load();
+            Scene scene = new Scene(root);
 
-        // Création du layout et ajout du label
-        StackPane root = new StackPane();
-        root.getChildren().add(label);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Calendar");
+            primaryStage.show();
 
-        // Création de la scène
-        Scene scene = new Scene(root, 300, 200);
-
-        // Configuration de la scène principale et affichage de la fenêtre
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Hello JavaFX");
-        primaryStage.show();
+        } catch (Exception e) { // Catch any exception and print the stack trace
+            e.printStackTrace();
+        }
     }
 }

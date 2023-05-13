@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import controllers.CalendarController?>
+
+<FlowPane fx:controller="controllers.CalendarController" onKeyPressed="#keyPressed" prefWidth="300" prefHeight="200" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label text="Day" fx:id="dayLabel" />
+        <Label text="Date" fx:id="dateLabel" />
+        <ComboBox fx:id="monthComboBox" />
+        <Label text="Year" fx:id="yearLabel" />
+    </children>
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+</FlowPane>
