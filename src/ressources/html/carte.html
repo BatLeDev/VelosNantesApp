@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Carte sans API Google</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+
+    <!-- Inclus les fichiers CSS et JavaScript de Leaflet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        // Initialise la carte
+        var map = L.map('map').setView([47.2184, -1.5536], 13);
+
+        // Ajoute une couche de tuiles OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Ajuste la taille de la carte lorsque la fenêtre est redimensionnée
+        map.on('resize', function () {
+            map.invalidateSize();
+        });
+    </script>
+</body>
+</html>
