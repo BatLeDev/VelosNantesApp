@@ -1,36 +1,22 @@
 package controllers;
 
-// JavaFX imports
-import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import views.CarteView;
 
 public class CarteController {
+    private Rooter rooter;
+    private CarteView carteView;
 
+    public CarteController(Rooter rooter) {
+        this.rooter = rooter;
+        this.carteView = (CarteView) rooter.getView("Carte");
 
-    // ------------------------------ FXML elements ------------------------------
-    @FXML
-    private ImageView carteImageView;
-
-    // ----------------------------------------------------------------------------
-
-
-    // ------------------------------ Initializer ------------------------------
-
-    public void initialize() {
-        String imagePath = "../ressources/images/carte.png";
-        Image carteImage = new Image(getClass().getResourceAsStream(imagePath));
-        carteImageView.setImage(carteImage);
+        this.setup();
     }
 
-    // ------------------------------ Event handlers ------------------------------
-    @FXML
-    private void zoomIn() {
-        System.out.println("Zoom in");
+    public void setup() {
+        carteView.getExporterButton().setOnAction(event -> {
+            rooter.changePage(true, "Exporter");
+        });
     }
 
-    @FXML
-    private void zoomOut() {
-        System.out.println("Zoom out");
-    }
 }

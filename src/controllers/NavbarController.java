@@ -1,38 +1,26 @@
 package controllers;
 
-import java.io.IOException;
-
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import views.NavbarView;
 
 public class NavbarController {
-    @FXML
-    private Button carteButton;
+    private Rooter rooter;
+    private NavbarView navbarView;
 
-    @FXML
-    private Button graphButton;
+    public NavbarController(Rooter rooter) {
+        this.rooter = rooter;
+        this.navbarView = (NavbarView) rooter.getView("Navbar");
 
-    @FXML
-    private Button exportButton;
-
-
-    @FXML
-    private void accueilButtonClick() {
-        Rooter root = new Rooter(carteButton);
+        this.setup();
     }
 
-    @FXML
-    private void profilButtonClick() {
-        Rooter root = new Rooter(graphButton);
-    }
+    public void setup() {
+        navbarView.getExporterButton().setOnAction(event -> {
+            rooter.changePage(true, "Exporter");
+        });
 
-    @FXML
-    private void parametresButtonClick() {
-        Rooter root = new Rooter(exportButton);
+        navbarView.getCarteButton().setOnAction(event -> {
+            rooter.changePage(true, "Carte");
+        });
     }
 
 }

@@ -1,44 +1,56 @@
-
-// JavaFX imports
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+// Controllers import
+import controllers.Rooter;
+import controllers.ExporterController;
+import controllers.CarteController;
+import controllers.NavbarController;
+
 /**
- * Main class of the application
+ * Main class
  * Run this class to launch the application
+ * 
+ * This class extends Application from JavaFX
  */
 public class MainApp extends Application {
 
+    /**
+     * Rooter instance
+     * Used to change the page displayed
+     */
+    private Rooter rooter;
+
+    /**
+     * Main method
+     * 
+     * @param args isn't used
+     */
     public static void main(String[] args) {
-        launch(args); // Create and open the main stage (window)
+        launch(args); // Start the application
     }
 
     /**
-     * Load the FXML file and display the scene
+     * Start method
+     * This method is called by the launch method
      * 
-     * @param primaryStage the main stage (window)
+     * @param primaryStage Stage instance (main window, generate by JavaFX)
      */
     @Override
     public void start(Stage primaryStage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("views/GraphView.fxml"));
-            BorderPane root = loader.load();
-            Scene scene = new Scene(root);
 
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Calendar");
-            primaryStage.show();
+        // Creation of the rooter
+        rooter = new Rooter(primaryStage);
 
-        } catch (Exception e) { // Catch any exception and print the stack trace
-            e.printStackTrace();
-        }
-    }
+        // Initialisation of each controller
+        // Isn't necessary to keep the reference of the controller
+        new ExporterController(rooter);
+        new CarteController(rooter);
 
-    @Override
-    public void stop() {
-        System.out.println("Closing the application");
+        // Initialisation of the navbar controller
+        new NavbarController(rooter);
+
+        // Show the main page (Carte)
+        rooter.changePage(true, "Carte");
     }
 }
