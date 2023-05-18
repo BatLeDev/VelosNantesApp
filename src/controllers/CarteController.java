@@ -14,9 +14,6 @@ public class CarteController {
     }
 
     public void setup() {
-        carteView.getExporterButton().setOnAction(event -> {
-            rooter.changePage(true, "Exporter");
-        });
     }
 
 }
