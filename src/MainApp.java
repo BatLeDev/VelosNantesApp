@@ -1,30 +1,56 @@
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+// Controllers import
+import controllers.Rooter;
+import controllers.ExporterController;
+import controllers.CarteController;
+import controllers.NavbarController;
+
+/**
+ * Main class
+ * Run this class to launch the application
+ * 
+ * This class extends Application from JavaFX
+ */
 public class MainApp extends Application {
 
+    /**
+     * Rooter instance
+     * Used to change the page displayed
+     */
+    private Rooter rooter;
+
+    /**
+     * Main method
+     * 
+     * @param args isn't used
+     */
     public static void main(String[] args) {
-        launch(args);
+        launch(args); // Start the application
     }
 
+    /**
+     * Start method
+     * This method is called by the launch method
+     * 
+     * @param primaryStage Stage instance (main window, generate by JavaFX)
+     */
     @Override
     public void start(Stage primaryStage) {
-        // Création du label
-        Label label = new Label("Hello, wordl!");
 
-        // Création du layout et ajout du label
-        StackPane root = new StackPane();
-        root.getChildren().add(label);
+        // Creation of the rooter
+        rooter = new Rooter(primaryStage);
 
-        // Création de la scène
-        Scene scene = new Scene(root, 300, 200);
+        // Initialisation of each controller
+        // Isn't necessary to keep the reference of the controller
+        new ExporterController(rooter);
+        new CarteController(rooter);
 
-        // Configuration de la scène principale et affichage de la fenêtre
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Hello JavaFX");
-        primaryStage.show();
+        // Initialisation of the navbar controller
+        new NavbarController(rooter);
+
+        // Show the main page (Carte)
+        rooter.changePage(true, "Carte");
     }
 }
