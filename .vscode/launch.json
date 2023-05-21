@@ -6,6 +6,13 @@
             "name": "MainApp",
             "request": "launch",
             "mainClass": "MainApp",
+            "projectName": "VelosNantesApp_6a735356"
+        },
+        {
+            "type": "java",
+            "name": "MainApp",
+            "request": "launch",
+            "mainClass": "MainApp",
             "projectName": "VelosNantesApp_6bb9ac7",
             "vmArgs": "--module-path lib/javafx-sdk-11/lib --add-modules javafx.controls,javafx.fxml"
         },
