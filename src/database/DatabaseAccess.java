@@ -43,7 +43,7 @@ public class DatabaseAccess {
         }
     }
 
-    public ArrayList<Compteur> getCompteurs() {
+    public static ArrayList<Compteur> getCompteurs() {
         ArrayList<Compteur> compteurs = new ArrayList<Compteur>();
 
         try {
@@ -55,10 +55,10 @@ public class DatabaseAccess {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                int numero = resultSet.getInt("idCompteur");
+                int numero = resultSet.getInt("numero");
                 String libelle = resultSet.getString("libelle");
                 String direction = resultSet.getString("direction");
-                String observation = resultSet.getString("observation");
+                String observation = resultSet.getString("observations");
                 double latitude = resultSet.getDouble("latitude");
                 double longitude = resultSet.getDouble("longitude");
 
