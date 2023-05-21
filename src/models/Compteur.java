@@ -18,5 +18,8 @@ public class Compteur {
         this.longitude = longitude;
     }
     
+    public String toString() {
+        return "Compteur " + numero + " : " + libelle + " (" + latitude + ", " + longitude + ")";
+    }
 
 }
