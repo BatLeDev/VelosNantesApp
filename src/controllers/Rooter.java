@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 // Views imports
 import views.NavbarView;
 import views.ExporterView;
-import views.GraphiqueView;
 import views.CarteView;
 
 /**
@@ -68,10 +67,6 @@ public class Rooter {
         // Creation of the navbar
         NavbarView navbarView = new NavbarView();
         views.put("Navbar", navbarView);
-
-        // Creation of the 
-        GraphiqueView graphiqueView = new GraphiqueView();
-        views.put("Graphique", graphiqueView);
 
         // Initialisation of the main BorderPane
         this.root = new BorderPane();

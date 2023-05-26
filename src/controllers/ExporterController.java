@@ -9,13 +9,6 @@ public class ExporterController {
     public ExporterController(Rooter rooter) {
         this.rooter = rooter;
         this.exporterView = (ExporterView) rooter.getView("Exporter");
-
-        this.setup();
     }
 
-    public void setup() {
-        exporterView.getHideButton().setOnAction(event -> {
-            rooter.changePage(false, "Exporter");
-        });
-    }
 }

@@ -3,7 +3,15 @@ package views;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
@@ -12,8 +20,7 @@ import javafx.scene.text.Text;
  */
 public class ExporterView extends BorderPane {
 
-    // Elements of the view
-    private Button hideButton;
+    ToggleGroup toggleGroup;   
 
     /**
      * Constructor
@@ -22,25 +29,35 @@ public class ExporterView extends BorderPane {
      * Initialise the elements of the view
      */
     public ExporterView() {
-        // Creation of the elements of the view
-        Text text = new Text("coucou");
-        hideButton = new Button("Cacher Navbar");
+        
+        Pane top = initialiseGenererPane();
+        this.setTop(top);
 
-        // Positioning of the elements
-        setCenter(text);
-        setBottom(hideButton);
-        setAlignment(text, Pos.CENTER);
-        setAlignment(hideButton, Pos.CENTER);
-        setMargin(text, new Insets(10));
-        setMargin(hideButton, new Insets(10));
     }
 
-    /**
-     * Getter for the hideButton
-     * 
-     * @return hideButton
-     */
-    public Button getHideButton() {
-        return hideButton;
-    }
+
+    private Pane initialiseGenererPane(){
+        VBox ret = new VBox();
+        ret.setPadding(new Insets(10));
+        ret.setSpacing(10);
+        ret.setStyle("-fx-background-color: beige;");
+
+        Label source = new Label("Generer un fichier (a partir de donnees brut)");
+
+        this.toggleGroup = new ToggleGroup();
+        HBox choix = new HBox();
+        RadioButton jourButton = new RadioButton("Jour");
+        toggleGroup.getToggles().add(jourButton);
+        RadioButton compteurButton = new RadioButton("Compteur");
+        toggleGroup.getToggles().add(compteurButton);
+        RadioButton releveJournalierButton = new RadioButton("Releve Journalier");
+        toggleGroup.getToggles().add(releveJournalierButton);
+
+        choix.getChildren().addAll(jourButton, compteurButton, releveJournalierButton);
+
+        ret.getChildren().addAll(source,choix);
+
+        return ret;
+    } 
+
 }
