@@ -89,6 +89,7 @@ public class CarteView extends BorderPane {
         js += "}";
 
         this.webEngine.executeScript(js);
+        System.out.println("Markers loaded");
     }
 
     /**

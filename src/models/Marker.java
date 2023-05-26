@@ -79,19 +79,37 @@ public class Marker {
                 ", idQuartier: " + idQuartier +
                 ", freqmoy: " + calcFreqMoy() +
                 ", releve: \"" + (observation != null ? "Oui" : "Non") + "\"" +
+                ", color: \"" + getColor() + "\"" +
                 ", details: [" + compteurDetails + "]" +
                 " }";
 
         return ret;
     }
     
-    public double calcFreqMoy() {
+    private double calcFreqMoy() {
         double freqMoy = 0;
         for (CompteurFull compteur : compteurs) {
             freqMoy += compteur.getMoyennePassageParJour();
         }
         double ret = freqMoy / compteurs.size();
-        ret = Math.round(ret*100)/100d;
+        ret = Math.round(ret * 100) / 100d;
         return ret;
+    }
+    
+    private String getColor() {
+        double freqMoy = calcFreqMoy();
+        if (freqMoy < 1) {
+            return "#999999";
+        } else if (freqMoy < 250) {
+            return "#6AAE27";
+        } else if (freqMoy < 500) {
+            return "#C3C201";
+        } else if (freqMoy < 1000) {
+            return "#FFE600";
+        } else if (freqMoy < 1500) {
+            return "#FF6B00";
+        } else {
+            return "#FF0000";
+        }
     }
 }
