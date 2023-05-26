@@ -3,12 +3,17 @@ package views;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
+import javafx.concurrent.Worker;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import javafx.concurrent.Worker;
+import database.DatabaseAccess;
+import models.CompteurFull;
+import models.Marker;
 
 /**
  * This class represents the view of the Carte page.
@@ -36,6 +41,7 @@ public class CarteView extends BorderPane {
         // Load the markers when the page is loaded
         this.webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == Worker.State.SUCCEEDED) {
+                System.out.println("Page loaded");
                 loadMarkers();
             }
         });
@@ -45,12 +51,52 @@ public class CarteView extends BorderPane {
     }
 
     private void loadMarkers() {
-        String js = "var marker = L.marker([47.2184, -1.5536]).addTo(map);\n" +
-                "marker.bindPopup(\"<b>Hello world!</b><br>I am a popup.\").openPopup();";
+
+        ArrayList<CompteurFull> compteursList = DatabaseAccess.getCompteursWithStats();
+
+        ArrayList<Marker> markersList = new ArrayList<>();
+
+        for (CompteurFull compteur : compteursList) {
+            boolean markerExists = false;
+
+            for (Marker marker : markersList) {
+                if (marker.getLongitude() == compteur.getLongitude()
+                        && marker.getLatitude() == compteur.getLatitude() && !markerExists) {
+                    marker.getCompteurs().add(compteur);
+                    markerExists = true;
+                }
+            }
+
+            if (!markerExists) {
+                ArrayList<CompteurFull> compteurs = new ArrayList<>();
+                compteurs.add(compteur);
+                Marker marker = new Marker(compteur.getLibelle(), compteur.getLongitude(), compteur.getLatitude(),
+                        compteur.getObservation(), compteur.getIdQuartier(), compteur.getNomQuartier(), compteurs);
+                markersList.add(marker);
+            }
+        }
+
+        String js = "var markersData = [";
+        for (Marker marker : markersList) {
+            js += marker.toJs() + ", ";
+        }
+        js += "];";
+
+        js += "\n";
+        js += "for (var i = 0; i < markersData.length; i++) {";
+        js += "    var markerData = markersData[i];";
+        js += "    createMarker(markerData);";
+        js += "}";
 
         this.webEngine.executeScript(js);
     }
 
+    /**
+     * Convert a html file to a string
+     * 
+     * @param filePath Path of the html file
+     * @return The html file converted to a string, executed by the web engine
+     */
     public String readHTMLFile(String filePath) {
         StringBuilder content = new StringBuilder();
 

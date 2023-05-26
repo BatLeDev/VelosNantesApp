@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.sql.ResultSetMetaData;
 
 import java.util.ArrayList;
-import models.Compteur;
+import models.CompteurFull;
 
 public class DatabaseAccess {
 
@@ -43,15 +43,15 @@ public class DatabaseAccess {
         }
     }
 
-    public static ArrayList<Compteur> getCompteurs() {
-        ArrayList<Compteur> compteurs = new ArrayList<Compteur>();
+    public static ArrayList<CompteurFull> getCompteursWithStats() {
+        ArrayList<CompteurFull> compteurs = new ArrayList<CompteurFull>();
 
         try {
             // Connection to the database
             Connection connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
 
-            String query = "SELECT * FROM Compteur";
+            String query = "SELECT * FROM vue_statCompteur";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -61,8 +61,19 @@ public class DatabaseAccess {
                 String observation = resultSet.getString("observations");
                 double latitude = resultSet.getDouble("latitude");
                 double longitude = resultSet.getDouble("longitude");
+                int idQuartier = resultSet.getInt("idQuartier");
+                String nomQuartier = resultSet.getString("nomQuartier");
+                int nombreJourReleve = resultSet.getInt("nombreJourReleve");
+                int nombreTotalPassage = resultSet.getInt("nombreTotalPassage");
+                double moyennePassageParJour = resultSet.getDouble("moyennePassageParJour");
+                double frequenceErreurs = resultSet.getDouble("frequenceErreurs");
+                int nbErreurs = resultSet.getInt("nbErreurs");
+                String heureSouventFrequetee = resultSet.getString("heureSouventFrequetee");
 
-                Compteur compteur = new Compteur(numero, libelle, direction, observation, latitude, longitude);
+                CompteurFull compteur = new CompteurFull(numero, libelle, direction, observation, latitude, longitude,
+                        idQuartier, nomQuartier, nombreJourReleve, nombreTotalPassage, moyennePassageParJour,
+                        frequenceErreurs, nbErreurs, heureSouventFrequetee);
+
                 compteurs.add(compteur);
             }
 
@@ -74,4 +85,36 @@ public class DatabaseAccess {
 
         return compteurs;
     }
+
+    
+
+    public static String[] getQuartiersFromID(int id) {
+        String[] quartiers = new String[2];
+
+        try {
+            // Connection to the database
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT * FROM Quartier WHERE id = " + id;
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String quartierName = resultSet.getString("nom");
+                String quartierId = resultSet.getString("code");
+
+                quartiers[0] = quartierName;
+                quartiers[1] = quartierId;
+            }
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return quartiers;
+    }
+
+    
 }

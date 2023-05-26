@@ -33,10 +33,74 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Ajuste la taille de la carte lorsque la fenêtre est redimensionnée
-        map.on('resize', function () {
-            map.invalidateSize();
-        });
+        // Définir les options de la pop-up
+        var popupOptions = {
+            closeButton: false,
+            className: 'custom-popup'
+        };
+
+        // Fonction pour créer un marqueur avec pop-up
+        function createMarker(markerData) {
+            var libelle = markerData.libelle;
+            var quartier = markerData.quartier;
+            var idQuartier = markerData.idQuartier;
+            var freqmoy = markerData.freqmoy;
+            var releve = markerData.releve;
+            var details = markerData.details;
+            var long = markerData.long;
+            var lat = markerData.lat;
+
+            var contentHover = "<strong>" + libelle + "</strong><br>" +
+                quartier + " #" + idQuartier + "<br>" +
+                "Fréquentation moyenne (tous les sens, par jour): <strong>" + freqmoy + "</strong>";
+
+            var contentClick = "<strong>" + libelle + "</strong><br>" +
+                quartier + " #" + idQuartier + "<br>" +
+                long + ", " + lat + "<br>" +
+                "Relevage manuelle : <strong>" + releve + "</strong><br>";
+
+            for (var i = 0; i < details.length; i++) {
+                var direction = details[i][0];
+                var idCompteur = details[i][1];
+                var freqMoyenne = details[i][2];
+                var freqErreur = details[i][3];
+
+                contentClick += "---------------------------<br>" +
+                    "Direction : <strong>" + direction + "</strong><br>" +
+                    "id : <strong>#" + idCompteur + "</strong><br>" +
+                    "Fréquence moyenne (par jour): <strong>" + freqMoyenne + "</strong><br>" +
+                    "Fréquence d'erreur : <strong>" + freqErreur + "</strong><br>";
+            }
+
+            var marker = L.marker([long, lat]).addTo(map);
+            var popup = L.popup(popupOptions).setContent(contentHover);
+
+            marker.bindPopup(popup);
+
+            marker.on('mouseover', function (e) {
+                marker.setPopupContent(contentHover);
+                marker.openPopup();
+            });
+
+            marker.on('mouseout', function (e) {
+                marker.closePopup();
+            });
+
+            marker.on('click', function (e) {
+                marker.setPopupContent(contentClick);
+                marker.openPopup();
+            });
+
+            return marker;
+        }
+
+
+        // Couleurs des markers
+        var redIcon = L.icon({
+                iconUrl: '/src/ressources/images/markers/',
+                iconSize: [25, 41], // taille de l'icône en pixels
+                iconAnchor: [12, 41] // ancre de l'icône, point d'attache
+            });
     </script>
 </body>
 </html>
