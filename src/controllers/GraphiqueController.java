@@ -4,12 +4,14 @@ import views.ExporterView;
 import views.GraphiqueView;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.Action;
 
 import database.DatabaseAccess;
 import javafx.event.ActionEvent;
 import javafx.scene.control.DatePicker;
+import models.Compteur;
 
 public class GraphiqueController {
     
@@ -25,20 +27,32 @@ public class GraphiqueController {
 
     public void setupSelection() {
         graphiqueView.getGenererButton().setOnAction(this::requete);
+        ArrayList<Compteur> compteurs = DatabaseAccess.getCompteurs();     
+        ArrayList<String> compteursString = new ArrayList<String>();
+        for (Compteur compteur : compteurs) {       
+            String tmp = compteur.getLibelle() + " (" + compteur.getNumero() + ")";     
+            compteursString.add(tmp);
+        }  
+        graphiqueView.setCompteurPane(compteursString);
+        // this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        //     if (newValue != null) {
+        //         System.out.println("Selected radio button: " + newValue.toString());
+        //     }
+        // });
     }
 
     private void requete (ActionEvent event) {
-        if (!checkDate()){
-            return;
+        if (checkDate()){
+            String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
+            String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
+            String typeGraphique = graphiqueView.getTypeGraphiqueComboBox().getValue();
+            String dateDebut = graphiqueView.getDateDebut().getValue().toString();
+            String dateFin = graphiqueView.getDateFin().getValue().toString();
+            DatabaseAccess databaseAccess = new DatabaseAccess();
+            System.out.println(typeSomme + " " + typeTemps + " " + typeGraphique + " " + dateDebut + " " + dateFin);
+            //databaseAccess.getGraphique(typeSomme, typeTemps, typeGraphique, dateDebut, dateFin);       
         }
-        String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
-        String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
-        String typeGraphique = graphiqueView.getTypeGraphiqueComboBox().getValue();
-        String dateDebut = graphiqueView.getDateDebut().getValue().toString();
-        String dateFin = graphiqueView.getDateFin().getValue().toString();
-        DatabaseAccess databaseAccess = new DatabaseAccess();
-        System.out.println(typeSomme + " " + typeTemps + " " + typeGraphique + " " + dateDebut + " " + dateFin);
-        //databaseAccess.getGraphique(typeSomme, typeTemps, typeGraphique, dateDebut, dateFin);       
+
     }
 
     private boolean checkDate() {

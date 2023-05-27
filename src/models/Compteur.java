@@ -9,7 +9,7 @@ public class Compteur {
     private double longitude;
 
     public Compteur(int numero, String libelle, String direction, String observation, double latitude,
-            double longitude) {
+        double longitude) {
         this.numero = numero;
         this.libelle = libelle;
         this.direction = direction;
@@ -20,6 +20,14 @@ public class Compteur {
     
     public String toString() {
         return "Compteur " + numero + " : " + libelle + " (" + latitude + ", " + longitude + ")";
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public String getLibelle() {
+        return libelle;
     }
 
 }

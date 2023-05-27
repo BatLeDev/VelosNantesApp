@@ -12,10 +12,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -30,9 +31,7 @@ public class GraphiqueView extends BorderPane {
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
 
-    // Elements of the view
-    private Button exempleButton;
-    
+    // Elements of the view    
     private ComboBox<String> typeSommeComboBox;
     private ComboBox<String> typeTempsComboBox;
     private ComboBox<String> typeGraphiqueComboBox;
@@ -53,13 +52,12 @@ public class GraphiqueView extends BorderPane {
         Pane graphiquePane = this.initialiseRequetePane();
         this.setTop(graphiquePane);
 
-        setCompteurPane();
-
         this.genererButton = new Button("Générer");
         setCenter(this.genererButton);
 
         setAlignment(graphiquePane, Pos.CENTER);
     }
+
 
     public Button getGenererButton() {
         return genererButton;
@@ -88,24 +86,6 @@ public class GraphiqueView extends BorderPane {
     public ToggleGroup getCalqueCompteursGroup() {
         return calqueCompteursGroup;
     }
-
-    public void setExempleButton(Button exempleButton) {
-        this.exempleButton = exempleButton;
-    }
-
-    public void setTypeSommeComboBox(ComboBox<String> typeSommeComboBox) {
-        this.typeSommeComboBox = typeSommeComboBox;
-    }
-
-    public void setTypeTempsComboBox(ComboBox<String> typeTempsComboBox) {
-        this.typeTempsComboBox = typeTempsComboBox;
-    }
-
-    public void setTypeGraphiqueComboBox(ComboBox<String> typeGraphiqueComboBox) {
-        this.typeGraphiqueComboBox = typeGraphiqueComboBox;
-    }
-
-
 
 
     private Pane initialiseRequetePane() {
@@ -165,7 +145,7 @@ public class GraphiqueView extends BorderPane {
     }
 
 
-    public void setCompteurPane() {
+    public void setCompteurPane(ArrayList<String> compteurs) {
         VBox ret = new VBox();
         ret.setPadding(new Insets(10));
         ret.setSpacing(10);
@@ -173,25 +153,36 @@ public class GraphiqueView extends BorderPane {
     
         Pane calqueCompteurPane = initialiseCalqueCompteursPane();
     
-        CheckBox compteurs1 = new CheckBox("Compteur 1");
-        compteurs1.setSelected(true);
-        CheckBox compteurs2 = new CheckBox("Compteur 2");
-        compteurs2.setSelected(true);
-        CheckBox compteurs3 = new CheckBox("Compteur 3");
-        compteurs3.setSelected(true);
-        CheckBox compteurs4 = new CheckBox("Compteur 4");
-        compteurs4.setSelected(true);
-        CheckBox compteurs5 = new CheckBox("Compteur 5");
-        compteurs5.setSelected(true);
-
         HBox tmp = new HBox();
+        tmp.setSpacing(10);
         Button toutSelectionner = new Button("Tout selectionner");
         Button toutDeselectionner = new Button("Tout déselectionner");
 
+        GridPane tmpCompteursPane = new GridPane();
+        tmpCompteursPane.setPadding(new Insets(10));
+        tmpCompteursPane.setVgap(10);
+        int i = 0;
+        int j = 0;
+        for (String string : compteurs) {
+            CheckBox tmpCompteur = new CheckBox(string);
+            tmpCompteur.setSelected(true);
+            tmpCompteursPane.add(tmpCompteur, i, j);
+            i++;
+            if (i == 2) {
+                i = 0;
+                j++;
+            }
+        }
+        ScrollPane scrollPane = new ScrollPane(tmpCompteursPane);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setPrefHeight(375);
+        scrollPane.setPrefWidth(250);
+        scrollPane.setContent(tmpCompteursPane);
+
         tmp.getChildren().addAll(toutSelectionner, toutDeselectionner);
-
-        ret.getChildren().addAll(calqueCompteurPane, compteurs1, compteurs2, compteurs3, compteurs4, compteurs5, tmp);
-
+        ret.getChildren().addAll(calqueCompteurPane, tmp, scrollPane);
+        
         this.setLeft(ret);
     }
 
