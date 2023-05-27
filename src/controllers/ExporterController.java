@@ -19,7 +19,7 @@ public class ExporterController  {
     }
 
     public void setupEnregistrer() {
-        exporterView.getToggleGroup().selectedToggleProperty().addListener(this::changed);
+        exporterView.getToggleGroup().selectedToggleProperty().addListener(this::selectionEnregistrer);
         exporterView.getEnregistrer().setOnAction(this::test);
     }
 
@@ -35,9 +35,22 @@ public class ExporterController  {
         System.out.println();
     }
 
-    public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+    public void selectionEnregistrer(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
         RadioButton rb = (RadioButton) exporterView.getToggleGroup().getSelectedToggle();
-        System.out.println(rb.getText());
+        String selected = rb.getText();
+        if (selected.equals("Jour")){
+            exporterView.setSelectionJour();
+            this.setupEnregistrer();
+
+        } else if (selected.equals("Compteur")){
+            exporterView.setSelectionCompteur();
+            this.setupEnregistrer();
+
+        } else if (selected.equals("Releve Journalier")){
+            exporterView.setSelectionReleveJournalier();
+            this.setupEnregistrer();
+
+        }
     }
 
 }
