@@ -14,6 +14,29 @@
         #map {
             height: 100%;
         }
+
+        /* Style de base pour le rectangle contenant les boutons */
+        .leaflet-bottom.leaflet-right .leaflet-control-zoom.leaflet-bar {
+            border: 2px solid purple;
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            
+        }
+
+        /* Style des boutons + et - */
+        .leaflet-bottom.leaflet-right .leaflet-control-zoom.leaflet-bar a {
+            color: black;
+            text-decoration: none;
+            transition: 0.1s ease-in-out;
+        }
+
+        /* Style au survol des boutons */
+        .leaflet-bottom.leaflet-right .leaflet-control-zoom.leaflet-bar a:hover {
+            background-color: purple;
+            color: white;
+            transition: 0.3s ease-in-out;
+        }
     </style>
 
     <!-- Inclus les fichiers CSS et JavaScript de Leaflet -->
@@ -24,13 +47,23 @@
     <div id="map"></div>
 
     <script>
-        // Initialise la carte
-        var map = L.map('map').setView([47.2184, -1.5536], 13);
+        // Initialiser la carte
+        var map = L.map('map', {
+            zoomControl: false // Désactiver le contrôle de zoom par défaut
+        });
 
         // Ajoute le plan OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
+
+        // Création du contrôle de zoom
+        var zoomControl = L.control.zoom({
+            position: 'bottomright' // Position en bas à droite
+        });
+
+        // Ajout du contrôle de zoom à la carte
+        zoomControl.addTo(map);
 
         // Définit les options de la pop-up
         var popupOptions = {
@@ -111,6 +144,16 @@
             });
 
             return marker;
+        }
+
+        // Ajoute tous les markers de la liste markersData
+        function addMarkers() {
+            // Création des markers
+            for (var i = 0; i < markersData.length; i++) {
+                var markerData = markersData[i];
+                createMarker(markerData);
+            }
+            map.setView([47.2184, -1.5536], 13);
         }
 
     </script>
