@@ -1,11 +1,15 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import views.ExporterView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
+
+import utilities.WriteFile;
 
 public class ExporterController  {
     private Rooter rooter;
@@ -28,11 +32,13 @@ public class ExporterController  {
             System.out.println("Aucune case n'est cochée");
         } else {
             System.out.println("Les cases cochées sont :");
+            ArrayList<String> contenu = new ArrayList<String>();
             for (CheckBox cb : exporterView.getSelectedCheckBoxes()) {
                 System.out.println(cb.getText());
+                contenu.add(cb.getText());
             }
+            WriteFile.writeCsv(WriteFile.fileChooser(), contenu);
         }
-        System.out.println();
     }
 
     public void selectionEnregistrer(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
