@@ -13,6 +13,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -39,7 +40,9 @@ public class GraphiqueView extends BorderPane {
     private DatePicker dateFin;
     private Button genererButton;
     private ToggleGroup calqueCompteursGroup;
-    private ArrayList<String> compteurs;
+    private Button toutSelectionner;
+    Button toutDeselectionner;
+    private ArrayList<CheckBox> compteurCheckBoxes;
 
     /**
      * Constructor
@@ -49,6 +52,8 @@ public class GraphiqueView extends BorderPane {
      */
     public GraphiqueView() {
         // Creation of the elements of the view
+        compteurCheckBoxes = new ArrayList<CheckBox>();
+
         Pane graphiquePane = this.initialiseRequetePane();
         this.setTop(graphiquePane);
 
@@ -86,6 +91,39 @@ public class GraphiqueView extends BorderPane {
     public ToggleGroup getCalqueCompteursGroup() {
         return calqueCompteursGroup;
     }
+
+    public Button getToutSelectionner() {
+        return toutSelectionner;
+    }
+
+    public Button getToutDeselectionner() {
+        return toutDeselectionner;
+    }
+
+    public void toutSelectionner() {
+        for (CheckBox checkBox : compteurCheckBoxes) {
+            checkBox.setSelected(true);
+        }
+    }
+
+    public void toutDeselectionner() {
+        for (CheckBox checkBox : compteurCheckBoxes) {
+            checkBox.setSelected(false);
+        }
+    }
+
+    public Toggle getSelectedLeftPane(){
+        return calqueCompteursGroup.getSelectedToggle();
+    }
+
+    public Toggle getCalqueRadioButton(){
+        return calqueCompteursGroup.getToggles().get(0);
+    }
+
+    public Toggle getCompteurRadioButton(){
+        return calqueCompteursGroup.getToggles().get(1);
+    }
+ 
 
 
     private Pane initialiseRequetePane() {
@@ -132,12 +170,11 @@ public class GraphiqueView extends BorderPane {
     
     
         this.calqueCompteursGroup = new ToggleGroup();
-        RadioButton calqueRadioButton = new RadioButton("Calque");
+        RadioButton calqueRadioButton = new RadioButton("Calques");
         calqueRadioButton.setToggleGroup(this.calqueCompteursGroup);
 
-        RadioButton compteurRadioButton = new RadioButton("Compteur");
+        RadioButton compteurRadioButton = new RadioButton("Compteurs");
         compteurRadioButton.setToggleGroup(this.calqueCompteursGroup);
-        compteurRadioButton.setSelected(true);
 
         ret.getChildren().addAll(calqueRadioButton, compteurRadioButton);
 
@@ -145,7 +182,7 @@ public class GraphiqueView extends BorderPane {
     }
 
 
-    public void setCompteurPane(ArrayList<String> compteurs) {
+    public void setCompteurCalquePane(ArrayList<String> contenu) {
         VBox ret = new VBox();
         ret.setPadding(new Insets(10));
         ret.setSpacing(10);
@@ -155,36 +192,38 @@ public class GraphiqueView extends BorderPane {
     
         HBox tmp = new HBox();
         tmp.setSpacing(10);
-        Button toutSelectionner = new Button("Tout selectionner");
-        Button toutDeselectionner = new Button("Tout déselectionner");
+        toutSelectionner = new Button("Tout selectionner");
+        toutDeselectionner = new Button("Tout déselectionner");
 
-        GridPane tmpCompteursPane = new GridPane();
-        tmpCompteursPane.setPadding(new Insets(10));
-        tmpCompteursPane.setVgap(10);
+        GridPane compteursPane = new GridPane();
+        compteursPane.setPadding(new Insets(10));
+        compteursPane.setVgap(10);
         int i = 0;
         int j = 0;
-        for (String string : compteurs) {
+        for (String string : contenu) {
             CheckBox tmpCompteur = new CheckBox(string);
+            compteurCheckBoxes.add(tmpCompteur);
             tmpCompteur.setSelected(true);
-            tmpCompteursPane.add(tmpCompteur, i, j);
+            compteursPane.add(tmpCompteur, i, j);
             i++;
             if (i == 2) {
                 i = 0;
                 j++;
             }
         }
-        ScrollPane scrollPane = new ScrollPane(tmpCompteursPane);
+        ScrollPane scrollPane = new ScrollPane(compteursPane);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         scrollPane.setPrefHeight(375);
         scrollPane.setPrefWidth(250);
-        scrollPane.setContent(tmpCompteursPane);
+        scrollPane.setContent(compteursPane);
 
         tmp.getChildren().addAll(toutSelectionner, toutDeselectionner);
         ret.getChildren().addAll(calqueCompteurPane, tmp, scrollPane);
         
         this.setLeft(ret);
     }
+
 
 }
 

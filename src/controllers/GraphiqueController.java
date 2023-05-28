@@ -6,39 +6,57 @@ import views.GraphiqueView;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import javax.swing.Action;
-
 import database.DatabaseAccess;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.Toggle;
 import models.Compteur;
 
 public class GraphiqueController {
     
     private Rooter rooter;
     private GraphiqueView graphiqueView;
+    ArrayList<Compteur> compteurs;
+    
 
     public GraphiqueController(Rooter rooter) {
         this.rooter = rooter;
         this.graphiqueView = (GraphiqueView) rooter.getView("Graphique");
+        compteurs = DatabaseAccess.getCompteurs();
 
         this.setupSelection();
+        this.graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
+        this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);
+
     }
 
     public void setupSelection() {
         graphiqueView.getGenererButton().setOnAction(this::requete);
-        ArrayList<Compteur> compteurs = DatabaseAccess.getCompteurs();     
+        this.setupCompteurs();
+    }
+
+    public void setupCompteurs() {
         ArrayList<String> compteursString = new ArrayList<String>();
-        for (Compteur compteur : compteurs) {       
+        for (Compteur compteur : this.compteurs) {       
             String tmp = compteur.getLibelle() + " (" + compteur.getNumero() + ")";     
             compteursString.add(tmp);
         }  
-        graphiqueView.setCompteurPane(compteursString);
-        // this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-        //     if (newValue != null) {
-        //         System.out.println("Selected radio button: " + newValue.toString());
-        //     }
-        // });
+        graphiqueView.setCompteurCalquePane(compteursString);
+        graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
+        graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
+    }
+
+
+    public void setupCalques(){
+        ArrayList<String> calquesString = new ArrayList<String>();
+        calquesString.add("Calque 1");
+        calquesString.add("Calque 2");
+        calquesString.add("Calque 3");
+        calquesString.add("Calque 4");
+
+        graphiqueView.setCompteurCalquePane(calquesString);
+        graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
+        graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
 
     private void requete (ActionEvent event) {
@@ -66,5 +84,25 @@ public class GraphiqueController {
         return ret;
     }
 
+    private void toutSelectionner(ActionEvent event) {
+        graphiqueView.toutSelectionner();
+    }
+
+    private void toutDeselectionner(ActionEvent event) {
+        graphiqueView.toutDeselectionner();
+    }
+
+    private void calqueCompteursListener(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+        if (this.graphiqueView.getSelectedLeftPane() == this.graphiqueView.getCompteurRadioButton()){
+            this.setupCompteurs();
+            graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
+
+        } else {
+            this.setupCalques();
+            graphiqueView.getCalqueCompteursGroup().getToggles().get(0).setSelected(true);
+        }
+        this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);
+
+    }
 
 }
