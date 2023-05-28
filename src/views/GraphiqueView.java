@@ -112,9 +112,6 @@ public class GraphiqueView extends BorderPane {
         }
     }
 
-    public Toggle getSelectedLeftPane(){
-        return calqueCompteursGroup.getSelectedToggle();
-    }
 
     public Toggle getCalqueRadioButton(){
         return calqueCompteursGroup.getToggles().get(0);
@@ -123,7 +120,26 @@ public class GraphiqueView extends BorderPane {
     public Toggle getCompteurRadioButton(){
         return calqueCompteursGroup.getToggles().get(1);
     }
- 
+
+    public ArrayList<String> getChackBoxesSelection(){
+        ArrayList<String> ret = new ArrayList<String>();
+        for (CheckBox checkBox : compteurCheckBoxes) {
+            if (checkBox.isSelected()) {
+                ret.add(checkBox.getText());
+            }
+        }
+        return ret;
+    }
+
+    public String getSelection(){
+        String ret = "";
+        if (getCalqueRadioButton().isSelected()) {
+            ret = "Calque";
+        } else if (getCompteurRadioButton().isSelected()) {
+            ret = "Compteur";
+        }
+        return ret;
+    }
 
 
     private Pane initialiseRequetePane() {

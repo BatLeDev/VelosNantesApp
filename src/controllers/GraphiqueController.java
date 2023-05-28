@@ -49,10 +49,10 @@ public class GraphiqueController {
 
     public void setupCalques(){
         ArrayList<String> calquesString = new ArrayList<String>();
-        calquesString.add("Calque 1");
-        calquesString.add("Calque 2");
-        calquesString.add("Calque 3");
-        calquesString.add("Calque 4");
+        calquesString.add("Calque 1 (1)");
+        calquesString.add("Calque 2 (2)");
+        calquesString.add("Calque 3 (3)");
+        calquesString.add("Calque 4 (4)");
 
         graphiqueView.setCompteurCalquePane(calquesString);
         graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
@@ -60,15 +60,16 @@ public class GraphiqueController {
     }
 
     private void requete (ActionEvent event) {
-        if (checkDate()){
+        if (this.checkDate() && this.checkSelection()){
             String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
             String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
             String typeGraphique = graphiqueView.getTypeGraphiqueComboBox().getValue();
             String dateDebut = graphiqueView.getDateDebut().getValue().toString();
             String dateFin = graphiqueView.getDateFin().getValue().toString();
-            DatabaseAccess databaseAccess = new DatabaseAccess();
-            System.out.println(typeSomme + " " + typeTemps + " " + typeGraphique + " " + dateDebut + " " + dateFin);
-            //databaseAccess.getGraphique(typeSomme, typeTemps, typeGraphique, dateDebut, dateFin);       
+            String selection = graphiqueView.getSelection();
+            String selectionCheckBoxes = this.selectionToString();
+            ArrayList<String> ret = DatabaseAccess.getGraphique(typeSomme, typeTemps, typeGraphique, dateDebut, dateFin, selection, selectionCheckBoxes);       
+            System.out.println(ret);
         }
 
     }
@@ -93,7 +94,7 @@ public class GraphiqueController {
     }
 
     private void calqueCompteursListener(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-        if (this.graphiqueView.getSelectedLeftPane() == this.graphiqueView.getCompteurRadioButton()){
+        if (this.graphiqueView.getSelection().equals("Compteur")) {
             this.setupCompteurs();
             graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
 
@@ -104,5 +105,25 @@ public class GraphiqueController {
         this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);
 
     }
+
+
+    private boolean checkSelection() {
+        return !graphiqueView.getChackBoxesSelection().isEmpty();
+    }
+
+    private String selectionToString(){
+        String ret = "";
+        ArrayList<String> result = graphiqueView.getChackBoxesSelection();
+        String string = result.get(0);
+        String tmp = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
+        ret += tmp;
+        for (int i = 1; i < result.size(); i++) {
+            string = result.get(i);
+            tmp = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
+            ret += "," + tmp;
+        }
+        return ret;
+    }
+
 
 }

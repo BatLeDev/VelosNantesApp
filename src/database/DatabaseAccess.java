@@ -74,4 +74,31 @@ public class DatabaseAccess {
 
         return compteurs;
     }
+
+
+    public static ArrayList<String> getGraphique ( String typeSomme, String typeTemps, String typeGraphique, String dateDebut, String dateFin, String selection, String selectionCheckBoxes){
+        ArrayList<String> graphique = new ArrayList<String>();
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            System.out.println(dateDebut + " " + dateFin + " " + selectionCheckBoxes);
+            String query = "SELECT total FROM vue_ReleveJournalierResume WHERE leJour BETWEEN '"+dateDebut+"' AND '"+dateFin+"' AND leCompteur IN ("+selectionCheckBoxes+");";
+            System.out.println(query);
+            ResultSet resultSet = statement.executeQuery(query);
+            System.out.println(resultSet);
+
+            while (resultSet.next()) {
+                String total = resultSet.getString("total");
+                graphique.add(total);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return graphique;
+    }
 }
