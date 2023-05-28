@@ -5,6 +5,8 @@ import javafx.geometry.Pos;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -43,6 +45,7 @@ public class GraphiqueView extends BorderPane {
     private Button toutSelectionner;
     Button toutDeselectionner;
     private ArrayList<CheckBox> compteurCheckBoxes;
+    private ArrayList<CheckBox> calqueCheckBoxes;
 
     /**
      * Constructor
@@ -121,9 +124,19 @@ public class GraphiqueView extends BorderPane {
         return calqueCompteursGroup.getToggles().get(1);
     }
 
-    public ArrayList<String> getChackBoxesSelection(){
+    public ArrayList<String> getSelectionCompteurCheckBoxes() {
         ArrayList<String> ret = new ArrayList<String>();
         for (CheckBox checkBox : compteurCheckBoxes) {
+            if (checkBox.isSelected()) {
+                ret.add(checkBox.getText());
+            }
+        }
+        return ret;
+    }
+
+    public ArrayList<String> getSelectionCalqueCheckBoxes() {
+        ArrayList<String> ret = new ArrayList<String>();
+        for (CheckBox checkBox : calqueCheckBoxes) {
             if (checkBox.isSelected()) {
                 ret.add(checkBox.getText());
             }
@@ -157,11 +170,14 @@ public class GraphiqueView extends BorderPane {
         dateDebut = new DatePicker();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
         dateDebut.setConverter(new DatePickerConverter(formatter));
+        dateDebut.setValue(dateDebut.getConverter().fromString("2020-01-01"));
 
         Label a = new Label("  à  ");
 
         dateFin = new DatePicker();
         dateFin.setConverter(new DatePickerConverter(formatter));
+        dateFin.setValue(dateDebut.getConverter().fromString("2023-01-01"));
+
 
         Label par = new Label("  par  ");
 
@@ -198,7 +214,13 @@ public class GraphiqueView extends BorderPane {
     }
 
 
-    public void setCompteurCalquePane(ArrayList<String> contenu) {
+    public void setCompteurCalquePane(ArrayList<String> contenu, boolean type) {
+        if (type){
+            compteurCheckBoxes = new ArrayList<CheckBox>();
+        } else {
+            calqueCheckBoxes = new ArrayList<CheckBox>();
+        }
+
         VBox ret = new VBox();
         ret.setPadding(new Insets(10));
         ret.setSpacing(10);
@@ -218,13 +240,17 @@ public class GraphiqueView extends BorderPane {
         int j = 0;
         for (String string : contenu) {
             CheckBox tmpCompteur = new CheckBox(string);
-            compteurCheckBoxes.add(tmpCompteur);
             tmpCompteur.setSelected(true);
             compteursPane.add(tmpCompteur, i, j);
             i++;
             if (i == 2) {
                 i = 0;
                 j++;
+            }
+            if (type){
+                compteurCheckBoxes.add(tmpCompteur);
+            } else {
+                compteurCheckBoxes.add(tmpCompteur);
             }
         }
         ScrollPane scrollPane = new ScrollPane(compteursPane);

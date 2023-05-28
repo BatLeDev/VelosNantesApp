@@ -86,7 +86,6 @@ public class DatabaseAccess {
             String query = "SELECT total FROM vue_ReleveJournalierResume WHERE leJour BETWEEN '"+dateDebut+"' AND '"+dateFin+"' AND leCompteur IN ("+selectionCheckBoxes+");";
             System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
-            System.out.println(resultSet);
 
             while (resultSet.next()) {
                 String total = resultSet.getString("total");

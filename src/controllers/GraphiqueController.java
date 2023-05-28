@@ -1,10 +1,10 @@
 package controllers;
 
-import views.ExporterView;
 import views.GraphiqueView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 
 import database.DatabaseAccess;
 import javafx.beans.value.ObservableValue;
@@ -41,7 +41,7 @@ public class GraphiqueController {
             String tmp = compteur.getLibelle() + " (" + compteur.getNumero() + ")";     
             compteursString.add(tmp);
         }  
-        graphiqueView.setCompteurCalquePane(compteursString);
+        graphiqueView.setCompteurCalquePane(compteursString,true);
         graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
         graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
@@ -54,7 +54,7 @@ public class GraphiqueController {
         calquesString.add("Calque 3 (3)");
         calquesString.add("Calque 4 (4)");
 
-        graphiqueView.setCompteurCalquePane(calquesString);
+        graphiqueView.setCompteurCalquePane(calquesString,false);
         graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
         graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
@@ -78,8 +78,8 @@ public class GraphiqueController {
         boolean ret = true;
         LocalDate dateDebut = graphiqueView.getDateDebut().getValue();
         LocalDate dateFin = graphiqueView.getDateFin().getValue();
-        if (dateDebut == null || dateFin == null || dateDebut.isAfter(dateFin)) {
-            System.out.println("Date de début supérieure à la date de fin");
+        if (dateDebut == null || dateFin == null || dateDebut.isBefore(dateFin) || dateDebut.isBefore(LocalDate.of(2020, 1, 1)) || dateFin.isAfter(LocalDate.of(2023, 1, 31))) {
+            System.out.println("Les dates doivent etre comprisent entre : 2020-01-01 et 2023-01-31");
             ret = false;
         }
         return ret;
@@ -108,12 +108,12 @@ public class GraphiqueController {
 
 
     private boolean checkSelection() {
-        return !graphiqueView.getChackBoxesSelection().isEmpty();
+        return !graphiqueView.getSelectionCompteurCheckBoxes().isEmpty();
     }
 
     private String selectionToString(){
         String ret = "";
-        ArrayList<String> result = graphiqueView.getChackBoxesSelection();
+        ArrayList<String> result = graphiqueView.getSelectionCompteurCheckBoxes();
         String string = result.get(0);
         String tmp = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
         ret += tmp;

@@ -3,7 +3,9 @@ package utilities;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class DatePickerConverter extends javafx.util.StringConverter<LocalDate> {
+import javafx.util.StringConverter;
+
+public class DatePickerConverter extends StringConverter<LocalDate> {
     private final DateTimeFormatter formatter;
 
     public DatePickerConverter(DateTimeFormatter formatter) {
