@@ -74,4 +74,47 @@ public class DatabaseAccess {
 
         return compteurs;
     }
+
+
+    public static ArrayList<String> exporterRequete(ArrayList<String> requete, String table) {
+        ArrayList<String> contenu = new ArrayList<String>();
+
+        try {
+            // Connection to the database
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            String tmp = requete.get(0);
+            for (int i = 1; i < requete.size(); i++) {
+                tmp += ", " + requete.get(i);
+            }
+
+            String query = "SELECT "+tmp+" FROM "+table+";";        
+            ResultSet resultSet = statement.executeQuery(query);
+            System.out.println(query);
+
+            tmp = requete.get(0);
+            for (int i = 1; i < requete.size(); i++) {
+                tmp += "," + requete.get(i);
+            }
+            contenu.add(tmp);
+            System.out.println(resultSet+":");
+            
+            while (resultSet.next()) {
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                tmp = resultSet.getString(1);
+                for (int i = 2; i <= columnCount; i++) {
+                    tmp += ","+resultSet.getObject(i);
+                }
+                contenu.add(tmp);
+            }
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return contenu;
+    }
 }

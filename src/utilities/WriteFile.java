@@ -1,8 +1,9 @@
 package utilities;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -14,7 +15,8 @@ public class WriteFile {
     
     public static void writeCsv(String filename, ArrayList<String> contenu){
         try {
-            FileWriter file = new FileWriter(filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
+            OutputStreamWriter file = new OutputStreamWriter(fileOutputStream, "UTF-8");
             PrintWriter out = new PrintWriter(file);
 
             for (String line : contenu) {

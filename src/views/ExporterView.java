@@ -57,6 +57,10 @@ public class ExporterView extends BorderPane {
         return ret;
     }
 
+    public RadioButton getSelectedRadioButton() {
+        return (RadioButton) this.toggleGroup.getSelectedToggle();
+    }
+
 
 
     private Pane initialiseGenererPane(){
@@ -70,6 +74,7 @@ public class ExporterView extends BorderPane {
         this.toggleGroup = new ToggleGroup();
         FlowPane choix = new FlowPane();
         RadioButton jourButton = new RadioButton("Jour");
+        jourButton.setSelected(true);
         toggleGroup.getToggles().add(jourButton);
         RadioButton compteurButton = new RadioButton("Compteur");
         toggleGroup.getToggles().add(compteurButton);
