@@ -91,21 +91,19 @@ public class DatabaseAccess {
 
             String query = "SELECT "+tmp+" FROM "+table+";";        
             ResultSet resultSet = statement.executeQuery(query);
-            System.out.println(query);
 
             tmp = requete.get(0);
             for (int i = 1; i < requete.size(); i++) {
-                tmp += "," + requete.get(i);
+                tmp += ";" + requete.get(i);
             }
             contenu.add(tmp);
-            System.out.println(resultSet+":");
             
             while (resultSet.next()) {
                 ResultSetMetaData metaData = resultSet.getMetaData();
                 int columnCount = metaData.getColumnCount();
                 tmp = resultSet.getString(1);
                 for (int i = 2; i <= columnCount; i++) {
-                    tmp += ","+resultSet.getObject(i);
+                    tmp += ";"+resultSet.getObject(i);
                 }
                 contenu.add(tmp);
             }
