@@ -5,8 +5,6 @@ import javafx.geometry.Pos;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -182,7 +180,7 @@ public class GraphiqueView extends BorderPane {
         Label par = new Label("  par  ");
 
         this.typeTempsComboBox = new ComboBox<String>();
-        this.typeTempsComboBox.getItems().addAll("Heure","Jour","Mois","Annee");
+        this.typeTempsComboBox.getItems().addAll("Jour","Mois","Annee");
         this.typeTempsComboBox.setValue("Heure");
 
         Label en = new Label("  en  ");
