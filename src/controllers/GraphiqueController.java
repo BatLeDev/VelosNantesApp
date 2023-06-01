@@ -78,7 +78,7 @@ public class GraphiqueController {
         boolean ret = true;
         LocalDate dateDebut = graphiqueView.getDateDebut().getValue();
         LocalDate dateFin = graphiqueView.getDateFin().getValue();
-        if (dateDebut == null || dateFin == null || dateDebut.isBefore(dateFin) || dateDebut.isBefore(LocalDate.of(2020, 1, 1)) || dateFin.isAfter(LocalDate.of(2023, 1, 31))) {
+        if (dateDebut == null || dateFin == null || dateDebut.isAfter(dateFin) || dateDebut.isBefore(LocalDate.of(2020, 1, 1)) || dateFin.isAfter(LocalDate.of(2023, 1, 31))) {
             System.out.println("Les dates doivent etre comprisent entre : 2020-01-01 et 2023-01-31");
             ret = false;
         }
