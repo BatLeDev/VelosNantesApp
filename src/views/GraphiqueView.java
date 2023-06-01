@@ -180,8 +180,8 @@ public class GraphiqueView extends BorderPane {
         Label par = new Label("  par  ");
 
         this.typeTempsComboBox = new ComboBox<String>();
-        this.typeTempsComboBox.getItems().addAll("Jour","Mois","Annee");
-        this.typeTempsComboBox.setValue("Heure");
+        this.typeTempsComboBox.getItems().addAll("Tout","Jour","Mois","Annee");
+        this.typeTempsComboBox.setValue("Tout");
 
         Label en = new Label("  en  ");
 
