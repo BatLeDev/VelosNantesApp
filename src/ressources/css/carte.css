@@ -1,0 +1,26 @@
+.legend-title {
+    -fx-border-color: #6807f7;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 10px;
+    -fx-pref-width: 270px;
+    -fx-pref-height: 50px;
+    -fx-background-color: #6807f7;
+    -fx-background-radius: 10px;
+}
+
+.legend-title .legend-title-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+}
+
+.legend-grid {
+    -fx-background-color: white;
+    -fx-border-color: #6807f7;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 10px;
+    -fx-pref-width: 270px;
+}

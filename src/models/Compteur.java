@@ -1,16 +1,16 @@
 package models;
 
 public class Compteur {
-    private int numero;
+    private int idCompteur;
     private String libelle;
     private String direction;
     private String observation;
     private double latitude;
     private double longitude;
 
-    public Compteur(int numero, String libelle, String direction, String observation, double latitude,
+    public Compteur(int idCompteur, String libelle, String direction, String observation, double latitude,
             double longitude) {
-        this.numero = numero;
+        this.idCompteur = idCompteur;
         this.libelle = libelle;
         this.direction = direction;
         this.observation = observation;
@@ -19,7 +19,30 @@ public class Compteur {
     }
     
     public String toString() {
-        return "Compteur " + numero + " : " + libelle + " (" + latitude + ", " + longitude + ")";
+        return "Compteur " + idCompteur + " : " + libelle + " (" + latitude + ", " + longitude + ")";
     }
 
+    public int getNumero() {
+        return idCompteur;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
 }
