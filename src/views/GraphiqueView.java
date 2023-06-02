@@ -244,15 +244,15 @@ public class GraphiqueView extends BorderPane {
                 compteurCheckBoxes.add(tmpCompteur);
             }
         }
+        VBox compteursVBox = new VBox();
         ScrollPane scrollPane = new ScrollPane(compteursPane);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
-        scrollPane.setPrefHeight(375);
-        scrollPane.setPrefWidth(250);
         scrollPane.setContent(compteursPane);
+        compteursVBox.getChildren().add(scrollPane);
 
         tmp.getChildren().addAll(toutSelectionner, toutDeselectionner);
-        ret.getChildren().addAll(calqueCompteurPane, tmp, scrollPane);
+        ret.getChildren().addAll(calqueCompteurPane, tmp, compteursVBox);
 
         this.setLeft(ret);
     }
