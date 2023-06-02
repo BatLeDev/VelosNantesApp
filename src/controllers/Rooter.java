@@ -9,9 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 // Views imports
-import views.NavbarView;
-import views.ExporterView;
-import views.CarteView;
+import views.*;
 
 /**
  * This class represents the rooter of the application.
@@ -63,6 +61,9 @@ public class Rooter {
 
         CarteView carteView = new CarteView();
         views.put("Carte", carteView);
+
+        GraphiqueView graphiqueView = new GraphiqueView();
+        views.put("Graphique", graphiqueView);
 
         // Creation of the navbar
         NavbarView navbarView = new NavbarView();

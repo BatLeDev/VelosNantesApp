@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.sql.ResultSetMetaData;
 
 import java.util.ArrayList;
+
+import models.Compteur;
 import models.CompteurFull;
 
 public class DatabaseAccess {
@@ -86,8 +88,6 @@ public class DatabaseAccess {
         return compteurs;
     }
 
-    
-
     public static String[] getQuartiersFromID(int id) {
         String[] quartiers = new String[2];
 
@@ -115,9 +115,6 @@ public class DatabaseAccess {
 
         return quartiers;
     }
-
-    
-
 
     public static ArrayList<String> exporterRequete(ArrayList<String> requete, String table) {
         ArrayList<String> contenu = new ArrayList<String>();
@@ -159,15 +156,15 @@ public class DatabaseAccess {
         return contenu;
     }
 
-
-    public static ArrayList<String> getGraphique ( String typeSomme, String typeTemps, String typeGraphique, String dateDebut, String dateFin, String selection, String selectionCheckBoxes){
+    public static ArrayList<String> getGraphique(String typeSomme, String typeTemps, String typeGraphique,
+            String dateDebut, String dateFin, String selection, String selectionCheckBoxes) {
         ArrayList<String> graphique = new ArrayList<String>();
         try {
             Connection connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
 
             String group;
-            if (typeTemps.equals("Tout")){
+            if (typeTemps.equals("Tout")) {
                 group = "leJour";
             } else if (typeTemps.equals("Jour")) {
                 group = "DAY(leJour)";
@@ -178,13 +175,14 @@ public class DatabaseAccess {
             }
 
             String type;
-            if (typeSomme.equals("Somme")){
+            if (typeSomme.equals("Somme")) {
                 type = "SUM(total)";
             } else {
                 type = "AVG(total)";
             }
 
-            String query = "SELECT "+type+" FROM vue_ReleveJournalierResume WHERE leJour BETWEEN '"+dateDebut+"' AND '"+dateFin+"' AND leCompteur IN ("+selectionCheckBoxes+") GROUP BY "+group+";";
+            String query = "SELECT " + type + " FROM vue_ReleveJournalierResume WHERE leJour BETWEEN '" + dateDebut
+                    + "' AND '" + dateFin + "' AND leCompteur IN (" + selectionCheckBoxes + ") GROUP BY " + group + ";";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -199,5 +197,37 @@ public class DatabaseAccess {
         }
 
         return graphique;
+    }
+
+    public static ArrayList<Compteur> getCompteurs() {
+        ArrayList<Compteur> compteurs = new ArrayList<Compteur>();
+
+        try {
+            // Connection to the database
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT * FROM Compteur";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int numero = resultSet.getInt("numero");
+                String libelle = resultSet.getString("libelle");
+                String direction = resultSet.getString("direction");
+                String observation = resultSet.getString("observations");
+                double latitude = resultSet.getDouble("latitude");
+                double longitude = resultSet.getDouble("longitude");
+
+                Compteur compteur = new Compteur(numero, libelle, direction, observation, latitude, longitude);
+                compteurs.add(compteur);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return compteurs;
     }
 }
