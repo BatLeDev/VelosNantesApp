@@ -100,9 +100,7 @@ public class DatabaseAccess {
                 type = "AVG(total)";
             }
 
-            System.out.println(dateDebut + " " + dateFin + " " + selectionCheckBoxes);
             String query = "SELECT "+type+" FROM vue_ReleveJournalierResume WHERE leJour BETWEEN '"+dateDebut+"' AND '"+dateFin+"' AND leCompteur IN ("+selectionCheckBoxes+") GROUP BY "+group+";";
-            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
