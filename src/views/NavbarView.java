@@ -15,7 +15,6 @@ public class NavbarView extends BorderPane {
     // Each button link of the navbar
     private Button exporterButton;
     private Button carteButton;
-    private Button graphiqueButton;
 
     /**
      * Constructor
@@ -30,13 +29,11 @@ public class NavbarView extends BorderPane {
         // Creation of the elements of the navbar
         exporterButton = new Button("Exporter");
         carteButton = new Button("Carte");
-        graphiqueButton = new Button("Graphique");
 
         // Positioning of the elements
         setPadding(new Insets(10));
         setLeft(exporterButton);
         setRight(carteButton);
-        setCenter(graphiqueButton);
     }
 
     /**
@@ -52,7 +49,4 @@ public class NavbarView extends BorderPane {
         return carteButton;
     }
 
-    public Button getGraphiqueButton() {
-        return graphiqueButton;
-    }
 }

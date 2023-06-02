@@ -21,10 +21,6 @@ public class NavbarController {
         navbarView.getCarteButton().setOnAction(event -> {
             rooter.changePage(true, "Carte");
         });
-
-        navbarView.getGraphiqueButton().setOnAction(event -> {
-            rooter.changePage(true, "Graphique");
-        });
     }
 
 }
