@@ -158,4 +158,46 @@ public class DatabaseAccess {
 
         return contenu;
     }
+
+
+    public static ArrayList<String> getGraphique ( String typeSomme, String typeTemps, String typeGraphique, String dateDebut, String dateFin, String selection, String selectionCheckBoxes){
+        ArrayList<String> graphique = new ArrayList<String>();
+        try {
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            String group;
+            if (typeTemps.equals("Tout")){
+                group = "leJour";
+            } else if (typeTemps.equals("Jour")) {
+                group = "DAY(leJour)";
+            } else if (typeTemps.equals("Mois")) {
+                group = "MONTH(leJour)";
+            } else {
+                group = "YEAR(leJour)";
+            }
+
+            String type;
+            if (typeSomme.equals("Somme")){
+                type = "SUM(total)";
+            } else {
+                type = "AVG(total)";
+            }
+
+            String query = "SELECT "+type+" FROM vue_ReleveJournalierResume WHERE leJour BETWEEN '"+dateDebut+"' AND '"+dateFin+"' AND leCompteur IN ("+selectionCheckBoxes+") GROUP BY "+group+";";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String total = resultSet.getString(type);
+                graphique.add(total);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return graphique;
+    }
 }

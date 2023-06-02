@@ -22,27 +22,4 @@ public class Compteur {
         return "Compteur " + idCompteur + " : " + libelle + " (" + latitude + ", " + longitude + ")";
     }
 
-    public int getNumero() {
-        return idCompteur;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public String getObservation() {
-        return observation;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
 }
