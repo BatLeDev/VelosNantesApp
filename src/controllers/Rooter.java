@@ -73,7 +73,7 @@ public class Rooter {
 
         // Initialisation of the main Scene
         this.mainScene = new Scene(root, 800, 600);
-
+        this.mainScene.getStylesheets().add("file:src/ressources/css/carte.css");
         // Configuration of the main window
         primaryStage.setScene(mainScene);
         primaryStage.show();
