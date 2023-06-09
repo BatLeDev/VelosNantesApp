@@ -155,9 +155,9 @@ public class DatabaseAccess {
         return contenu;
     }
 
-    public static ArrayList<String> getGraphique(String typeSomme, String typeTemps, String typeGraphique,
-            String dateDebut, String dateFin, String selection, String selectionCheckBoxes) {
-        ArrayList<String> graphique = new ArrayList<String>();
+    public static ArrayList<Double> getGraphique(String typeSomme, String typeTemps, String dateDebut, String dateFin, String selection, String selectionCheckBoxes) {
+        
+        ArrayList<Double> graphique = new ArrayList<Double>();
         try {
             Statement connection = DatabaseConnection.getConnection();
 
@@ -185,7 +185,7 @@ public class DatabaseAccess {
 
             while (resultSet.next()) {
                 String total = resultSet.getString(type);
-                graphique.add(total);
+                graphique.add(Double.parseDouble(total));
             }
 
             resultSet.close();
