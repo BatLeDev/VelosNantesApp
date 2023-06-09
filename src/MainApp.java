@@ -44,7 +44,7 @@ public class MainApp extends Application {
         rooter = new Rooter(primaryStage);
 
         // Set the icon of the application
-        primaryStage.getIcons().add(new Image("file:./ressources/images/logo.png"));
+        primaryStage.getIcons().add(new Image("./ressources/images/logo2.png"));
         primaryStage.setTitle("VelosNantes");
 
         // Initialisation of each controller
