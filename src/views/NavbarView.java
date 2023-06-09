@@ -28,15 +28,15 @@ public class NavbarView extends BorderPane {
      */
     public NavbarView() {
         // Creation of the elements of the navbar
-        exporterButton = new Button("Exporter");
         carteButton = new Button("Carte");
         graphiqueButton = new Button("Graphique");
+        exporterButton = new Button("Exporter");
 
         // Positioning of the elements
         setPadding(new Insets(10));
-        setLeft(exporterButton);
+        setLeft(carteButton);
         setCenter(graphiqueButton);
-        setRight(carteButton);
+        setRight(exporterButton);
     }
 
     /**

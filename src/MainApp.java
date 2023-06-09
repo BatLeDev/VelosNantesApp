@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 // Controllers import
@@ -41,6 +42,10 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         // Creation of the rooter
         rooter = new Rooter(primaryStage);
+
+        // Set the icon of the application
+        primaryStage.getIcons().add(new Image("file:./ressources/images/logo.png"));
+        primaryStage.setTitle("VelosNantes");
 
         // Initialisation of each controller
         // Isn't necessary to keep the reference of the controller

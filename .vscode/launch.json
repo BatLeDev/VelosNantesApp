@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ClickableRectangle",
+            "request": "launch",
+            "mainClass": "ClickableRectangle",
+            "projectName": "VelosNantesApp_6bb9ac7"
+        },
+        {
+            "type": "java",
             "name": "MainApp",
             "request": "launch",
             "mainClass": "MainApp",
