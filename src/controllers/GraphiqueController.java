@@ -1,6 +1,7 @@
 package controllers;
 
 import views.GraphiqueView;
+import utilities.DataChart;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class GraphiqueController {
         this.setupSelection();
         this.graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
         this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);
-
     }
 
     public void setupSelection() {
@@ -63,13 +63,13 @@ public class GraphiqueController {
         if (this.checkDate() && this.checkSelection()){
             String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
             String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
-            String typeGraphique = graphiqueView.getTypeGraphiqueComboBox().getValue();
             String dateDebut = graphiqueView.getDateDebut().getValue().toString();
             String dateFin = graphiqueView.getDateFin().getValue().toString();
             String selection = graphiqueView.getSelection();
             String selectionCheckBoxes = this.selectionToString();
-            ArrayList<String> ret = DatabaseAccess.getGraphique(typeSomme, typeTemps, typeGraphique, dateDebut, dateFin, selection, selectionCheckBoxes);       
+            ArrayList<Double> ret = DatabaseAccess.getGraphique(typeSomme, typeTemps, dateDebut, dateFin, selection, selectionCheckBoxes);       
             System.out.println(ret);
+            this.ajoutGraphe(ret);
         }
 
     }
@@ -123,6 +123,17 @@ public class GraphiqueController {
             ret += "," + tmp;
         }
         return ret;
+    }
+
+
+    public void ajoutGraphe (ArrayList<Double> dataReleves, ArrayList<String> nom){
+        DataChart lineChart = new DataChart(dataReleves, nom);
+        this.graphiqueView.setGraphesPane(lineChart.getLineChart());
+    }
+
+    public void ajoutGraphe (ArrayList<Double> dataReleves){
+        DataChart lineChart = new DataChart(dataReleves);
+        this.graphiqueView.setGraphesPane(lineChart.getLineChart());
     }
 
 

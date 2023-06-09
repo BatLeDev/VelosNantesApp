@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.geometry.Insets;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -20,6 +21,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import utilities.DatePickerConverter;
 
@@ -177,15 +179,9 @@ public class GraphiqueView extends BorderPane {
         this.typeTempsComboBox = new ComboBox<String>();
         this.typeTempsComboBox.getItems().addAll("Tout", "Jour", "Mois", "Annee");
         this.typeTempsComboBox.setValue("Tout");
-
-        Label en = new Label("  en  ");
-
-        this.typeGraphiqueComboBox = new ComboBox<String>();
-        this.typeGraphiqueComboBox.getItems().setAll("Histogramme", "Courbe");
-        this.typeGraphiqueComboBox.setValue("Histogramme");
-
+        
         ret.getChildren().addAll(affichage, this.typeSommeComboBox, desReleves, dateDebut, a, dateFin, par,
-                this.typeTempsComboBox, en, this.typeGraphiqueComboBox);
+                this.typeTempsComboBox);
         return ret;
     }
 
@@ -255,6 +251,18 @@ public class GraphiqueView extends BorderPane {
         ret.getChildren().addAll(calqueCompteurPane, tmp, compteursVBox);
 
         this.setLeft(ret);
+    }
+
+
+    public void setGraphesPane(LineChart<String, Number> graphe) {
+        StackPane graphPane = new StackPane(graphe);
+        graphPane.setStyle("-fx-background-color: cyan;");
+        BorderPane tmp = new BorderPane();
+        tmp.setPadding(new Insets(15, 15, 30, 15));
+        tmp.setCenter(graphPane);
+        tmp.setBottom(this.genererButton);
+        BorderPane.setAlignment(tmp.getBottom(), Pos.CENTER);
+        this.setCenter(tmp);
     }
 
 }
