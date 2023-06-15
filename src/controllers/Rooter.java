@@ -6,6 +6,7 @@ import java.util.HashMap;
 // JavaFX imports
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 // Views imports
@@ -37,7 +38,7 @@ public class Rooter {
      * The value is the view
      * It's used to get a view by his title
      */
-    private HashMap<String, BorderPane> views;
+    private HashMap<String, Pane> views;
 
     /**
      * Constructor
@@ -53,7 +54,7 @@ public class Rooter {
      */
     public Rooter(Stage primaryStage) {
         // Initialisation of the HashMap of views
-        this.views = new HashMap<String, BorderPane>();
+        this.views = new HashMap<String, Pane>();
 
         // Creation of each view
         ExporterView exporterView = new ExporterView();
@@ -74,7 +75,11 @@ public class Rooter {
 
         // Initialisation of the main Scene
         this.mainScene = new Scene(root, 800, 600);
+
+        // Add CSS Files
         this.mainScene.getStylesheets().add("file:src/ressources/css/carte.css");
+        this.mainScene.getStylesheets().add("file:src/ressources/css/navbar.css");
+
         // Configuration of the main window
         primaryStage.setScene(mainScene);
         primaryStage.show();
@@ -88,7 +93,7 @@ public class Rooter {
      */
     public void changePage(boolean showNavbar, String pageTitle) {
         // Get the view to display
-        BorderPane page = views.get(pageTitle);
+        Pane page = views.get(pageTitle);
 
         // Display the view in the center of the main BorderPane
         root.setCenter(page);
@@ -105,9 +110,9 @@ public class Rooter {
      * Get a view by his title
      * 
      * @param viewName The title of the view to get
-     * @return The BorderPane view
+     * @return The Pane view
      */
-    public BorderPane getView(String viewName) {
+    public Pane getView(String viewName) {
         return views.get(viewName);
     }
 }

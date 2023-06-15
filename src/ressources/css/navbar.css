@@ -1,0 +1,31 @@
+.navbar-view {
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+.navbar-box {
+    -fx-alignment: center;
+}
+
+.navbar-box>.button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6807f7;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-line-spacing: 24px;
+    -fx-display: flex;
+    -fx-align-items: center;
+    -fx-text-alignment: center;
+    -fx-font-family: 'Inter';
+}
+.login-box {
+    -fx-alignment: center-right;
+}
+
+.login-box>.button {
+    -fx-background-color: #dddddd;
+    -fx-text-fill: black;
+    -fx-padding: 5px 10px;
+    -fx-font-size: 14px;
+}

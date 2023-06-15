@@ -57,14 +57,14 @@ public class CarteView extends BorderPane {
         stackPane.getChildren().addAll(webView, legendPaneOpen);
 
         // Load the markers when the page is loaded
-        this.webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == Worker.State.SUCCEEDED) {
-                System.out.println("Page loaded");
-                loadMarkers(); // Load the markers on the map
+        // this.webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+        //     if (newValue == Worker.State.SUCCEEDED) {
+        //         System.out.println("Page loaded");
+        //         loadMarkers(); // Load the markers on the map
 
-                this.setCenter(stackPane);
-            }
-        });
+        //         this.setCenter(stackPane);
+        //     }
+        // });
     }
 
     /**
