@@ -57,14 +57,14 @@ public class Rooter {
         this.views = new HashMap<String, Pane>();
 
         // Creation of each view
-        ExporterView exporterView = new ExporterView();
-        views.put("Exporter", exporterView);
-
         CarteView carteView = new CarteView();
         views.put("Carte", carteView);
 
         GraphiqueView graphiqueView = new GraphiqueView();
         views.put("Graphique", graphiqueView);
+        
+        ExporterView exporterView = new ExporterView();
+        views.put("Exporter", exporterView);
 
         // Creation of the navbar
         NavbarView navbarView = new NavbarView();
@@ -74,7 +74,7 @@ public class Rooter {
         this.root = new BorderPane();
 
         // Initialisation of the main Scene
-        this.mainScene = new Scene(root, 800, 600);
+        this.mainScene = new Scene(root);
 
         // Add CSS Files
         this.mainScene.getStylesheets().add("file:src/ressources/css/carte.css");
@@ -82,7 +82,6 @@ public class Rooter {
 
         // Configuration of the main window
         primaryStage.setScene(mainScene);
-        primaryStage.show();
     }
 
     /**
@@ -95,12 +94,16 @@ public class Rooter {
         // Get the view to display
         Pane page = views.get(pageTitle);
 
+        // Change the page selected in the navbar
+        NavbarView navbar = (NavbarView) views.get("Navbar");
+        navbar.setPageSelected(pageTitle);
+
         // Display the view in the center of the main BorderPane
         root.setCenter(page);
 
         // Display or hide the navbar
         if (showNavbar) {
-            root.setTop(views.get("Navbar"));
+            root.setTop(navbar);
         } else {
             root.setTop(null);
         }

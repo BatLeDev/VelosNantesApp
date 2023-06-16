@@ -1,6 +1,5 @@
 package views;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,7 +37,6 @@ public class NavbarView extends BorderPane {
         // Création de la boîte horizontale pour les boutons de connexion et d'inscription
         HBox loginBox = new HBox(10);
         loginBox.getChildren().addAll(loginButton, registerButton);
-        loginBox.setAlignment(Pos.CENTER_RIGHT);
 
         // Positionnement des éléments
         setLeft(logoImageView);
@@ -49,6 +47,8 @@ public class NavbarView extends BorderPane {
         getStyleClass().add("navbar-view");
         navbarBox.getStyleClass().add("navbar-box");
         loginBox.getStyleClass().add("login-box");
+        loginButton.getStyleClass().add("login-button");
+        registerButton.getStyleClass().add("register-button");
     }
 
     public Button getExporterButton() {
@@ -69,5 +69,23 @@ public class NavbarView extends BorderPane {
 
     public Button getRegisterButton() {
         return registerButton;
+    }
+
+    public void setPageSelected(String pageTitle) {
+        carteButton.getStyleClass().remove("selected");
+        graphiqueButton.getStyleClass().remove("selected");
+        exporterButton.getStyleClass().remove("selected");
+
+        switch (pageTitle) {
+            case "Carte":
+                carteButton.getStyleClass().add("selected");
+                break;
+            case "Graphique":
+                graphiqueButton.getStyleClass().add("selected");
+                break;
+            case "Exporter":
+                exporterButton.getStyleClass().add("selected");
+                break;
+        }
     }
 }

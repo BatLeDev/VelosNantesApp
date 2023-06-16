@@ -6,28 +6,8 @@
             "name": "MainApp",
             "request": "launch",
             "mainClass": "MainApp",
-            "projectName": "VelosNantesApp_6a735356"
-        },
-        {
-            "type": "java",
-            "name": "ClickableRectangle",
-            "request": "launch",
-            "mainClass": "ClickableRectangle",
-            "projectName": "VelosNantesApp_6bb9ac7"
-        },
-        {
-            "type": "java",
-            "name": "MainApp",
-            "request": "launch",
-            "mainClass": "MainApp",
             "projectName": "VelosNantesApp_6bb9ac7",
             "vmArgs": "--module-path lib/javafx-sdk-11/lib --add-modules javafx.swing,javafx.graphics,javafx.fxml,javafx.media,javafx.web"
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
         }
     ]
 }

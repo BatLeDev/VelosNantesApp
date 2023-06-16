@@ -1,7 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
+import javafx.stage.StageStyle;
 // Controllers import
 import controllers.Rooter;
 import controllers.ExporterController;
@@ -46,6 +46,10 @@ public class MainApp extends Application {
         // Set the icon of the application
         primaryStage.getIcons().add(new Image("./ressources/images/logo.png"));
         primaryStage.setTitle("VelosNantes");
+        primaryStage.setMinWidth(1200);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMaximized(true);
+        primaryStage.show();
 
         // Initialisation of each controller
         // Isn't necessary to keep the reference of the controller
