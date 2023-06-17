@@ -71,15 +71,13 @@ public class Rooter {
         ExporterView exporterView = new ExporterView();
         views.put("Exporter", exporterView);
 
-<<<<<<< HEAD:src/utilities/Rooter.java
         LoginView loginView = new LoginView();
         views.put("Login", loginView);
         RegisterView registerView = new RegisterView();
         views.put("Register", registerView);
-=======
+
         ModificationView modificationView = new ModificationView();
         views.put("Modification", modificationView);
->>>>>>> dev-modif:src/controllers/Rooter.java
 
         // Creation of the navbar
         NavbarView navbarView = new NavbarView();
@@ -151,5 +149,7 @@ public class Rooter {
 
         // Change the permission
         this.typeDeCompte = typeDeCompte;
+        NavbarView navbar = (NavbarView) views.get("Navbar");
+        navbar.updateLogged(typeDeCompte);
     }
 }

@@ -295,10 +295,9 @@ public class DatabaseAccess {
     public static String requeteSQL (String requete) throws SQLException {
         String contenu = "";
 
-        Connection connection = DatabaseConnection.getConnection();
-        Statement statement = connection.createStatement();
+        Statement connexion = DatabaseConnection.getConnection();
 
-        ResultSet resultSet = statement.executeQuery(requete);
+        ResultSet resultSet = connexion.executeQuery(requete);
         for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
             contenu+=(resultSet.getMetaData().getColumnName(i))+"\t";
         }

@@ -14,6 +14,7 @@ public class NavbarView extends BorderPane {
     private Button modificationButton;
     private Button loginButton;
     private Button registerButton;
+    private ImageView rondObject3 = new ImageView();
 
     public NavbarView() {
         carteButton = new Button("Carte");
@@ -34,8 +35,8 @@ public class NavbarView extends BorderPane {
         Image rondImg = new Image("./ressources/images/rond.png");
         ImageView rondObject = new ImageView(rondImg);
         ImageView rondObject2 = new ImageView(rondImg);
-        ImageView rondObject3 = new ImageView(rondImg);
-        navbarBox.getChildren().addAll(carteButton, rondObject, graphiqueButton, rondObject2, exporterButton, rondObject3, modificationButton);
+        this.rondObject3 = new ImageView(rondImg);
+        navbarBox.getChildren().addAll(carteButton, rondObject, graphiqueButton, rondObject2, exporterButton, this.rondObject3, modificationButton);
 
         // Création de la boîte horizontale pour les boutons de connexion et d'inscription
         HBox loginBox = new HBox(10);
@@ -97,6 +98,25 @@ public class NavbarView extends BorderPane {
             case "Modification":
                 modificationButton.getStyleClass().add("selected");
                 break;
+        }
+    }
+
+    public void updateLogged(String typeDeCompte) {
+        if (typeDeCompte != null) {
+            loginButton.setVisible(false);
+            registerButton.setVisible(false);
+            if (typeDeCompte.equals("Administrateur") || typeDeCompte.equals("Elu")) {
+                modificationButton.setVisible(true);
+                rondObject3.setVisible(true);
+            } else {
+                modificationButton.setVisible(false);
+                rondObject3.setVisible(false);
+            }
+        } else {
+            loginButton.setVisible(true);
+            registerButton.setVisible(true);
+            modificationButton.setVisible(false);
+            rondObject3.setVisible(false);
         }
     }
 }

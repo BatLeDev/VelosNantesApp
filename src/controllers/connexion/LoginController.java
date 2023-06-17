@@ -30,7 +30,6 @@ public class LoginController {
     }
 
     private void login(ActionEvent event) {
-        System.out.println("Connection en cour...");
         String[] fields = this.loginView.getFields();
 
         int checkLogin = DatabaseAccess.checkLogin(fields[0], fields[1]);
