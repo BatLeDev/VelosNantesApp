@@ -9,7 +9,7 @@ import views.ExporterView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
-
+import utilities.Rooter;
 import utilities.WriteFile;
 
 public class ExporterController  {
@@ -110,7 +110,6 @@ public class ExporterController  {
         return colonne;
     }
 
-    
     private ArrayList<String> transformeColonneReleveJournalier(ArrayList<String> contenu){
         ArrayList<String> colonne = new ArrayList<String>();
         for (String s : contenu) {

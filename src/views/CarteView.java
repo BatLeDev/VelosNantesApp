@@ -57,14 +57,14 @@ public class CarteView extends BorderPane {
         stackPane.getChildren().addAll(webView, legendPaneOpen);
 
         // Load the markers when the page is loaded
-        this.webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == Worker.State.SUCCEEDED) {
-                System.out.println("Page loaded");
-                loadMarkers(); // Load the markers on the map
+        // this.webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+        //     if (newValue == Worker.State.SUCCEEDED) {
+        //         System.out.println("Page loaded");
+        //         loadMarkers(); // Load the markers on the map
 
-                this.setCenter(stackPane);
-            }
-        });
+        //         this.setCenter(stackPane);
+        //     }
+        // });
     }
 
     /**
@@ -136,31 +136,31 @@ public class CarteView extends BorderPane {
         Label legendMarkersTitle = new Label("Fréquentation moyenne par jour :");
         GridPane.setConstraints(legendMarkersTitle, 0, 1, 2, 1);
 
-        Image legendMarkersImage1 = new Image("file:src/ressources/images/marker1.png");
+        Image legendMarkersImage1 = new Image("file:src/ressources/images/markers/marker1.png");
         ImageView legendMarkersImageView1 = new ImageView(legendMarkersImage1);
         GridPane.setConstraints(legendMarkersImageView1, 0, 2);
         Label legendMarkers1 = new Label("< 250");
         GridPane.setConstraints(legendMarkers1, 1, 2);
 
-        Image legendMarkersImage2 = new Image("file:src/ressources/images/marker2.png");
+        Image legendMarkersImage2 = new Image("file:src/ressources/images/markers/marker2.png");
         ImageView legendMarkersImageView2 = new ImageView(legendMarkersImage2);
         GridPane.setConstraints(legendMarkersImageView2, 0, 3);
         Label legendMarkers2 = new Label("250 à 500");
         GridPane.setConstraints(legendMarkers2, 1, 3);
 
-        Image legendMarkersImage3 = new Image("file:src/ressources/images/marker3.png");
+        Image legendMarkersImage3 = new Image("file:src/ressources/images/markers/marker3.png");
         ImageView legendMarkersImageView3 = new ImageView(legendMarkersImage3);
         GridPane.setConstraints(legendMarkersImageView3, 0, 4);
         Label legendMarkers3 = new Label("500 à 1000");
         GridPane.setConstraints(legendMarkers3, 1, 4);
 
-        Image legendMarkersImage4 = new Image("file:src/ressources/images/marker4.png");
+        Image legendMarkersImage4 = new Image("file:src/ressources/images/markers/marker4.png");
         ImageView legendMarkersImageView4 = new ImageView(legendMarkersImage4);
         GridPane.setConstraints(legendMarkersImageView4, 0, 5);
         Label legendMarkers4 = new Label("1000 à 2000");
         GridPane.setConstraints(legendMarkers4, 1, 5);
 
-        Image legendMarkersImage5 = new Image("file:src/ressources/images/marker5.png");
+        Image legendMarkersImage5 = new Image("file:src/ressources/images/markers/marker5.png");
         ImageView legendMarkersImageView5 = new ImageView(legendMarkersImage5);
         GridPane.setConstraints(legendMarkersImageView5, 0, 6);
         Label legendMarkers5 = new Label("> 2000");

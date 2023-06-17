@@ -11,16 +11,18 @@ import java.util.ArrayList;
 import models.Compteur;
 import models.CompteurFull;
 
+import utilities.BCrypt;
+
 public class DatabaseAccess {
 
+/*
     public static void exemple() {
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement connection = DatabaseConnection.getConnection();
 
             String query = "SELECT * FROM Quartier";
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = connection.executeQuery(query);
 
             printResult(resultSet);
 
@@ -29,6 +31,7 @@ public class DatabaseAccess {
             e.printStackTrace();
         }
     }
+*/
 
     public static void printResult(ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
@@ -50,11 +53,10 @@ public class DatabaseAccess {
 
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement connection = DatabaseConnection.getConnection();
 
             String query = "SELECT * FROM vue_statCompteur";
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = connection.executeQuery(query);
 
             while (resultSet.next()) {
                 int numero = resultSet.getInt("numero");
@@ -93,11 +95,10 @@ public class DatabaseAccess {
 
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement connection = DatabaseConnection.getConnection();
 
             String query = "SELECT * FROM Quartier WHERE id = " + id;
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = connection.executeQuery(query);
 
             while (resultSet.next()) {
                 String quartierName = resultSet.getString("nom");
@@ -121,8 +122,7 @@ public class DatabaseAccess {
 
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement connection = DatabaseConnection.getConnection();
 
             String tmp = requete.get(0);
             for (int i = 1; i < requete.size(); i++) {
@@ -130,7 +130,7 @@ public class DatabaseAccess {
             }
 
             String query = "SELECT "+tmp+" FROM "+table+";";        
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = connection.executeQuery(query);
 
             tmp = requete.get(0);
             for (int i = 1; i < requete.size(); i++) {
@@ -160,8 +160,7 @@ public class DatabaseAccess {
             String dateDebut, String dateFin, String selection, String selectionCheckBoxes) {
         ArrayList<String> graphique = new ArrayList<String>();
         try {
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement connection = DatabaseConnection.getConnection();
 
             String group;
             if (typeTemps.equals("Tout")) {
@@ -183,7 +182,7 @@ public class DatabaseAccess {
 
             String query = "SELECT " + type + " FROM vue_ReleveJournalierResume WHERE leJour BETWEEN '" + dateDebut
                     + "' AND '" + dateFin + "' AND leCompteur IN (" + selectionCheckBoxes + ") GROUP BY " + group + ";";
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = connection.executeQuery(query);
 
             while (resultSet.next()) {
                 String total = resultSet.getString(type);
@@ -204,11 +203,10 @@ public class DatabaseAccess {
 
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement connection = DatabaseConnection.getConnection();
 
             String query = "SELECT * FROM Compteur";
-            ResultSet resultSet = statement.executeQuery(query);
+            ResultSet resultSet = connection.executeQuery(query);
 
             while (resultSet.next()) {
                 int numero = resultSet.getInt("numero");
@@ -229,5 +227,68 @@ public class DatabaseAccess {
         }
 
         return compteurs;
+    }
+
+    /**
+     * Check if the username exists and if the password is correct
+     * 
+     * @param username
+     * @param password
+     * @return -1 if username doesn't exist, 0 if password is incorrect, 1 if all is correct
+     */
+    public static int checkLogin(String username, String password) {
+        int res = -1;
+
+        try {
+            // Connection to the database
+            Statement connection = DatabaseConnection.getConnection();
+
+            // Check if username exists
+            String query = "SELECT motDePasse FROM Compte WHERE identifiant = '" + username + "';";
+            ResultSet resultSet = connection.executeQuery(query);
+
+            // Check if username exists
+            if (resultSet.next()) {
+                res = 0;
+
+                // Check if password is correct
+                if (BCrypt.checkpw(password, resultSet.getString("motDePasse"))) {
+                    System.out.println("Mot de passe correct !");
+                    res = 1;
+                }
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * Get the type of the account
+     * 
+     * @param username The username of the account
+     * @return The type of the account
+     */
+    public static String getTypeDeCompte(String username) {
+        String typeDeCompte = null;
+
+        try {
+            // Connection to the database
+            Statement connection = DatabaseConnection.getConnection();
+
+            String query = "SELECT typeDeCompte FROM Compte WHERE identifiant = '" + username + "';";
+            ResultSet resultSet = connection.executeQuery(query);
+
+            if (resultSet.next()) {
+                typeDeCompte = resultSet.getString("typeDeCompte");
+            }
+
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return typeDeCompte;
     }
 }

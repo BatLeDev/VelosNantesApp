@@ -1,0 +1,118 @@
+.logo {
+    -fx-translate-x: 10px;
+    -fx-translate-y: 10px;
+}
+
+.action-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-effect: none;
+}
+
+.content {
+    -fx-alignment: center;
+}
+
+.title-banner {
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-fill: white;
+}
+
+.title-center {
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-fill: black;
+}
+
+.description-banner {
+    -fx-font-size: 22px;
+    -fx-fill: white;
+    -fx-text-alignment: center;
+}
+
+.description-center {
+    -fx-font-size: 20px;
+    -fx-font-style: italic;
+    -fx-fill: #505050;
+    -fx-text-alignment: center;
+}
+
+.button-banner {
+    -fx-border-color: #6807F7;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+
+    -fx-text-fill: #6807F7;
+    -fx-padding: 5px 40px;
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+}
+
+.button-banner:hover {
+    -fx-text-fill: #9140FE;
+    -fx-border-color: #9140FE;
+}
+
+.button-center {
+    -fx-border-color: #6807F7;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-background-color: #6807F7;
+    -fx-background-radius: 10px;
+
+    -fx-max-width: 400px;
+    -fx-pref-height: 50px;
+    -fx-text-fill: #fff;
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+}
+
+.button-center:hover {
+    -fx-border-color: #9140FE;
+    -fx-background-color: #9140FE;
+}
+
+.input-field {
+    -fx-max-width: 400px;
+    -fx-pref-height: 50px;
+    -fx-font-size: 20px;
+    -fx-text-box-border: transparent;
+    -fx-border-color: #6807F7;
+    -fx-border-width: 3px;
+    -fx-border-radius: 7px;
+    -fx-padding: 0 30px;
+}
+
+.input-field:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-border-color: #9140FE;
+}
+
+.error-message {
+    -fx-font-size: 20px;
+    -fx-fill: red;
+    -fx-text-alignment: center;
+}
+
+.error-message-container {
+    -fx-padding: 10px 20px;
+    -fx-max-width: 400px;
+
+    -fx-background-color: #FFCDD2;
+    -fx-background-radius: 10px;
+
+    -fx-border-color: red;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+
+    -fx-alignment: center;
+    -fx-justify-content: center;
+    -fx-align-items: center;
+}
