@@ -230,4 +230,23 @@ public class DatabaseAccess {
 
         return compteurs;
     }
+
+    public static ArrayList<String> requeteSQL (String requete) {
+        ArrayList<String> contenu = new ArrayList<String>();
+        try {
+
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(requete);
+            printResult(resultSet);
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return contenu;
+    }
 }

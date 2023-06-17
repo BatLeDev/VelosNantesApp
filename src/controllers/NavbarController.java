@@ -25,6 +25,10 @@ public class NavbarController {
         navbarView.getGraphiqueButton().setOnAction(event -> {
             rooter.changePage(true, "Graphique");
         });
+
+        navbarView.getModificationButton().setOnAction(event -> {
+            rooter.changePage(true, "Modification");
+        });
     }
 
 }

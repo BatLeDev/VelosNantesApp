@@ -66,6 +66,9 @@ public class Rooter {
         ExporterView exporterView = new ExporterView();
         views.put("Exporter", exporterView);
 
+        ModificationView modificationView = new ModificationView();
+        views.put("Modification", modificationView);
+
         // Creation of the navbar
         NavbarView navbarView = new NavbarView();
         views.put("Navbar", navbarView);
