@@ -6,6 +6,7 @@ import javafx.stage.StageStyle;
 import controllers.Rooter;
 import controllers.ExporterController;
 import controllers.GraphiqueController;
+import controllers.ModificationController;
 import controllers.CarteController;
 import controllers.NavbarController;
 
@@ -56,7 +57,7 @@ public class MainApp extends Application {
         new ExporterController(rooter);
         new CarteController(rooter);
         new GraphiqueController(rooter);
-
+        new ModificationController(rooter);
         // Initialisation of the navbar controller
         new NavbarController(rooter);
 

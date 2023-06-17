@@ -1,16 +1,11 @@
 package controllers;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 
 import database.DatabaseAccess;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import views.ModificationView;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.layout.Pane;
-import utilities.WriteFile;
+
 
 public class ModificationController  {
     private Rooter rooter;
@@ -20,7 +15,19 @@ public class ModificationController  {
         this.rooter = rooter;
         this.modificationView = (ModificationView) rooter.getView("Modification");
 
+        this.setup();
     }
 
+    private void setup() {
+        this.modificationView.getExecuter().setOnAction(this::executer);
+    }
 
+    private void executer(ActionEvent event) {
+        String requete = this.modificationView.getRequete().getText();
+        try {
+            this.modificationView.getReponse().setText(DatabaseAccess.requeteSQL(requete));
+        } catch (SQLException e) {
+            this.modificationView.getReponse().setText(e.getMessage());
+        }
+    }
 }

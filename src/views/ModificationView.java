@@ -34,4 +34,12 @@ public class ModificationView extends BorderPane {
         return this.requete;
     }
 
+    public Button getExecuter() {
+        return this.executer;
+    }
+
+    public Label getReponse() {
+        return this.reponse;
+    }
+
 }
