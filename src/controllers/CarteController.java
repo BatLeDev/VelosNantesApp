@@ -1,5 +1,6 @@
 package controllers;
 
+import utilities.Rooter;
 import views.CarteView;
 
 public class CarteController {

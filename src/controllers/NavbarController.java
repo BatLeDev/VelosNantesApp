@@ -1,5 +1,6 @@
 package controllers;
 
+import utilities.Rooter;
 import views.NavbarView;
 
 public class NavbarController {
@@ -24,6 +25,14 @@ public class NavbarController {
 
         navbarView.getGraphiqueButton().setOnAction(event -> {
             rooter.changePage(true, "Graphique");
+        });
+
+        navbarView.getLoginButton().setOnAction(event -> {
+            rooter.changePage(false, "Login");
+        });
+
+        navbarView.getRegisterButton().setOnAction(event -> {
+            rooter.changePage(false, "Register");
         });
     }
 
