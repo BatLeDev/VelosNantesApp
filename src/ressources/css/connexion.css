@@ -94,3 +94,25 @@
     -fx-faint-focus-color: transparent;
     -fx-border-color: #9140FE;
 }
+
+.error-message {
+    -fx-font-size: 20px;
+    -fx-fill: red;
+    -fx-text-alignment: center;
+}
+
+.error-message-container {
+    -fx-padding: 10px 20px;
+    -fx-max-width: 400px;
+
+    -fx-background-color: #FFCDD2;
+    -fx-background-radius: 10px;
+
+    -fx-border-color: red;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+
+    -fx-alignment: center;
+    -fx-justify-content: center;
+    -fx-align-items: center;
+}

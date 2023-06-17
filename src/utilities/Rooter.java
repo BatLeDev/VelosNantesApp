@@ -42,7 +42,13 @@ public class Rooter {
     private HashMap<String, Pane> views;
 
     /**
-     * Constructor
+     * The permission of the user logged
+     * Null if no user is logged
+     * "Utilisateur", "Elu", "Administrateur"
+     */
+    private String typeDeCompte;
+
+    /**
      * This method is called by the MainApp class
      * 
      * Initialise the rooter:
@@ -122,5 +128,23 @@ public class Rooter {
      */
     public Pane getView(String viewName) {
         return views.get(viewName);
+    }
+
+    /**
+     * Change the views displayed from permissions of the user logged
+     * 
+     * @param typeDeCompte The permission of the user (null, "Utilisateur", "Elu", "Administrateur")
+     */
+    public void changePermission(String typeDeCompte) {
+        // Get the name of the calling class
+        String callingClassName = new Throwable().getStackTrace()[1].getClassName();
+
+        // Check if the calling class is LoginController
+        if (!callingClassName.equals("controllers.connexion.LoginController")) {
+            throw new SecurityException("Permission refusée : Accès à la méthode changePermission est limité à la classe LoginController.");
+        }
+
+        // Change the permission
+        this.typeDeCompte = typeDeCompte;
     }
 }

@@ -6,7 +6,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -16,6 +18,8 @@ public class LoginView extends AnchorPane {
     private Button connexionButton;
     private TextField utilisateurField;
     private PasswordField passwordField;
+    private Text errorMessage;
+    private StackPane errorContainer;
 
     public LoginView() {
         // Background
@@ -74,10 +78,17 @@ public class LoginView extends AnchorPane {
         this.connexionButton = new Button("Se connecter");
         this.connexionButton.getStyleClass().add("button-center");
 
+        this.errorMessage = new Text("coucou");
+        this.errorMessage.setWrappingWidth(325);
+        this.errorMessage.getStyleClass().add("error-message");
+        this.errorContainer = new StackPane(errorMessage);
+        this.errorContainer.getStyleClass().add("error-message-container");
+        this.errorContainer.setVisible(false);
+
         VBox contentRight = new VBox();
         contentRight.getStyleClass().add("content");
         contentRight.setSpacing(20);
-        contentRight.getChildren().addAll(titleRight, this.utilisateurField, this.passwordField, this.connexionButton);
+        contentRight.getChildren().addAll(titleRight, this.utilisateurField, this.passwordField, this.connexionButton, this.errorContainer);
 
         AnchorPane.setTopAnchor(contentRight, 0.0);
         AnchorPane.setBottomAnchor(contentRight, 0.0);
@@ -108,10 +119,7 @@ public class LoginView extends AnchorPane {
     }
 
     public void showErrorMessage(String message) {
-        Text errorMessage = new Text(message);
-        errorMessage.getStyleClass().add("error-message");
-        AnchorPane.setTopAnchor(errorMessage, 10.0);
-        AnchorPane.setLeftAnchor(errorMessage, 77.5);
-        getChildren().add(errorMessage);
+        this.errorMessage.setText(message);
+        this.errorContainer.setVisible(true);
     }
 }

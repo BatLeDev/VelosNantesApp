@@ -1,10 +1,10 @@
 package controllers.connexion;
 
-import javax.swing.Action;
-
 import javafx.event.ActionEvent;
 import utilities.Rooter;
 import views.connexion.LoginView;
+
+import database.DatabaseAccess;
 
 public class LoginController {
     private Rooter rooter;
@@ -32,14 +32,17 @@ public class LoginController {
     private void login(ActionEvent event) {
         System.out.println("Connection en cour...");
         String[] fields = this.loginView.getFields();
-        System.out.println("Utilisateur : " + fields[0]);
-        System.out.println("Mot de passe : " + fields[1]);
 
-        if (fields[0].equals("admin") && fields[1].equals("admin")) {
-            System.out.println("Connexion réussie !");
-            this.rooter.changePage(true, "Carte");
+        int checkLogin = DatabaseAccess.checkLogin(fields[0], fields[1]);
+        if (checkLogin > 0) {
+            // Get type de compte
+            String typeDeCompte = DatabaseAccess.getTypeDeCompte(fields[0]);
+            this.rooter.changePermission(typeDeCompte);
+            rooter.changePage(true, "Carte");
+        } else if (checkLogin == 0) {
+            loginView.showErrorMessage("Mot de passe incorrect");
         } else {
-            this.loginView.showErrorMessage("Erreur de connexion");
+            loginView.showErrorMessage("Utilisateur inconnu");
         }
     }
 }
