@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import utilities.Rooter;
+
 // Controllers import
 import controllers.*;
 import controllers.connexion.*;

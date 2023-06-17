@@ -36,6 +36,10 @@ public class NavbarView extends BorderPane {
         ImageView rondObject = new ImageView(rondImg);
         ImageView rondObject2 = new ImageView(rondImg);
         this.rondObject3 = new ImageView(rondImg);
+
+        modificationButton.setVisible(false);
+        rondObject3.setVisible(false);
+        
         navbarBox.getChildren().addAll(carteButton, rondObject, graphiqueButton, rondObject2, exporterButton, this.rondObject3, modificationButton);
 
         // Création de la boîte horizontale pour les boutons de connexion et d'inscription

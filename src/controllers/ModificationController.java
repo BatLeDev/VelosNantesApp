@@ -1,9 +1,5 @@
 package controllers;
 
-import java.sql.SQLException;
-
-import database.DatabaseAccess;
-import javafx.event.ActionEvent;
 import views.ModificationView;
 import utilities.Rooter;
 
