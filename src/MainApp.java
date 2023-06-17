@@ -57,6 +57,8 @@ public class MainApp extends Application {
         new LoginController(rooter);
         new RegisterController(rooter);
 
+        new ModificationController(rooter);
+        
         // Initialisation of the navbar controller
         new NavbarController(rooter);
 

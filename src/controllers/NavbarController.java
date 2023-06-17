@@ -34,6 +34,10 @@ public class NavbarController {
         navbarView.getRegisterButton().setOnAction(event -> {
             rooter.changePage(false, "Register");
         });
+
+        navbarView.getModificationButton().setOnAction(event -> {
+            rooter.changePage(true, "Modification");
+        });
     }
 
 }

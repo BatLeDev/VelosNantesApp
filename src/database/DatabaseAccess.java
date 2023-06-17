@@ -291,4 +291,26 @@ public class DatabaseAccess {
 
         return typeDeCompte;
     }
+
+    public static String requeteSQL (String requete) throws SQLException {
+        String contenu = "";
+
+        Connection connection = DatabaseConnection.getConnection();
+        Statement statement = connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery(requete);
+        for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+            contenu+=(resultSet.getMetaData().getColumnName(i))+"\t";
+        }
+        contenu+="\n";
+        while (resultSet.next()) {
+            for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+                contenu+=(resultSet.getString(i)+"\t");
+            }
+            contenu+="\n";
+        }
+        resultSet.close();
+
+        return contenu;
+    }
 }
