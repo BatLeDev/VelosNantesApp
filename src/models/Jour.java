@@ -5,7 +5,6 @@ public class Jour {
     private String date;
     private int jourDeSemaine;
     private int temp;
-    private boolean isWeekend;
     private boolean estFerie;
 
 
@@ -13,6 +12,10 @@ public class Jour {
         this.date = date;
         this.jourDeSemaine = jourDeSemaine;
         this.temp = temp;
+    }
+
+    public boolean isWeekend() {
+        return (jourDeSemaine == 6 || jourDeSemaine == 7);
     }
 
     
