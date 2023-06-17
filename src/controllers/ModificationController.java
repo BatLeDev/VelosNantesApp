@@ -15,19 +15,7 @@ public class ModificationController  {
         this.rooter = rooter;
         this.modificationView = (ModificationView) rooter.getView("Modification");
 
-        this.setup();
     }
 
-    private void setup() {
-        this.modificationView.getExecuter().setOnAction(this::executer);
-    }
 
-    private void executer(ActionEvent event) {
-        String requete = this.modificationView.getRequete().getText();
-        try {
-            this.modificationView.getReponse().setText(DatabaseAccess.requeteSQL(requete));
-        } catch (SQLException e) {
-            this.modificationView.getReponse().setText(e.getMessage());
-        }
-    }
 }

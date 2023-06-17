@@ -1,12 +1,14 @@
 package views;
 
-import javax.swing.UIDefaults.LazyValue;
 
-import javafx.scene.control.Button;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableView;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
 /**
  * This class represents the view of the Exporter page.
@@ -14,32 +16,38 @@ import javafx.scene.layout.VBox;
  */
 public class ModificationView extends BorderPane {
 
-    private TextArea requete;
-    private Button executer;
-    private Label reponse;
+    private ToggleGroup selectionGroup;
+    private TableView table;
+    private Label message;
 
     public ModificationView() {
         
-        this.requete = new TextArea("SELECT * FROM Compteur;");
-        this.executer = new Button("Executer");
-        this.reponse = new Label("Reponse");
+        this.selectionGroup = new ToggleGroup();
+        RadioButton compteurRadioButton = new RadioButton("Compteur");
+        RadioButton quartierRadioButton = new RadioButton("Quartier");
+        RadioButton jourRadioButton = new RadioButton("Jour");
+        RadioButton releveRadioButton = new RadioButton("Releve Journalier");
+        compteurRadioButton.setToggleGroup(this.selectionGroup);
+        quartierRadioButton.setToggleGroup(this.selectionGroup);
+        jourRadioButton.setToggleGroup(this.selectionGroup);
+        releveRadioButton.setToggleGroup(this.selectionGroup);
+        compteurRadioButton.setSelected(true);
+        HBox selectionBox = new HBox(compteurRadioButton, quartierRadioButton, jourRadioButton, releveRadioButton);
+        selectionBox.setSpacing(10);
+        selectionBox.setAlignment(javafx.geometry.Pos.CENTER);
 
-        VBox tmp = new VBox();
-        tmp.getChildren().addAll(this.requete, this.executer);
-        this.setTop(tmp);
-        this.setCenter(this.reponse);
+        this.table = new TableView();
+
+        this.message = new Label("> ");
+        this.message.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
+
+        this.setPadding(new Insets(15, 10, 10, 10));
+        this.setTop(selectionBox);
+        this.setCenter(this.table);
+        this.setBottom(this.message);
+        this.message.setPrefHeight(50);
     }
 
-    public TextArea getRequete() {
-        return this.requete;
-    }
 
-    public Button getExecuter() {
-        return this.executer;
-    }
-
-    public Label getReponse() {
-        return this.reponse;
-    }
 
 }
