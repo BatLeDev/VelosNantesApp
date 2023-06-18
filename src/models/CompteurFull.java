@@ -1,6 +1,10 @@
 package models;
 
 public class CompteurFull extends Compteur{
+
+    public static String[] getHeaders() {
+        return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "idQuartier", "nomQuartier", "nombreJourReleve", "nombreTotalPassage", "moyennePassageParJour", "frequenceErreurs", "nbErreurs", "heureSouventFrequetee" };
+    }
     
     private int idQuartier;
     private String nomQuartier;

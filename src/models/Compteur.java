@@ -1,6 +1,11 @@
 package models;
 
 public class Compteur {
+
+    public static String[] getHeaders() {
+        return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude" };
+    }
+
     private int numero;
     private String libelle;
     private String direction;

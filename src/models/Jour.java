@@ -2,6 +2,10 @@ package models;
 
 public class Jour {
 
+    public static String[] getHeaders() {
+        return new String[] { "date", "jourDeSemaine", "temp", "estFerie" };
+    }
+
     private String date;
     private int jourDeSemaine;
     private int temp;
