@@ -1,12 +1,11 @@
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import utilities.Rooter;
 
 // Controllers import
-import controllers.Rooter;
-import controllers.ExporterController;
-import controllers.GraphiqueController;
-import controllers.CarteController;
-import controllers.NavbarController;
+import controllers.*;
+import controllers.connexion.*;
 
 /**
  * Main class
@@ -42,12 +41,25 @@ public class MainApp extends Application {
         // Creation of the rooter
         rooter = new Rooter(primaryStage);
 
+        // Set the icon of the application
+        primaryStage.getIcons().add(new Image("./ressources/images/logo.png"));
+        primaryStage.setTitle("VelosNantes");
+        primaryStage.setMinWidth(1200);
+        primaryStage.setMinHeight(800);
+        primaryStage.setMaximized(true);
+        primaryStage.show();
+
         // Initialisation of each controller
         // Isn't necessary to keep the reference of the controller
-        new ExporterController(rooter);
         new CarteController(rooter);
         new GraphiqueController(rooter);
+        new ExporterController(rooter);
 
+        new LoginController(rooter);
+        new RegisterController(rooter);
+
+        new ModificationController(rooter);
+        
         // Initialisation of the navbar controller
         new NavbarController(rooter);
 
