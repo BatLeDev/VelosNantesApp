@@ -1,10 +1,217 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class ReleveJournalier {
     
+    // ----------------------------- static attributes -----------------------------
 
+    // These two HashMap are used to preserve the unicity of a ReleveJournalier
+    /**
+     * The list of all the ReleveJournalier associated to a Compteur, if an id of Compteur is not in this HashMap, it means that there aren't any ReleveJournalier associated to this Compteur
+     */
+    private static HashMap<Integer, ArrayList<ReleveJournalier>> releveComptList = new HashMap<Integer, ArrayList<ReleveJournalier>>();
+    
+    /**
+     * The list of all the ReleveJournalier associated to a Jour, if a date of Jour is not in this HashMap, it means that there aren't any ReleveJournalier associated to this Jour
+     */
+    private static HashMap<String, ArrayList<ReleveJournalier>> releveJourList = new HashMap<String, ArrayList<ReleveJournalier>>();
+    
+    private static final String[] TYPE_ANOMALIE = {"Faible","Forte"};
+
+    // ----------------------------- static methods -----------------------------
+
+    /**
+     * Check if the type is valid (null or in the list of TYPE_ANOMALIE)
+     * @param type the type to check
+     * @return true if the type is valid, false otherwise
+     */
+    private static boolean typeAnomalieValide(String type) {
+        boolean ret = true;
+
+        if (type != null) {
+            ret = false;
+            int i = 0;
+            while (i < TYPE_ANOMALIE.length && !ret) {
+                if (type.equals(TYPE_ANOMALIE[i])) {
+                    ret = true;
+                }
+                i++;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Check if the relevesHeures is valid (not null, length = 24, all values >= 0)
+     * @param relevesHeures the relevesHeures to check
+     * @return true if the relevesHeures is valid, false otherwise
+     */
+    private static boolean relevesHeuresValide(int[] relevesHeures) {
+        boolean ret = false;
+
+        if (relevesHeures != null && relevesHeures.length == 24) { // Check valid length
+            ret = true;
+            int i = 0;
+            while (i < relevesHeures.length && ret) { // Check all values >= 0
+                if (relevesHeures[i] < 0) {
+                    ret = false;
+                }
+                i++;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Add a ReleveJournalier to the HashMap releveComptList and releveJourList
+     * 
+     * @param releve the ReleveJournalier to add
+     */
+    private static void addReleveJournalier(ReleveJournalier releve) {
+        int idCompteur = releve.getLeCompteur();
+        String date = releve.getLeJour();
+
+        if (releveComptList.get(idCompteur) == null) {
+            releveComptList.put(idCompteur, new ArrayList<ReleveJournalier>());
+        }
+        releveComptList.get(idCompteur).add(releve);
+
+        if (releveJourList.get(date) == null) {
+            releveJourList.put(date, new ArrayList<ReleveJournalier>());
+        }
+        releveJourList.get(date).add(releve);
+    }
+
+    /**
+     * Get the ReleveJournalier by the date of its Jour and the id of its Compteur
+     * 
+     * @param date       the date of the Jour associated (YYYY-MM-DD)
+     * @param idCompteur the id of the Compteur associated
+     * @return the a ReleveJournalier, null if it doesn't exist 
+     */
+    public static ReleveJournalier getReleveJournalier(String date, int idCompteur) {
+        ReleveJournalier ret = null;
+        ArrayList<ReleveJournalier> listJour = getRelevesByJour(date);
+        ArrayList<ReleveJournalier> listCompt = getRelevesByCompteur(idCompteur);
+
+        if (listJour != null && listCompt != null) {
+            Iterator<ReleveJournalier> itJour = listJour.iterator();
+            boolean trouve = false;
+            while (itJour.hasNext() && !trouve) {
+
+                Iterator<ReleveJournalier> itCompt = listCompt.iterator();
+                ReleveJournalier tmp = itJour.next();
+                while (itCompt.hasNext() && !trouve) {
+                    if (tmp == itCompt.next()) {
+                        trouve = true;
+                        ret = tmp;
+                    }
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Get an ArrayList of the ReleveJournalier associated to a Jour
+     * 
+     * @param date the date of the Compteur (YYYY-MM-DD)
+     * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Jour
+     */
+    public static ArrayList<ReleveJournalier> getRelevesByJour(String date){
+        ArrayList<ReleveJournalier> tmp = releveJourList.get(date);
+        ArrayList<ReleveJournalier> ret = null;
+
+        if (tmp != null) {
+            ret = new ArrayList<ReleveJournalier>(tmp);
+        }
+        return ret;
+    }
+
+    /**
+     * Get an ArrayList of the ReleveJournalier associated to a Compteur
+     * @param idCompteur the id of the Compteur
+     * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Compteur
+     */
+    public static ArrayList<ReleveJournalier> getRelevesByCompteur(int idCompteur) {
+        ArrayList<ReleveJournalier> tmp = releveComptList.get(idCompteur);
+        ArrayList<ReleveJournalier> ret = null;
+
+        if (tmp != null) {
+            ret =  new ArrayList<ReleveJournalier>(tmp);
+        }
+        return ret;
+    }
+
+
+    /**
+     * Remove a ReleveJournalier saved by the date of the Jour associated and the id of the Compteur associatedd.
+     * If the ReleveJournalier doesn't exist, do nothing
+     * 
+     * @param date the date of the Jour associated (YYYY-MM-DD)
+     * @param idCompteur the id of the Compteur associatedd
+     * @return the ReleveJournalier removed, null if it doesn't exist
+     */
+    public static ReleveJournalier removeReleveJournalier(String date, int idCompteur) {
+        ReleveJournalier releve = getReleveJournalier(date, idCompteur);
+        if (releve != null) {
+            releveComptList.get(idCompteur).remove(releve);
+            releveJourList.get(date).remove(releve);
+        }
+        return releve;
+    }
+
+    /**
+     * Remove all the ReleveJournalier associated to this Compteur
+     * If the ReleveJournalier doesn't exist, do nothing
+     * 
+     * @param date the date of the Jour associated (YYYY-MM-DD)
+     * @return an ArrayList of the ReleveJournalier removed, null if there aren't any ReleveJournalier for this Jour
+     */
+    public static ArrayList<ReleveJournalier> removeAllRelevesOfAJour(String date) {
+        ArrayList<ReleveJournalier> releves = getRelevesByJour(date);
+        if (releves != null) {
+            for (ReleveJournalier releve : releves) {
+                removeReleveJournalier(date, releve.getLeCompteur());
+            }
+        }
+        return releves;
+    }
+
+    /**
+     * Remove all the ReleveJournalier associated to this Compteur
+     * If the ReleveJournalier doesn't exist, do nothing
+     * 
+     * @param idCompteur the id of the Compteur associated
+     * @return an ArrayList of the ReleveJournalier removed, null if there aren't any ReleveJournalier for this Compteur
+     */
+    public static ArrayList<ReleveJournalier> removeAllRelevesOfACompteur(int idCompteur) {
+        ArrayList<ReleveJournalier> releves = getRelevesByCompteur(idCompteur);
+        if (releves != null) {
+            for (ReleveJournalier releve : releves) {
+                ReleveJournalier.removeReleveJournalier(releve.getLeJour(), idCompteur);
+            }
+        }
+        return releves;
+    }
+
+    public static String[] getHeadersSimplified(){
+        return new String[]{"Compteur", "Jour", "RelevesHeures", "PresenceAnomalie"};
+    }
+
+        public static String[] getHeaders(){
+        return new String[]{"Compteur", "Jour", "heure00", "heure01", "heure02", "heure03", "heure04", 
+        "heure05", "heure06", "heure07", "heure08", "heure09", "heure10", "heure11", "heure12",
+        "heure13", "heure14", "heure15", "heure16", "heure17", "heure18", "heure19", "heure20", 
+        "heure21", "heure22", "heure23", "PresenceAnomalie"};
+    }
+
+    // ----------------------------- attributes -----------------------------
     private int leCompteur;
     private String leJour;
     private int[] relevesHeures;
@@ -17,15 +224,31 @@ public class ReleveJournalier {
      * @param leCompteur the id of the compteur (positive)
      * @param leJour the day of the releve (not null or empty)
      * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
-     * @param presenceAnomalie the presenceAnomalie of the releve
+     * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of TYPE_ANOMALIE)
      */
     public ReleveJournalier(int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
+        if (Compteur.getCompteur(leCompteur) == null){
+            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leCompteur n'est pas valide");
+        }
+        if (Jour.getJour(leJour) == null) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.constructor : Le parametre leJour n'est pas valide");
+        }
+        if (ReleveJournalier.getReleveJournalier(leJour, leCompteur) != null) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.constructor : Le releveJournalier existe deja");
+        }
         this.leCompteur = leCompteur;
         this.leJour = leJour;
 
-        this.setRelevesHeures(relevesHeures);
-        this.setPresenceAnomalie(presenceAnomalie);
+        try {
+            this.setRelevesHeures(relevesHeures);
+            this.setPresenceAnomalie(presenceAnomalie);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("models.ReleveJournalier.constructor : " + e.getMessage());
+        }
 
+        ReleveJournalier.addReleveJournalier(this);
     }
 
     // ----------------------------- setters -----------------------------
@@ -38,6 +261,10 @@ public class ReleveJournalier {
      *                      all values >= 0)
      */
     public void setRelevesHeures(int[] relevesHeures) {
+        if (!ReleveJournalier.relevesHeuresValide(relevesHeures)) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.setRelevesHeures : Le parametre relevesHeures n'est pas valide");
+        }
         this.relevesHeures = relevesHeures;
     }
 
@@ -48,6 +275,10 @@ public class ReleveJournalier {
      *                         list of TYPE_ANOMALIE)
      */
     public void setPresenceAnomalie(String presenceAnomalie) {
+        if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.setPresenceAnomalie : Le parametre presenceAnomalie n'est pas valide");
+        }
         this.presenceAnomalie = presenceAnomalie;
     }
 
@@ -169,4 +400,5 @@ public class ReleveJournalier {
         ret += "]";
         return ret;
     }
+
 }
