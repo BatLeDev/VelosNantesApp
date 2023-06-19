@@ -13,11 +13,15 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import controllers.ExporterController;
+import utilities.Rooter;
+
 /**
  * This class represents the view of the Exporter page.
  * This page is a form to export data.
  */
 public class ExporterView extends BorderPane {
+    private ExporterController exporterController;
 
     private ToggleGroup toggleGroup;   
 
@@ -30,21 +34,20 @@ public class ExporterView extends BorderPane {
      * 
      * Initialise the elements of the view
      */
-    public ExporterView() {
+    public ExporterView(Rooter rooter) {
+        this.exporterController = new ExporterController(rooter, this);
         
         Pane top = initialiseGenererPane();
         this.setTop(top);
         Pane center = initialiseSelectionJourPane();
         this.setCenter(center);
 
-    }
+        Pane bottom = new Pane();
+        this.enregistrer = new Button("Enregistrer (csv)");
+        this.enregistrer.setOnAction(this.exporterController::test);
+        bottom.getChildren().add(enregistrer);
 
-    public ToggleGroup getToggleGroup() {
-        return toggleGroup;
-    }
-
-    public Button getEnregistrer() {
-        return enregistrer;
+        this.setBottom(bottom);
     }
 
     public ArrayList<CheckBox> getSelectedCheckBoxes() {
@@ -60,8 +63,6 @@ public class ExporterView extends BorderPane {
     public RadioButton getSelectedRadioButton() {
         return (RadioButton) this.toggleGroup.getSelectedToggle();
     }
-
-
 
     private Pane initialiseGenererPane(){
         VBox ret = new VBox();
@@ -81,6 +82,8 @@ public class ExporterView extends BorderPane {
         RadioButton releveJournalierButton = new RadioButton("Releve Journalier");
         toggleGroup.getToggles().add(releveJournalierButton);
 
+        toggleGroup.selectedToggleProperty().addListener(this.exporterController::selectionEnregistrer);
+
         choix.getChildren().addAll(jourButton, compteurButton, releveJournalierButton);
 
         ret.getChildren().addAll(source,choix);
@@ -97,14 +100,12 @@ public class ExporterView extends BorderPane {
         CheckBox jourSemaine = new CheckBox("Jour de la semaine");
         CheckBox temp = new CheckBox("Temperature");
 
-        enregistrer = new Button("Enregistrer (csv)");
-
         this.checkBoxes = new ArrayList<CheckBox>();
         this.checkBoxes.add(date);
         this.checkBoxes.add(jourSemaine);
         this.checkBoxes.add(temp);
         tmp.getChildren().addAll(date, jourSemaine, temp);
-        ret.getChildren().addAll(tmp, enregistrer);
+        ret.getChildren().add(tmp);
 
         return ret;
     }
@@ -122,8 +123,6 @@ public class ExporterView extends BorderPane {
         CheckBox latitude = new CheckBox("Latitude");
         CheckBox leQuartier = new CheckBox("Le Quartier");
 
-        enregistrer = new Button("Enregistrer (csv)");
-
         this.checkBoxes = new ArrayList<CheckBox>();
         this.checkBoxes.add(numero);
         this.checkBoxes.add(libelle);
@@ -133,11 +132,10 @@ public class ExporterView extends BorderPane {
         this.checkBoxes.add(latitude);
         this.checkBoxes.add(leQuartier);
         tmp.getChildren().addAll(numero, libelle, direction, observations, longitude, latitude, leQuartier);        
-        ret.getChildren().addAll(tmp, enregistrer);
+        ret.getChildren().add(tmp);
 
         return ret;
     }
-
 
     private Pane initialiseSelectionReleveJournalierPane() {
         VBox ret = new VBox();
@@ -151,8 +149,6 @@ public class ExporterView extends BorderPane {
         CheckBox heureMax = new CheckBox("Heure la plus frequentee");
         CheckBox freqHeureMax = new CheckBox("Passage maximum");
 
-        enregistrer = new Button("Enregistrer (csv)");
-
         this.checkBoxes = new ArrayList<CheckBox>();
         this.checkBoxes.add(leCompteur);
         this.checkBoxes.add(leJour);
@@ -161,7 +157,7 @@ public class ExporterView extends BorderPane {
         this.checkBoxes.add(heureMax);
         this.checkBoxes.add(freqHeureMax);
         tmp.getChildren().addAll(leCompteur, leJour, probabiliteAnomalie, total, heureMax, freqHeureMax);
-        ret.getChildren().addAll(tmp, enregistrer);
+        ret.getChildren().addAll(tmp);
 
         return ret;
     }
@@ -174,7 +170,11 @@ public class ExporterView extends BorderPane {
         this.setCenter(initialiseSelectionCompteurPane());
     }
 
-    public void setSelectionReleveJournalier () {
+    public void setSelectionReleveJournalier() {
         this.setCenter(initialiseSelectionReleveJournalierPane());
+    }
+    
+    public String getSelected() {
+        return ((RadioButton) this.toggleGroup.getSelectedToggle()).getText();
     }
 }

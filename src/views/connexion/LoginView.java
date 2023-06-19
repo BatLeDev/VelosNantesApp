@@ -1,5 +1,6 @@
 package views.connexion;
 
+import controllers.connexion.LoginController;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -10,17 +11,19 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import utilities.Rooter;
 
 public class LoginView extends AnchorPane {
-    private Button exitBtn;
-    private Button leftButton;
-    private Button connexionButton;
+    private LoginController loginController;
+
     private TextField utilisateurField;
     private PasswordField passwordField;
     private Text errorMessage;
     private StackPane errorContainer;
 
-    public LoginView() {
+    public LoginView(Rooter rooter) {
+        this.loginController = new LoginController(rooter, this);
+        
         // Background
         Image banner = new Image("./ressources/images/banner-connexion.png");
         ImageView bannerView = new ImageView(banner);
@@ -31,35 +34,38 @@ public class LoginView extends AnchorPane {
         getChildren().addAll(bannerView, widthConstraint);
 
         // Foreground
-
         // Header
         Image logoImage = new Image("./ressources/images/logo-full-white.png");
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitWidth(200);
         logoImageView.setPreserveRatio(true);
         logoImageView.getStyleClass().add("logo");
-
-        this.exitBtn = new Button();
-        this.exitBtn.setGraphic(new ImageView(new Image("./ressources/images/exit-black.png")));
-        this.exitBtn.getStyleClass().add("action-button");
-        AnchorPane.setTopAnchor(this.exitBtn, 10.0);
-        AnchorPane.setRightAnchor(this.exitBtn, 10.0);
         getChildren().add(logoImageView);
+
+        Button exitBtn = new Button();
+        exitBtn.setGraphic(new ImageView(new Image("./ressources/images/exit-black.png")));
+        exitBtn.getStyleClass().add("action-button");
+        exitBtn.setOnAction(this.loginController::exit);
+        AnchorPane.setTopAnchor(exitBtn, 10.0);
+        AnchorPane.setRightAnchor(exitBtn, 10.0);
 
         // Content
         // content-left
         Text titleLeft = new Text("Nouveau ici ?");
         titleLeft.getStyleClass().add("title-banner");
+
         Text descriptionText = new Text("Inscrivez-vous et découvrez un nouveau monde de possibilités.");
         descriptionText.setWrappingWidth(325);
         descriptionText.getStyleClass().add("description-banner");
-        this.leftButton = new Button("S'inscrire");
-        this.leftButton.getStyleClass().add("button-banner");
+
+        Button inscriptionBtn = new Button("S'inscrire");
+        inscriptionBtn.getStyleClass().add("button-banner");
+        inscriptionBtn.setOnAction(this.loginController::register);
 
         VBox contentLeft = new VBox();
         contentLeft.getStyleClass().add("content");
         contentLeft.setSpacing(20);
-        contentLeft.getChildren().addAll(titleLeft, descriptionText, this.leftButton);
+        contentLeft.getChildren().addAll(titleLeft, descriptionText, inscriptionBtn);
 
         AnchorPane.setTopAnchor(contentLeft, 0.0);
         AnchorPane.setBottomAnchor(contentLeft, 0.0);
@@ -68,14 +74,18 @@ public class LoginView extends AnchorPane {
         // content-right
         Text titleRight = new Text("Connectez-vous \u00E0 votre compte !");
         titleRight.getStyleClass().add("title-center");
+
         this.utilisateurField = new TextField();
         this.utilisateurField.getStyleClass().add("input-field");
         this.utilisateurField.setPromptText("Utilisateur");
+
         this.passwordField = new PasswordField();
         this.passwordField.getStyleClass().add("input-field");
         this.passwordField.setPromptText("Mot de passe");
-        this.connexionButton = new Button("Se connecter");
-        this.connexionButton.getStyleClass().add("button-center");
+
+        Button connexionButton = new Button("Se connecter");
+        connexionButton.getStyleClass().add("button-center");
+        connexionButton.setOnAction(this.loginController::login);
 
         this.errorMessage = new Text("coucou");
         this.errorMessage.setWrappingWidth(325);
@@ -87,27 +97,15 @@ public class LoginView extends AnchorPane {
         VBox contentRight = new VBox();
         contentRight.getStyleClass().add("content");
         contentRight.setSpacing(20);
-        contentRight.getChildren().addAll(titleRight, this.utilisateurField, this.passwordField, this.connexionButton, this.errorContainer);
+        contentRight.getChildren().addAll(titleRight, this.utilisateurField, this.passwordField, connexionButton, this.errorContainer);
 
         AnchorPane.setTopAnchor(contentRight, 0.0);
         AnchorPane.setBottomAnchor(contentRight, 0.0);
         AnchorPane.setLeftAnchor(contentRight, 500.0);
         AnchorPane.setRightAnchor(contentRight, 0.0);
 
-        getChildren().addAll(contentLeft, contentRight, this.exitBtn);
+        getChildren().addAll(contentLeft, contentRight, exitBtn);
         getStyleClass().add("login-view");
-    }
-
-    public Button getExitBtn() {
-        return this.exitBtn;
-    }
-
-    public Button getLeftButton() {
-        return this.leftButton;
-    }
-
-    public Button getRightButton() {
-        return this.connexionButton;
     }
 
     public String[] getFields() {

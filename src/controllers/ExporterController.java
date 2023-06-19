@@ -16,19 +16,12 @@ public class ExporterController  {
     private Rooter rooter;
     private ExporterView exporterView;
 
-    public ExporterController(Rooter rooter) {
+    public ExporterController(Rooter rooter, ExporterView exporterView) {
         this.rooter = rooter;
-        this.exporterView = (ExporterView) rooter.getView("Exporter");
-
-        setupEnregistrer();
+        this.exporterView = exporterView;
     }
 
-    public void setupEnregistrer() {
-        exporterView.getToggleGroup().selectedToggleProperty().addListener(this::selectionEnregistrer);
-        exporterView.getEnregistrer().setOnAction(this::test);
-    }
-
-    private void test (ActionEvent action) {
+    public void test(ActionEvent action) {
         if (exporterView.getSelectedCheckBoxes().size() == 0) {
             System.out.println("Aucune case n'est cochée");
         } else {
@@ -57,20 +50,15 @@ public class ExporterController  {
     }
 
     public void selectionEnregistrer(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-        RadioButton rb = (RadioButton) exporterView.getToggleGroup().getSelectedToggle();
-        String selected = rb.getText();
+        String selected = this.exporterView.getSelected();
         if (selected.equals("Jour")){
             exporterView.setSelectionJour();
-            this.setupEnregistrer();
 
         } else if (selected.equals("Compteur")){
             exporterView.setSelectionCompteur();
-            this.setupEnregistrer();
 
         } else if (selected.equals("Releve Journalier")){
             exporterView.setSelectionReleveJournalier();
-            this.setupEnregistrer();
-
         }
     }
 

@@ -3,6 +3,10 @@ package utilities;
 // Java imports
 import java.util.HashMap;
 
+import controllers.ModificationController;
+import controllers.NavbarController;
+import controllers.connexion.RegisterController;
+
 // JavaFX imports
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -18,7 +22,6 @@ import views.connexion.*;
  * Generate all views, allow to change the view displayed.
  */
 public class Rooter {
-
     /**
      * Main BorderPane
      * His content is changed to display the correct view
@@ -48,6 +51,10 @@ public class Rooter {
      */
     private String typeDeCompte;
 
+    private NavbarView navbarView;
+
+
+
     /**
      * This method is called by the MainApp class
      * 
@@ -63,25 +70,29 @@ public class Rooter {
         // Initialisation of the HashMap of views
         this.views = new HashMap<String, Pane>();
 
-        // Creation of each view
-        CarteView carteView = new CarteView();
+        // initialization of pages
+        CarteView carteView = new CarteView(this);
         views.put("Carte", carteView);
-        GraphiqueView graphiqueView = new GraphiqueView();
+
+        GraphiqueView graphiqueView = new GraphiqueView(this);
         views.put("Graphique", graphiqueView);
-        ExporterView exporterView = new ExporterView();
+
+        ExporterView exporterView = new ExporterView(this);
         views.put("Exporter", exporterView);
 
-        LoginView loginView = new LoginView();
-        views.put("Login", loginView);
-        RegisterView registerView = new RegisterView();
-        views.put("Register", registerView);
-
-        ModificationView modificationView = new ModificationView();
+        ModificationController modificationController = new ModificationController(this);
+        ModificationView modificationView = new ModificationView(modificationController);
         views.put("Modification", modificationView);
 
-        // Creation of the navbar
-        NavbarView navbarView = new NavbarView();
-        views.put("Navbar", navbarView);
+        LoginView loginView = new LoginView(this);
+        views.put("Login", loginView);
+
+        RegisterView registerView = new RegisterView(this);
+        views.put("Register", registerView);
+
+        NavbarController navbarController = new NavbarController(this);
+        this.navbarView = new NavbarView(navbarController);
+        navbarController.setNavbarView(navbarView);
 
         // Initialisation of the main BorderPane
         this.root = new BorderPane();
@@ -108,16 +119,13 @@ public class Rooter {
         // Get the view to display
         Pane page = views.get(pageTitle);
 
-        // Change the page selected in the navbar
-        NavbarView navbar = (NavbarView) views.get("Navbar");
-        navbar.setPageSelected(pageTitle);
-
         // Display the view in the center of the main BorderPane
         root.setCenter(page);
 
         // Display or hide the navbar
         if (showNavbar) {
-            root.setTop(navbar);
+            this.navbarView.setPageSelected(pageTitle); // Change the page selected in the navbar
+            root.setTop(this.navbarView);
         } else {
             root.setTop(null);
         }
@@ -144,12 +152,13 @@ public class Rooter {
 
         // Check if the calling class is LoginController
         if (!callingClassName.equals("controllers.connexion.LoginController")) {
-            throw new SecurityException("Permission refusée : Accès à la méthode changePermission est limité à la classe LoginController.");
+            throw new SecurityException(
+                    "Permission refusée : Accès à la méthode changePermission est limité à la classe LoginController.");
         }
 
         // Change the permission
         this.typeDeCompte = typeDeCompte;
-        NavbarView navbar = (NavbarView) views.get("Navbar");
-        navbar.updateLogged(typeDeCompte);
+        this.navbarView.updateLogged(typeDeCompte);
     }
+
 }

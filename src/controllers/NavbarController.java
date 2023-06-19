@@ -9,12 +9,14 @@ public class NavbarController {
 
     public NavbarController(Rooter rooter) {
         this.rooter = rooter;
-        this.navbarView = (NavbarView) rooter.getView("Navbar");
-
-        this.setup();
     }
 
-    public void setup() {
+    public void setNavbarView(NavbarView navbarView) {
+        this.navbarView = navbarView;
+        setup();
+    }
+
+    private void setup() {
         navbarView.getExporterButton().setOnAction(event -> {
             rooter.changePage(true, "Exporter");
         });

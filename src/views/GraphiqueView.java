@@ -22,14 +22,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import utilities.DatePickerConverter;
-
+import utilities.Rooter;
+import controllers.GraphiqueController;
 /**
  * This class represents the view of the Exporter page.
  * This page is a form to export data.
  */
 public class GraphiqueView extends BorderPane {
-
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    private GraphiqueController graphiqueController;
 
     // Elements of the view
     private ComboBox<String> typeSommeComboBox;
@@ -50,7 +52,9 @@ public class GraphiqueView extends BorderPane {
      * 
      * Initialise the elements of the view
      */
-    public GraphiqueView() {
+    public GraphiqueView(Rooter rooter) {
+        this.graphiqueController = new GraphiqueController(rooter, this);
+        
         // Creation of the elements of the view
         compteurCheckBoxes = new ArrayList<CheckBox>();
 
@@ -58,13 +62,11 @@ public class GraphiqueView extends BorderPane {
         this.setTop(graphiquePane);
 
         this.genererButton = new Button("Générer");
+        // Ajoute un listener sur le bouton
+        this.genererButton.setOnAction(this.graphiqueController::requete);
         setCenter(this.genererButton);
 
         setAlignment(graphiquePane, Pos.CENTER);
-    }
-
-    public Button getGenererButton() {
-        return genererButton;
     }
 
     public ComboBox<String> getTypeSommeComboBox() {

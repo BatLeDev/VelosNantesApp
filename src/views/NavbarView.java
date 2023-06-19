@@ -1,12 +1,28 @@
 package views;
 
+import controllers.NavbarController;
+// JavaFX imports
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+/**
+ * It's the view of the navbar. It's used to display the navbar.
+ * <p> This class extends BorderPane from JavaFX.
+ * <p> It contains:
+ * <ul>
+ * <li> A {@link Button} to go to the map page
+ * <li> A {@link Button} to go to the graph page
+ * <li> A {@link Button} to go to the export page
+ * <li> A {@link Button} to go to the modification page (when the user is logged)
+ * <li> A {@link Button} to go to the login page (when the user isn't logged)
+ * <li> A {@link Button} to go to the register page (when the user isn't logged)
+ * </ul>
+ */
 public class NavbarView extends BorderPane {
+    private NavbarController navbarController;
 
     private Button exporterButton;
     private Button carteButton;
@@ -16,7 +32,9 @@ public class NavbarView extends BorderPane {
     private Button registerButton;
     private ImageView rondObject3 = new ImageView();
 
-    public NavbarView() {
+    public NavbarView(NavbarController navbarController) {
+        this.navbarController = navbarController;
+        
         carteButton = new Button("Carte");
         graphiqueButton = new Button("Graphique");
         exporterButton = new Button("Exporter");

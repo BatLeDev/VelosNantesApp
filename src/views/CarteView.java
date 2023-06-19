@@ -19,6 +19,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import controllers.CarteController;
+import utilities.Rooter;
+
 // Project imports
 import database.DatabaseAccess;
 import models.CompteurFull;
@@ -31,6 +34,9 @@ import models.Marker;
 public class CarteView extends BorderPane {
     private static final String CARTE_HTML_PATH = "src/ressources/html/carte.html";
 
+    // Controller of the view
+    private CarteController carteController;
+
     // Elements of the view
     private WebEngine webEngine;
 
@@ -40,7 +46,9 @@ public class CarteView extends BorderPane {
      * 
      * Initialise the elements of the view
      */
-    public CarteView() {
+    public CarteView(Rooter rooter) {
+        this.carteController = new CarteController(rooter, this);
+
         // Show "Chargement en cour ..."
         Label loadingLabel = new Label("Chargement en cours ... (Cela peut dépendre de la connexion internet)");
         this.setCenter(loadingLabel);

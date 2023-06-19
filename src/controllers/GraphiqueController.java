@@ -20,20 +20,14 @@ public class GraphiqueController {
     ArrayList<Compteur> compteurs;
     
 
-    public GraphiqueController(Rooter rooter) {
+    public GraphiqueController(Rooter rooter, GraphiqueView graphiqueView) {
         this.rooter = rooter;
-        this.graphiqueView = (GraphiqueView) rooter.getView("Graphique");
+        this.graphiqueView = graphiqueView;
         compteurs = DatabaseAccess.getCompteurs();
 
-        this.setupSelection();
+        this.setupCompteurs();
         this.graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
         this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);
-
-    }
-
-    public void setupSelection() {
-        graphiqueView.getGenererButton().setOnAction(this::requete);
-        this.setupCompteurs();
     }
 
     public void setupCompteurs() {
@@ -47,7 +41,6 @@ public class GraphiqueController {
         graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
 
-
     public void setupCalques(){
         ArrayList<String> calquesString = new ArrayList<String>();
         calquesString.add("Calque 1 (1)");
@@ -60,7 +53,7 @@ public class GraphiqueController {
         graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
 
-    private void requete (ActionEvent event) {
+    public void requete (ActionEvent event) {
         if (this.checkDate() && this.checkSelection()){
             String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
             String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();

@@ -10,26 +10,20 @@ public class LoginController {
     private Rooter rooter;
     private LoginView loginView;
 
-    public LoginController(Rooter rooter) {
+    public LoginController(Rooter rooter, LoginView loginView) {
         this.rooter = rooter;
-        this.loginView = (LoginView) rooter.getView("Login");
-
-        this.setup();
+        this.loginView = loginView;
     }
 
-    public void setup() {
-        loginView.getExitBtn().setOnAction(event -> {
-            rooter.changePage(true, "Carte");
-        });
-
-        loginView.getLeftButton().setOnAction(event -> {
-            rooter.changePage(false, "Register");
-        });
-
-        loginView.getRightButton().setOnAction(this::login);
+    public void exit(ActionEvent event) {
+        rooter.changePage(true, "Carte");
     }
 
-    private void login(ActionEvent event) {
+    public void register(ActionEvent event) {
+        rooter.changePage(false, "Register");
+    }
+
+    public void login(ActionEvent event) {
         String[] fields = this.loginView.getFields();
 
         int checkLogin = DatabaseAccess.checkLogin(fields[0], fields[1]);

@@ -7,10 +7,9 @@ public class CarteController {
     private Rooter rooter;
     private CarteView carteView;
 
-    public CarteController(Rooter rooter) {
+    public CarteController(Rooter rooter, CarteView carteView) {
         this.rooter = rooter;
-        this.carteView = (CarteView) rooter.getView("Carte");
-
+        this.carteView = carteView;
         this.setup();
     }
 

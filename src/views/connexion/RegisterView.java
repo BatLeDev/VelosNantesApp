@@ -1,5 +1,8 @@
 package views.connexion;
 
+import controllers.connexion.RegisterController;
+import utilities.Rooter;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -11,10 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class RegisterView extends AnchorPane {
-    private Button exitBtn;
-    private Button leftButton;
+    private RegisterController registerController;
 
-    public RegisterView() {
+    public RegisterView(Rooter rooter) {
+        this.registerController = new RegisterController(rooter, this);
+
         // Background
         Image banner = new Image("./ressources/images/banner-connexion.png");
         ImageView bannerView = new ImageView(banner);
@@ -25,20 +29,21 @@ public class RegisterView extends AnchorPane {
         getChildren().addAll(bannerView, widthConstraint);
 
         // Foreground
-
         // Header
         Image logoImage = new Image("./ressources/images/logo-full-white.png");
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitWidth(200);
         logoImageView.setPreserveRatio(true);
         logoImageView.getStyleClass().add("logo");
-
-        this.exitBtn = new Button();
-        this.exitBtn.setGraphic(new ImageView(new Image("./ressources/images/exit-black.png")));
-        this.exitBtn.getStyleClass().add("action-button");
-        AnchorPane.setTopAnchor(this.exitBtn, 10.0);
-        AnchorPane.setRightAnchor(this.exitBtn, 10.0);
         getChildren().add(logoImageView);
+
+        Button exitBtn = new Button();
+        exitBtn.setGraphic(new ImageView(new Image("./ressources/images/exit-black.png")));
+        exitBtn.getStyleClass().add("action-button");
+        exitBtn.setOnAction(e -> registerController.exit());
+
+        AnchorPane.setTopAnchor(exitBtn, 10.0);
+        AnchorPane.setRightAnchor(exitBtn, 10.0);
 
         // Content
         // content-left
@@ -47,13 +52,13 @@ public class RegisterView extends AnchorPane {
         Text descriptionText = new Text("Si vous avez d\u00E9j\u00E0 votre propre compte, connectez-vous simplement.");
         descriptionText.setWrappingWidth(325);
         descriptionText.getStyleClass().add("description-banner");
-        this.leftButton = new Button("Se connecter");
-        this.leftButton.getStyleClass().add("button-banner");
+        Button connextionPage = new Button("Se connecter");
+        connextionPage.getStyleClass().add("button-banner");
 
         VBox contentLeft = new VBox();
         contentLeft.getStyleClass().add("content");
         contentLeft.setSpacing(20);
-        contentLeft.getChildren().addAll(titleLeft, descriptionText, this.leftButton);
+        contentLeft.getChildren().addAll(titleLeft, descriptionText, connextionPage);
 
         AnchorPane.setTopAnchor(contentLeft, 0.0);
         AnchorPane.setBottomAnchor(contentLeft, 0.0);
@@ -87,16 +92,8 @@ public class RegisterView extends AnchorPane {
         AnchorPane.setLeftAnchor(contentRight, 500.0);
         AnchorPane.setRightAnchor(contentRight, 0.0);
 
-        getChildren().addAll(contentLeft, contentRight, this.exitBtn);
+        getChildren().addAll(contentLeft, contentRight, exitBtn);
 
         getStyleClass().add("register-view");
-    }
-
-    public Button getExitBtn() {
-        return this.exitBtn;
-    }
-
-    public Button getLeftButton() {
-        return this.leftButton;
     }
 }

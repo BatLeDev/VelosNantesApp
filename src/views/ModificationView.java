@@ -1,11 +1,10 @@
 package views;
 
-
+import controllers.ModificationController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -15,12 +14,14 @@ import javafx.scene.layout.HBox;
  * This page is a form to export data.
  */
 public class ModificationView extends BorderPane {
+    private ModificationController modificationController;
 
     private ToggleGroup selectionGroup;
     private TableView table;
     private Label message;
 
-    public ModificationView() {
+    public ModificationView(ModificationController modificationController) {
+        this.modificationController = modificationController;
         
         this.selectionGroup = new ToggleGroup();
         RadioButton compteurRadioButton = new RadioButton("Compteur");

@@ -7,21 +7,16 @@ public class RegisterController {
     private Rooter rooter;
     private RegisterView registerView;
 
-    public RegisterController(Rooter rooter) {
+    public RegisterController(Rooter rooter, RegisterView registerView) {
         this.rooter = rooter;
-        this.registerView = (RegisterView) rooter.getView("Register");
-
-        this.setup();
+        this.registerView = registerView;
     }
 
-    public void setup() {
-        registerView.getExitBtn().setOnAction(event -> {
-            rooter.changePage(true, "Carte");
-        });
-
-        registerView.getLeftButton().setOnAction(event -> {
-            rooter.changePage(false, "Login");
-        });
+    public void exit() {
+        rooter.changePage(true, "Carte");
     }
 
+    public void login() {
+        rooter.changePage(true, "Login");
+    }
 }
