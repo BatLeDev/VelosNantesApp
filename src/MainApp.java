@@ -45,7 +45,10 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
                 
         DatabaseAccess.getQuartiers();
+        DatabaseAccess.getCompteurs();
+        DatabaseAccess.getJour();
 
+        
         // Creation of the rooter
         rooter = new Rooter(primaryStage);
 

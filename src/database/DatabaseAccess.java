@@ -259,4 +259,33 @@ public class DatabaseAccess {
 
         return quartiers;
     }
+
+    public static ArrayList<Jour> getJour() {
+        ArrayList<Jour> jours = new ArrayList<Jour>();
+
+        try {
+            // Connection to the database
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT * FROM Jour";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String date = resultSet.getString("jourDate");
+                int j = resultSet.getInt("jourDeSemaine");
+                double temperatureMoyenne = resultSet.getDouble("temperature");
+
+                Jour jour = new Jour(date, j, temperatureMoyenne);
+                jours.add(jour);
+            }
+                
+            resultSet.close();
+
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des jours" + e.getMessage());
+        }
+
+        return jours;
+    }
 }

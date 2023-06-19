@@ -22,8 +22,7 @@ public class GraphiqueController {
     public GraphiqueController(Rooter rooter) {
         this.rooter = rooter;
         this.graphiqueView = (GraphiqueView) rooter.getView("Graphique");
-        compteurs = DatabaseAccess.getCompteurs();
-
+        this.compteurs = Compteur.getAll();
         this.setupSelection();
         this.graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
         this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);

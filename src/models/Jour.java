@@ -20,9 +20,6 @@ public class Jour implements IModels {
      */
     private static HashMap<String, Jour> jourList = new HashMap<String, Jour>();
 
-    private static final String[] VALIDE_JOUR = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
-    private static final String[] VALIDE_VACANCES = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
-
     // ----------------------------- static methods -----------------------------
 
     /**
@@ -69,35 +66,15 @@ public class Jour implements IModels {
         return ret;
     }
 
-    /**
-     * Check if a string is in a list of string
-     * 
-     * @param aChercher the string to check 
-     * @param liste the list of string to check in 
-     * @return true if the string is in the list, false otherwise 
-     */
-    private static boolean containString(String aChercher, String[] liste) {
-        boolean ret = false;
-        int i = 0;
-        while (!ret && i < liste.length) {
-            if (aChercher.equals(liste[i])) {
-                ret = true;
-            }
-            i++;
-        }
-        return ret;
-    }
-
  
     public static String[] getHeaders() {
-        return new String[] { "Date", "Jour", "Vacances", "Temperature Moyenne" };
+        return new String[] { "Date", "Jour", "Temperature Moyenne" };
     }
 
     // ----------------------------- attributes -----------------------------
 
     private String date;
-    private String jour;
-    private String vacances;
+    private int jour;
     private double temperatureMoyenne;
 
     // ----------------------------- constructor -----------------------------
@@ -110,7 +87,7 @@ public class Jour implements IModels {
      * @param jour the day of the week ("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
      * @param vacances the holidays (null if there is no holidays)
      */
-    public Jour(String date, String jour, String vacances, double temperatureMoyenne) {
+    public Jour(String date, int jour, double temperatureMoyenne) {
         if (!Jour.dateValide(date)) {
             throw new IllegalArgumentException("models.Jour.constructor : Le parametre date n'est pas valide");
         }
@@ -121,7 +98,6 @@ public class Jour implements IModels {
         this.date = date;
         try {
             this.setJour(jour);
-            this.setVacances(vacances);
             this.setTemperatureMoyenne(temperatureMoyenne);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("models.Jour.constructor : " + e.getMessage());
@@ -149,7 +125,6 @@ public class Jour implements IModels {
         this.date = date;
         try {
             this.setJour(jour);
-            this.setVacances(vacances);
             this.setTemperatureMoyenne(temperatureMoyenne);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("models.Jour.constructor : " + e.getMessage());
@@ -166,46 +141,14 @@ public class Jour implements IModels {
      * 
      * @param jour the day of the week
      */
-    public void setJour(String jour) {
-        if (jour == null || jour.isEmpty()) {
+    public void setJour(int jour) {
+        if ( jour < 1 || jour > 7) {
             throw new IllegalArgumentException(
-                    "models.Jour.setJour : Le parametre jour n'est pas valide (null ou vide)");
-        }
-
-        if (!Jour.containString(jour, Jour.VALIDE_JOUR)) {
-            throw new IllegalArgumentException("models.Jour.setJour : Ce jour n'existe pas ou est mal orthographié");
+                    "models.Jour.setJour : Le parametre jour n'est pas valide (1-7)");
         }
         this.jour = jour;
     }
-    
-    /**
-     * Set the day of the week with an int (0-6)
-     * 
-     * @param jour the day of the week (0-6)
-     */
-    public void setJour(int jour) {
-        if (jour < 0 || jour > 6) {
-            throw new IllegalArgumentException("models.Jour.setJour : Le parametre jour n'est pas valide (0-6))");
-        }
-        this.jour = Jour.VALIDE_JOUR[jour];
-    }
 
-    /**
-     * Set the holidays
-     * valid string : "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps"
-     * 
-     * @param vacances the holidays, null if there is no holidays
-     */
-    public void setVacances(String vacances) {
-        if (vacances == null || vacances.isEmpty()) {
-            this.vacances = null;
-        } else {
-            if (!Jour.containString(vacances, Jour.VALIDE_VACANCES)) {
-                throw new IllegalArgumentException("models.Jour.setVacances : Ces vacances n'existent pas ou sont mal orthographiées");
-            }
-            this.vacances = vacances;
-        }
-    }
 
     /**
      * Set the average temperature
@@ -247,18 +190,11 @@ public class Jour implements IModels {
      * 
      * @return the holidays, null if there is no holidays
      */
-    public String getJour() {
+    public int getJour() {
         return this.jour;
     }
 
-    /**
-     * Get the average temperature
-     * 
-     * @return the average temperature
-     */
-    public String getVacances() {
-        return this.vacances;
-    }
+
     
     // ----------------------------- methods -----------------------------
 
@@ -269,23 +205,11 @@ public class Jour implements IModels {
      */
     public boolean estWeekEnd(){
         boolean ret = false;
-        if (this.jour.equals("Samedi") || this.jour.equals("Dimanche")){
+        if ( this.jour == 6 || this.jour == 7){
             ret = true;
         }
         return ret;
     }
 
-    /**
-     * Check if the day is a holiday
-     * 
-     * @return true if the day is a holiday, false otherwise
-     */
-    public boolean estVacances() {
-        boolean ret = false;
-        if (this.vacances != null) {
-            ret = true;
-        }
-        return ret;
-    }
 
 }
