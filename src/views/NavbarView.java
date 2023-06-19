@@ -1,6 +1,7 @@
 package views;
 
 import controllers.NavbarController;
+
 // JavaFX imports
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;

@@ -1,15 +1,15 @@
 package views;
 
-import javafx.scene.layout.AnchorPane;
 // JavaFX imports
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
 import javafx.concurrent.Worker;
 import javafx.geometry.Insets;
 
@@ -19,19 +19,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// Project imports
 import controllers.CarteController;
 import utilities.Rooter;
 
-// Project imports
-import database.DatabaseAccess;
-import models.CompteurFull;
-import models.Marker;
-
 /**
  * This class represents the view of the Carte page.
- * This page is a map, with a legend and markers points which represents sensors.
+ * <p> This page is a map, with a legend and markers points which represents sensors.
+ * <p> The markers are loaded from the database, and the map is a html file with javascript.
  */
 public class CarteView extends BorderPane {
+    /**
+     * Path of the html file of the map, use an online map with an API
+     */
     private static final String CARTE_HTML_PATH = "src/ressources/html/carte.html";
 
     // Controller of the view
@@ -39,21 +39,21 @@ public class CarteView extends BorderPane {
 
     // Elements of the view
     private WebEngine webEngine;
+    private StackPane content;
 
     /**
-     * Constructor
-     * This method is called by the router to create the view
+     * Initialize elements of the view and create the controller
      * 
-     * Initialise the elements of the view
+     * @param rooter The rooter of the application
      */
     public CarteView(Rooter rooter) {
         this.carteController = new CarteController(rooter, this);
 
-        // Show "Chargement en cour ..."
+        // Show a loading pane while map and markers are loading.
         Label loadingLabel = new Label("Chargement en cours ... (Cela peut dépendre de la connexion internet)");
         this.setCenter(loadingLabel);
 
-        AnchorPane legendPaneOpen = this.createLegendPane();
+        AnchorPane legendPane = this.createLegendPane();
 
         // Create the map view
         WebView webView = new WebView();
@@ -61,70 +61,26 @@ public class CarteView extends BorderPane {
         this.webEngine.loadContent(readHTMLFile(CARTE_HTML_PATH));
 
         // Superposition of the map and the legend
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(webView, legendPaneOpen);
+        this.content = new StackPane();
+        this.content.getChildren().addAll(webView, legendPane);
 
-        // Load the markers when the page is loaded
-        // this.webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-        //     if (newValue == Worker.State.SUCCEEDED) {
-        //         System.out.println("Page loaded");
-        //         loadMarkers(); // Load the markers on the map
-
-        //         this.setCenter(stackPane);
-        //     }
-        // });
-
+        // Listener to know when the map is loaded
+        this.webEngine.getLoadWorker().stateProperty().addListener(this.carteController::webMachineLoaded);
     }
 
     /**
-     * Load the markers on the map
+     * Add the markers to the map and show the map
      * 
-     * Get the list of sensors from the database
-     * Create a list of markers from the list of sensors
-     * Convert the list of markers to a javascript string
-     * Execute the javascript string in the web engine
+     * @param js The javascript code to add the markers
      */
-    private void loadMarkers() {
-        ArrayList<CompteurFull> compteursList = DatabaseAccess.getCompteursWithStats();
-        ArrayList<Marker> markersList = new ArrayList<>();
-
-        // For each sensor, we create a marker
-        for (CompteurFull compteur : compteursList) {
-            boolean markerExists = false;
-
-            // We check if the marker already exists, if it does, we add the sensor to the marker
-            for (Marker marker : markersList) {
-                if (marker.getLongitude() == compteur.getLongitude()
-                        && marker.getLatitude() == compteur.getLatitude() && !markerExists) {
-                    marker.getCompteurs().add(compteur);
-                    markerExists = true;
-                }
-            }
-
-            // If the marker doesn't exist, we create it
-            if (!markerExists) {
-                ArrayList<CompteurFull> compteurs = new ArrayList<>();
-                compteurs.add(compteur);
-                Marker marker = new Marker(compteur.getLibelle(), compteur.getLongitude(), compteur.getLatitude(),
-                        compteur.getObservation(), compteur.getIdQuartier(), compteur.getNomQuartier(), compteurs);
-                markersList.add(marker);
-            }
-        }
-
-        // We convert the list of markers to a javascript string and add the markers to the map
-        String js = "var markersData = [";
-        for (Marker marker : markersList) {
-            js += marker.toJs() + ", ";
-        }
-        js += "];";
-        js += "addMarkers();";
-
+    public void pageLoaded(String js) {
         this.webEngine.executeScript(js);
+        this.setCenter(this.content);
         System.out.println("Markers loaded");
     }
 
     /**
-     * Create the legend pane
+     * Initialize the legend pane
      * 
      * @return The legend pane
      */
