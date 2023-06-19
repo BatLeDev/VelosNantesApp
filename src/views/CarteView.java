@@ -34,6 +34,7 @@ public class CarteView extends BorderPane {
     // Elements of the view
     private WebEngine webEngine;
     private StackPane content;
+    private GridPane legendGrid;
 
     /**
      * Initialize elements of the view and create the controller
@@ -87,47 +88,21 @@ public class CarteView extends BorderPane {
         legendTitle.getStyleClass().add("legend-title");
 
         // Rectangle with the legend
-        GridPane legendGrid = new GridPane();
-        legendGrid.setHgap(10);
-        legendGrid.setVgap(10);
-        legendGrid.setPadding(new Insets(10, 10, 10, 10));
+        this.legendGrid = new GridPane();
+        this.legendGrid.setHgap(10);
+        this.legendGrid.setVgap(10);
+        this.legendGrid.setPadding(new Insets(10, 10, 10, 10));
 
         Label legendMarkersTitle = new Label("Fréquentation moyenne par jour :");
         GridPane.setConstraints(legendMarkersTitle, 0, 1, 2, 1);
+        this.legendGrid.getChildren().add(legendMarkersTitle);
 
-        Image legendMarkersImage1 = new Image("file:src/ressources/images/markers/marker1.png");
-        ImageView legendMarkersImageView1 = new ImageView(legendMarkersImage1);
-        GridPane.setConstraints(legendMarkersImageView1, 0, 2);
-        Label legendMarkers1 = new Label("< 250");
-        GridPane.setConstraints(legendMarkers1, 1, 2);
-
-        Image legendMarkersImage2 = new Image("file:src/ressources/images/markers/marker2.png");
-        ImageView legendMarkersImageView2 = new ImageView(legendMarkersImage2);
-        GridPane.setConstraints(legendMarkersImageView2, 0, 3);
-        Label legendMarkers2 = new Label("250 à 500");
-        GridPane.setConstraints(legendMarkers2, 1, 3);
-
-        Image legendMarkersImage3 = new Image("file:src/ressources/images/markers/marker3.png");
-        ImageView legendMarkersImageView3 = new ImageView(legendMarkersImage3);
-        GridPane.setConstraints(legendMarkersImageView3, 0, 4);
-        Label legendMarkers3 = new Label("500 à 1000");
-        GridPane.setConstraints(legendMarkers3, 1, 4);
-
-        Image legendMarkersImage4 = new Image("file:src/ressources/images/markers/marker4.png");
-        ImageView legendMarkersImageView4 = new ImageView(legendMarkersImage4);
-        GridPane.setConstraints(legendMarkersImageView4, 0, 5);
-        Label legendMarkers4 = new Label("1000 à 2000");
-        GridPane.setConstraints(legendMarkers4, 1, 5);
-
-        Image legendMarkersImage5 = new Image("file:src/ressources/images/markers/marker5.png");
-        ImageView legendMarkersImageView5 = new ImageView(legendMarkersImage5);
-        GridPane.setConstraints(legendMarkersImageView5, 0, 6);
-        Label legendMarkers5 = new Label("> 2000");
-        GridPane.setConstraints(legendMarkers5, 1, 6);
-
-        legendGrid.getChildren().addAll(legendMarkersTitle, legendMarkersImageView1, legendMarkers1,
-                legendMarkersImageView2, legendMarkers2, legendMarkersImageView3, legendMarkers3,
-                legendMarkersImageView4, legendMarkers4, legendMarkersImageView5, legendMarkers5);
+        addLegendMarker("marker1.png", "< 250", 2);
+        addLegendMarker("marker2.png", "250 à 500", 3);
+        addLegendMarker("marker3.png", "500 à 1000", 4);
+        addLegendMarker("marker4.png", "1000 à 2000", 5);
+        addLegendMarker("marker5.png", "> 2000", 6);
+        
         legendGrid.getStyleClass().add("legend-grid");
 
         // Position of the legend
@@ -141,5 +116,21 @@ public class CarteView extends BorderPane {
         AnchorPane.setLeftAnchor(legendTitle, 10.0);
 
         return legendPane;
+    }
+
+    /**
+     * Add a marker to the legend
+     * 
+     * @param markerName The name of the marker
+     * @param text The text to show
+     * @param row The row of the grid
+     */
+    private void addLegendMarker(String markerName, String text, int row) {
+        Image legendImage = new Image("file:src/ressources/images/markers/" + markerName);
+        ImageView legendImageView = new ImageView(legendImage);
+        GridPane.setConstraints(legendImageView, 0, row);
+        Label legendMarker = new Label(text);
+        GridPane.setConstraints(legendMarker, 1, row);
+        this.legendGrid.getChildren().addAll(legendImageView, legendMarker);
     }
 }
