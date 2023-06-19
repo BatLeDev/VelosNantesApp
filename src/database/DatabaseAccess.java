@@ -291,6 +291,28 @@ public class DatabaseAccess {
         return typeDeCompte;
     }
 
+    /**
+     * Create user account
+     * 
+     * @param identifiant The username of the account
+     * @param motDePasse The password of the account
+     * @param typeDeCompte The type of the account ("Administrateur", "Utilisateur", "Elu")
+     */
+    public static void createAcount(String identifiant, String motDePasse, String typeDeCompte) {
+        try {
+            // Connection to the database
+            Statement connection = DatabaseConnection.getConnection();
+            String passwordHash = BCrypt.hashpw(motDePasse, BCrypt.gensalt());
+
+            String query = "INSERT INTO Compte (identifiant, motDePasse, typeDeCompte) VALUES ('" + identifiant + "', '"
+                    + passwordHash + "', '" + typeDeCompte + "');";
+            connection.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }   
+
     public static String requeteSQL (String requete) throws SQLException {
         String contenu = "";
 

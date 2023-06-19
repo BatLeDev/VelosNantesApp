@@ -27,10 +27,12 @@ public class NavbarView extends BorderPane {
     private Button exporterButton;
     private Button carteButton;
     private Button graphiqueButton;
-    private Button modificationButton;
     private Button loginButton;
     private Button registerButton;
-    private ImageView rondObject3 = new ImageView();
+
+    private ImageView rondObject3;
+    private Button modificationButton;
+    private HBox navbarBox;
 
     public NavbarView(NavbarController navbarController) {
         this.navbarController = navbarController;
@@ -49,16 +51,13 @@ public class NavbarView extends BorderPane {
         logoImageView.setPreserveRatio(true);
 
         // Création de la boîte horizontale pour les boutons de la navbar
-        HBox navbarBox = new HBox(10);
+        this.navbarBox = new HBox(10);
         Image rondImg = new Image("./ressources/images/rond.png");
         ImageView rondObject = new ImageView(rondImg);
         ImageView rondObject2 = new ImageView(rondImg);
         this.rondObject3 = new ImageView(rondImg);
-
-        modificationButton.setVisible(false);
-        rondObject3.setVisible(false);
         
-        navbarBox.getChildren().addAll(carteButton, rondObject, graphiqueButton, rondObject2, exporterButton, this.rondObject3, modificationButton);
+        this.navbarBox.getChildren().addAll(carteButton, rondObject, graphiqueButton, rondObject2, exporterButton);
 
         // Création de la boîte horizontale pour les boutons de connexion et d'inscription
         HBox loginBox = new HBox(10);
@@ -128,17 +127,14 @@ public class NavbarView extends BorderPane {
             loginButton.setVisible(false);
             registerButton.setVisible(false);
             if (typeDeCompte.equals("Administrateur") || typeDeCompte.equals("Elu")) {
-                modificationButton.setVisible(true);
-                rondObject3.setVisible(true);
+                this.navbarBox.getChildren().addAll(this.rondObject3, this.modificationButton);
             } else {
-                modificationButton.setVisible(false);
-                rondObject3.setVisible(false);
+                this.navbarBox.getChildren().removeAll(this.rondObject3, this.modificationButton);
             }
         } else {
             loginButton.setVisible(true);
             registerButton.setVisible(true);
-            modificationButton.setVisible(false);
-            rondObject3.setVisible(false);
+            this.navbarBox.getChildren().removeAll(this.rondObject3, this.modificationButton);
         }
     }
 }

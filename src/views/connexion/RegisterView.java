@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -67,25 +68,33 @@ public class RegisterView extends AnchorPane {
         // content-right
         Text titleRight = new Text("Cr\u00E9er un compte");
         titleRight.getStyleClass().add("title-center");
-        TextField utilisateurField = new TextField();
-        utilisateurField.getStyleClass().add("input-field");
-        utilisateurField.setPromptText("Utilisateur");
-        PasswordField passwordField = new PasswordField();
-        passwordField.getStyleClass().add("input-field");
-        passwordField.setPromptText("Mot de passe");
-        PasswordField passwordFieldConfirm = new PasswordField();
-        passwordFieldConfirm.getStyleClass().add("input-field");
-        passwordFieldConfirm.setPromptText("Confirmez le mot de passe");
-        Button connexionButton = new Button("S'inscrire");
-        connexionButton.getStyleClass().add("button-center");
+        this.utilisateurField = new TextField();
+        this.utilisateurField.getStyleClass().add("input-field");
+        this.utilisateurField.setPromptText("Utilisateur");
+        this.passwordField = new PasswordField();
+        this.passwordField.getStyleClass().add("input-field");
+        this.passwordField.setPromptText("Mot de passe");
+        this.passwordFieldConfirm = new PasswordField();
+        this.passwordFieldConfirm.getStyleClass().add("input-field");
+        this.passwordFieldConfirm.setPromptText("Confirmez le mot de passe");
+        
+        Button inscriptionBtn = new Button("S'inscrire");
+        inscriptionBtn.getStyleClass().add("button-center");
         Text descText = new Text("Si vous faites parti de la mairie de Nantes, contactez un responsable pour avoir acc\u00E8s a tous les privil\u00E8ges.");
         descText.setWrappingWidth(400);
         descText.getStyleClass().add("description-center");
 
+        this.errorMessage = new Text("coucou");
+        this.errorMessage.setWrappingWidth(325);
+        this.errorMessage.getStyleClass().add("error-message");
+        this.errorContainer = new StackPane(errorMessage);
+        this.errorContainer.getStyleClass().add("error-message-container");
+        this.errorContainer.setVisible(false);
+
         VBox contentRight = new VBox();
         contentRight.getStyleClass().add("content");
         contentRight.setSpacing(20);
-        contentRight.getChildren().addAll(titleRight, utilisateurField, passwordField, passwordFieldConfirm, connexionButton, descText);
+        contentRight.getChildren().addAll(titleRight, utilisateurField, passwordField, passwordFieldConfirm, inscriptionBtn, descText, this.errorContainer);
 
         AnchorPane.setTopAnchor(contentRight, 0.0);
         AnchorPane.setBottomAnchor(contentRight, 0.0);
@@ -95,5 +104,19 @@ public class RegisterView extends AnchorPane {
         getChildren().addAll(contentLeft, contentRight, exitBtn);
 
         getStyleClass().add("register-view");
+    }
+
+    public String[] getFields() {
+        String[] fields = new String[3];
+        fields[0] = this.utilisateurField.getText();
+        fields[1] = this.passwordField.getText();
+        fields[2] = this.passwordFieldConfirm.getText();
+
+        return fields;
+    }
+
+    public void showErrorMessage(String message) {
+        this.errorMessage.setText(message);
+        this.errorContainer.setVisible(true);
     }
 }
