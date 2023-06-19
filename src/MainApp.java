@@ -6,10 +6,6 @@ import javafx.stage.Stage;
 // Utilities import
 import utilities.Rooter;
 
-// Controllers import
-import controllers.*;
-import controllers.connexion.*;
-
 /**
  * It's the main class, run it to launch the application. 
  * This class extends Application from JavaFX.

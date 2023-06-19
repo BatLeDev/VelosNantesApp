@@ -92,7 +92,6 @@ public class Rooter {
 
         NavbarController navbarController = new NavbarController(this);
         this.navbarView = new NavbarView(navbarController);
-        navbarController.setNavbarView(navbarView);
 
         // Initialisation of the main BorderPane
         this.root = new BorderPane();

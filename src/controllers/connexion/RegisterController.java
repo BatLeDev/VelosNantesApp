@@ -21,7 +21,8 @@ public class RegisterController {
     public void login() {
         rooter.changePage(true, "Login");
     }
-    private void inscription(ActionEvent event) {
+
+    public void inscription() {
         System.out.println("Inscription");
         String[] fields = this.registerView.getFields();
 

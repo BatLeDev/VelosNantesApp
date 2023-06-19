@@ -17,6 +17,12 @@ import javafx.scene.text.Text;
 public class RegisterView extends AnchorPane {
     private RegisterController registerController;
 
+    private TextField utilisateurField;
+    private PasswordField passwordField;
+    private PasswordField passwordFieldConfirm;
+    private Text errorMessage;
+    private StackPane errorContainer;
+
     public RegisterView(Rooter rooter) {
         this.registerController = new RegisterController(rooter, this);
 
@@ -80,6 +86,8 @@ public class RegisterView extends AnchorPane {
         
         Button inscriptionBtn = new Button("S'inscrire");
         inscriptionBtn.getStyleClass().add("button-center");
+        inscriptionBtn.setOnAction(e -> registerController.inscription());
+
         Text descText = new Text("Si vous faites parti de la mairie de Nantes, contactez un responsable pour avoir acc\u00E8s a tous les privil\u00E8ges.");
         descText.setWrappingWidth(400);
         descText.getStyleClass().add("description-center");

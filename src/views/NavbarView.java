@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 public class NavbarView extends BorderPane {
     private NavbarController navbarController;
 
+    // Elements
     private Button exporterButton;
     private Button carteButton;
     private Button graphiqueButton;
@@ -32,11 +33,18 @@ public class NavbarView extends BorderPane {
 
     private ImageView rondObject3;
     private Button modificationButton;
+
     private HBox navbarBox;
 
-    public NavbarView(NavbarController navbarController) {
-        this.navbarController = navbarController;
-        
+    /**
+     * Constructor of the NavbarView class.
+     * <p> Initializes the navbar view.
+     * @param navbarController The controller of the navbar view
+     */
+    public NavbarView(NavbarController controller) {
+        this.navbarController = controller;
+
+        // Initializations of buttons
         carteButton = new Button("Carte");
         graphiqueButton = new Button("Graphique");
         exporterButton = new Button("Exporter");
@@ -44,31 +52,41 @@ public class NavbarView extends BorderPane {
         loginButton = new Button("Se connecter");
         registerButton = new Button("S'inscrire");
 
-        // Création de l'ImageView avec le logo souhaité
+        // Add listeners to the buttons
+        carteButton.setOnAction(e -> this.navbarController.buttonClicked("Carte"));
+        graphiqueButton.setOnAction(e -> this.navbarController.buttonClicked("Graphique"));
+        exporterButton.setOnAction(e -> this.navbarController.buttonClicked("Exporter"));
+        modificationButton.setOnAction(e -> this.navbarController.buttonClicked("Modification"));
+        loginButton.setOnAction(e -> this.navbarController.buttonClicked("Login"));
+        registerButton.setOnAction(e -> this.navbarController.buttonClicked("Register"));
+
+        // Initialize the logo
         Image logoImage = new Image("./ressources/images/logo-full.png");
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitWidth(200);
         logoImageView.setPreserveRatio(true);
 
-        // Création de la boîte horizontale pour les boutons de la navbar
+        // Creation of the horizontal box for the navbar buttons
         this.navbarBox = new HBox(10);
+
         Image rondImg = new Image("./ressources/images/rond.png");
         ImageView rondObject = new ImageView(rondImg);
         ImageView rondObject2 = new ImageView(rondImg);
         this.rondObject3 = new ImageView(rondImg);
         
+        // Add the buttons to the horizontal box
         this.navbarBox.getChildren().addAll(carteButton, rondObject, graphiqueButton, rondObject2, exporterButton);
 
-        // Création de la boîte horizontale pour les boutons de connexion et d'inscription
+        // Connections buttons box
         HBox loginBox = new HBox(10);
         loginBox.getChildren().addAll(loginButton, registerButton);
 
-        // Positionnement des éléments
+        // Positioning of the elements
         setLeft(logoImageView);
         setCenter(navbarBox);
         setRight(loginBox);
 
-        // Ajout de la classe CSS navbar
+        // Styling
         getStyleClass().add("navbar-view");
         navbarBox.getStyleClass().add("navbar-box");
         loginBox.getStyleClass().add("login-box");
@@ -76,30 +94,14 @@ public class NavbarView extends BorderPane {
         registerButton.getStyleClass().add("register-button");
     }
 
-    public Button getExporterButton() {
-        return exporterButton;
-    }
-
-    public Button getCarteButton() {
-        return carteButton;
-    }
-
-    public Button getGraphiqueButton() {
-        return graphiqueButton;
-    }
-
-    public Button getModificationButton() {
-        return modificationButton;
-    }
-
-    public Button getLoginButton() {
-        return loginButton;
-    }
-
-    public Button getRegisterButton() {
-        return registerButton;
-    }
-
+    /**
+     * Sets the page selected and unselects the others.
+     * 
+     * <p> It changes the style of the button by adding the "selected" class. 
+     * Add an underline to the text of the button.
+     * 
+     * @param pageTitle The title of the page to set selected
+     */
     public void setPageSelected(String pageTitle) {
         carteButton.getStyleClass().remove("selected");
         graphiqueButton.getStyleClass().remove("selected");
@@ -122,19 +124,34 @@ public class NavbarView extends BorderPane {
         }
     }
 
+    /**
+     * Update the navbar when the user is logged or not.
+     * <ul>
+     * <li> If the user is logged, it removes the login and register buttons and adds the modification button.
+     * <li> If the user logged is an "Administrateur" or an "Elu", it adds the modification button.
+     * <li> If the user isn't logged, it removes the modification button and adds the login and register buttons.
+     * </ul>
+     * 
+     * @param typeDeCompte The type of the account of the user
+     */
     public void updateLogged(String typeDeCompte) {
-        if (typeDeCompte != null) {
+
+        if (typeDeCompte != null) { // If the user is logged
             loginButton.setVisible(false);
             registerButton.setVisible(false);
-            if (typeDeCompte.equals("Administrateur") || typeDeCompte.equals("Elu")) {
+
+            if (typeDeCompte.equals("Administrateur") || typeDeCompte.equals("Elu")) { // If permissions are good
                 this.navbarBox.getChildren().addAll(this.rondObject3, this.modificationButton);
             } else {
                 this.navbarBox.getChildren().removeAll(this.rondObject3, this.modificationButton);
             }
+
         } else {
             loginButton.setVisible(true);
             registerButton.setVisible(true);
+
             this.navbarBox.getChildren().removeAll(this.rondObject3, this.modificationButton);
         }
     }
+
 }
