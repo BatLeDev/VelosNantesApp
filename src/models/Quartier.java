@@ -1,11 +1,19 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ArrayList;
 
+/**
+ * Class Quartier
+ * This class is used to represent a quartier, with its id, its nom and its
+ * length of track
+ * 
+ * This class save all the quartier in a HashMap, with the id as key
+ * Each quartier has a list of compteur id
+ */
 public class Quartier {
-
-// ----------------------------- static attributes -----------------------------
+    
+    // ----------------------------- static attributes -----------------------------
 
     /**
      * HashMap containing all quartier's objects
@@ -13,7 +21,7 @@ public class Quartier {
      * The value is the quartier object
      * This HashMap allow to get a quartier by his id and verify uniqueness of id
      */
-    protected static HashMap<Integer,Quartier> quartierList = new HashMap<Integer,Quartier>();
+    private static HashMap<Integer,Quartier> quartierList = new HashMap<Integer,Quartier>();
 
     // ----------------------------- static methods -----------------------------
 
@@ -37,42 +45,110 @@ public class Quartier {
         return Quartier.quartierList.remove(id); // Quartier if found, null if not
     }
 
-
     public static String[] getHeaders() {
-        return new String[] { "idQuartier", "nomQuartier", "lgPisteCyclable" };
+        return new String[] { "id", "nom", "lgPisteCyclable" };
     }
 
-
-
+    // ----------------------------- attributes -----------------------------
     private int idQuartier;
     private String nomQuartier;
     private double lgPisteCyclable;
     private ArrayList<Integer> compteurIdList;
 
-    public Quartier(int idQuartier, String nomQuartier, double lgPisteCyclable) {
-        this.idQuartier = idQuartier;
-        this.nomQuartier = nomQuartier;
-        this.lgPisteCyclable = lgPisteCyclable;
+    // ----------------------------- constructor -----------------------------
 
+    /**
+     * Constructor of the class Quartier
+     * can launch an IllegalArgumentException if parameters arn't valid
+     * 
+     * @param id                an integer representing the (unique, positive) id of the quartier
+     * @param nom               a String representing the name of the quartier (not null or empty)
+     * @param lgPisteCyclable   a double representing the length of the track of the quartier (positive)
+     */
+    public Quartier(int id, String nom, double lgPisteCyclable) {
+        if (id < 0 || quartierList.containsKey(id)) {
+            throw new IllegalArgumentException("models.Quartier.constructor : l'id est invalide (<0 ou deja existant)");
+        }
+
+        this.idQuartier = id;
+        try {
+            this.setNom(nom);
+            this.setLgPisteCyclable(lgPisteCyclable);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("models.Quartier.constructor : " + e.getMessage());
+        }
         this.compteurIdList = new ArrayList<Integer>();
-    }
-
-    public int getIdQuartier() {
-        return idQuartier;
-    }
-
-    public String getNomQuartier() {
-        return nomQuartier;
-    }
-
-    public double getLgPisteCyclable() {
-        return lgPisteCyclable;
-    }
-
-    public ArrayList<Integer> getCompteurIdList() {
-        return compteurIdList;
+            
+        Quartier.quartierList.put(id, this); // add the quartier to the quartierList
     }
     
+    // ----------------------------- setters -----------------------------
+
+    /**
+     * Set the name of the quartier
+     * 
+     * @param nomQuartier a String representing the name of the quartier (not null or empty)
+     */
+    public void setNom(String nomQuartier) {
+        if (nomQuartier == null || nomQuartier.isEmpty()) {
+            throw new IllegalArgumentException("models.Quartier.setNom : Le parametre nom n'est pas valide");
+        }
+        this.nomQuartier = nomQuartier;
+    }
+
+    /**
+     * Set the length of the track of the quartier
+     * 
+     * @param lgPisteCyclable a double representing the length of the track of the quartier (positive)
+     */
+    public void setLgPisteCyclable(double lgPisteCyclable) {
+        if (lgPisteCyclable < 0) {
+            throw new IllegalArgumentException(
+                    "models.Quartier.setLgPisteCyclable : La longueur de la piste doit être positive");
+        }
+        this.lgPisteCyclable = lgPisteCyclable;
+    }
+
+    // ----------------------------- getters -----------------------------
+
+    /**
+     * Get the id of the quartier
+     * 
+     * @return an int representing the id of the quartier
+     */
+    public int getId() {
+        return this.idQuartier;
+    }
+
+    /**
+     * Get the name of the quartier
+     * 
+     * @return a String representing the name of the quartier
+     */
+    public String getNom() {
+        return this.nomQuartier;
+    }
+
+    /**
+     * Get the length of the track of the quartier
+     * 
+     * @return a double representing the length of the track of the quartier
+     */
+    public double getLgPisteCyclable() {
+        return this.lgPisteCyclable;
+    }
+    
+    /**
+     * Get the list of compteur of the quartier
+     * 
+     * @return an ArrayList of Integer representing the list of compteur of the quartier
+     */
+    public ArrayList<Integer> getCompteursList() {
+        return new ArrayList<Integer>(this.compteurIdList); // return a copy of the list
+    }
+    
+    // ----------------------------- add/remove -----------------------------
+
     /**
      * Add a compteur to the quartier
      * /!\ the quartierId of the compteur object is not updated in this method
@@ -104,6 +180,8 @@ public class Quartier {
         }
     }
 
+    // ----------------------------- prints -----------------------------
+
     /**
      * Get a String representing the quartier
      * 
@@ -115,4 +193,13 @@ public class Quartier {
         return ret;
     }
 
+    /**
+     * Get a String representing the quartier in CSV format
+     * 
+     * @return "nomQuartier;idQuartier;lgPisteCyclable"
+     */
+    public String toCSV() {
+        String ret = this.idQuartier + ";" + this.nomQuartier + ";" + this.lgPisteCyclable;
+        return ret;
+    }
 }

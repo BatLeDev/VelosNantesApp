@@ -8,8 +8,7 @@ import java.sql.ResultSetMetaData;
 
 import java.util.ArrayList;
 
-import models.Compteur;
-import models.CompteurFull;
+import models.*;
 
 public class DatabaseAccess {
 
@@ -217,8 +216,9 @@ public class DatabaseAccess {
                 String observation = resultSet.getString("observations");
                 double latitude = resultSet.getDouble("latitude");
                 double longitude = resultSet.getDouble("longitude");
+                int idQuartier = resultSet.getInt("leQuartier");
 
-                Compteur compteur = new Compteur(numero, libelle, direction, observation, latitude, longitude);
+                Compteur compteur = new Compteur(numero, libelle, direction, observation, latitude, longitude, idQuartier);
                 compteurs.add(compteur);
             }
 
@@ -229,5 +229,34 @@ public class DatabaseAccess {
         }
 
         return compteurs;
+    }
+
+    public static ArrayList<Quartier> getQuartiers() {
+        ArrayList<Quartier> quartiers = new ArrayList<Quartier>();
+
+        try {
+            // Connection to the database
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT * FROM Quartier";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("code");
+                String nom = resultSet.getString("nom");
+                double lg = resultSet.getDouble("longueurPiste");
+
+                Quartier quartier = new Quartier(id, nom, lg);
+                quartiers.add(quartier);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des quartiers" + e.getMessage());
+        }
+
+        return quartiers;
     }
 }

@@ -8,7 +8,7 @@ import java.util.HashMap;
  * 
  * This class save all the days in a HashMap, with the date as key and the Jour object as value
  */
-public class Jour {
+public class Jour implements IModels {
 
     // ----------------------------- static attributes -----------------------------
     

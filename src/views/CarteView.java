@@ -137,6 +137,7 @@ public class CarteView extends BorderPane {
      * Execute the javascript string in the web engine
      */
     private void loadMarkers() {
+        // Get the list of sensors from the database
         ArrayList<CompteurFull> compteursList = DatabaseAccess.getCompteursWithStats();
         ArrayList<Marker> markersList = new ArrayList<>();
 

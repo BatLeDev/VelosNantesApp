@@ -1,8 +1,9 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Compteur {
+public class Compteur implements IModels {
 
 // ----------------------------- static attributes -----------------------------
 
@@ -17,6 +18,18 @@ public class Compteur {
     // ----------------------------- static methods -----------------------------
 
     /**
+     * Get the list of all compteurs
+     * @return an ArrayList of all compteurs
+     */
+    public static ArrayList<Compteur> getAll() {
+        ArrayList<Compteur> ret = new ArrayList<Compteur>();
+        for (Compteur c : Compteur.compteurList.values()) {
+            ret.add(c);
+        }
+        return ret;
+    }
+
+    /**
      * Get a compteur by its id
      * 
      * @return the compteur object corresponding to the id
@@ -27,7 +40,7 @@ public class Compteur {
 
 
     public static String[] getHeaders() {
-        return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude" };
+        return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "leQuartier" };
     }
 
 
@@ -39,20 +52,21 @@ public class Compteur {
     private String observation;
     private double latitude;
     private double longitude;
+    private int leQuartier;
 
 /**
      * Constructor of the class Compteur with quartier object
      * libelle + sens = "libelle vers sens"
      * can launch an IllegalArgumentException in setters if the parameters arn't valid
      * 
-     * @param id        an integer representing the (unique) id of the compteur (positive)
-     * @param libelle   a String representing the libelle of the compteur (not null or empty)
-     * @param sens      a String representing the sens of the compteur (not null or empty)
-     * @param latitude  a double representing the latitude of the compteur
-     * @param longitude a double representing the longitude of the compteur
-     * @param quartier  a Quartier object representing the quartier of the compteur
+     * @param id         an integer representing the (unique) id of the compteur (positive)
+     * @param libelle    a String representing the libelle of the compteur (not null or empty)
+     * @param sens       a String representing the sens of the compteur (not null or empty)
+     * @param latitude   a double representing the latitude of the compteur
+     * @param longitude  a double representing the longitude of the compteur
+     * @param idQuartier an integer which is the code of the Quartier, representing the quartier of the compteur
      */
-    public Compteur(int id, String libelle, String direction,String observation, double latitude, double longitude) {
+    public Compteur(int id, String libelle, String direction,String observation, double latitude, double longitude,int idQuartier) {
         if (id < 0 || compteurList.containsKey(id)) {
             throw new IllegalArgumentException("models.Compteur.constructor : l'id est invalide ( < 0 ou deja existant )");
         }
@@ -64,6 +78,7 @@ public class Compteur {
             this.setObservation(observation);
             this.setLatitude(latitude);
             this.setLongitude(longitude);
+            this.setQuartier(idQuartier);
 
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("models.Compteur.constructor : " + e.getMessage());
@@ -153,5 +168,36 @@ public class Compteur {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+
+    /**
+     * Setter for the quartier of the compteur
+     * Update the compteur list of the old and new quartier
+     * If the idQuartier is 0, the compteur is removed from the quartier and the Quartier is undefined
+     * @param idQuartier an integer representing the id of the quartier of the compteur (positive)
+     */
+    public void setQuartier(int idQuartier) {
+        if (idQuartier < 0) {
+            throw new IllegalArgumentException(
+                    "models.Compteur.setQuartier : L'id du quartier ne peut pas être négatif");
+        } 
+
+        if (idQuartier != 0) {
+            //verification que le quartier existe
+            Quartier q = Quartier.getQuartier(idQuartier);
+            if (q == null) {
+                throw new IllegalArgumentException(
+                        "models.Compteur.setQuartier : L'id du quartier ne correspond à aucun quartier" + idQuartier);
+            }
+            if (this.leQuartier != 0) {
+                Quartier oldQuartier = Quartier.getQuartier(this.leQuartier);
+                oldQuartier.removeCompteur(this.getNumero());
+            }
+            q.addCompteur(this.getNumero());
+        }
+
+        this.leQuartier = idQuartier;
+    }
+
 
 }

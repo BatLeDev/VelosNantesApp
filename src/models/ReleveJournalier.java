@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class ReleveJournalier {
+public class ReleveJournalier implements IModels {
     
     // ----------------------------- static attributes -----------------------------
 

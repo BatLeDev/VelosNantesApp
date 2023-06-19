@@ -1,9 +1,11 @@
 package models;
 
-public class CompteurFull extends Compteur{
+import java.util.ArrayList;
+
+public class CompteurFull {
 
     // ----------------------------- static methods -----------------------------
-    
+
     /**
      * Delete a compteur by its id
      * 
@@ -28,6 +30,12 @@ public class CompteurFull extends Compteur{
 
     // ----------------------------- attributes -----------------------------
     
+    private int numero;
+    private String libelle;
+    private String direction;
+    private String observation;
+    private double latitude;
+    private double longitude;
     private int idQuartier;
     private String nomQuartier;
     private int nombreJourReleve;
@@ -42,7 +50,13 @@ public class CompteurFull extends Compteur{
             int nombreTotalPassage, double moyennePassageParJour, double frequenceErreurs,
             int nbErreurs, String heureSouventFrequetee) {
         
-        super(numero, libelle, direction, observation, latitude, longitude );
+        //numero, libelle, direction, observation, latitude, longitude
+        this.numero = numero;
+        this.libelle = libelle;
+        this.direction = direction;
+        this.observation = observation;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.idQuartier = idQuartier;
         this.nomQuartier = nomQuartier;
         this.nombreJourReleve = nombreJourReleve;
@@ -55,6 +69,29 @@ public class CompteurFull extends Compteur{
 
 
     // ----------------- Getters ----------------- //
+    public int getNumero() {
+        return numero;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
 
     public int getIdQuartier() {
         return idQuartier;
@@ -87,41 +124,6 @@ public class CompteurFull extends Compteur{
     public String getHeureSouventFrequetee() {
         return heureSouventFrequetee;
     }
-
-    // ----------------- Setters ----------------- //
-
-    /**
-     * Setter for the quartier of the compteur
-     * Update the compteur list of the old and new quartier
-     * If the idQuartier is -1, the compteur is removed from the quartier and the Quartier is undefined
-     * @param idQuartier an integer representing the id of the quartier of the compteur (positive)
-     */
-    public void setQuartier(int idQuartier) {
-        if (idQuartier < -1) {
-            throw new IllegalArgumentException(
-                    "models.Compteur.setQuartier : L'id du quartier ne peut pas être négatif");
-        } 
-
-        if (idQuartier != -1) {
-            //verification que le quartier existe
-            Quartier q = Quartier.getQuartier(idQuartier);
-            if (q == null) {
-                throw new IllegalArgumentException(
-                        "models.Compteur.setQuartier : L'id du quartier ne correspond à aucun quartier");
-            }
-            if (this.idQuartier != -1) {
-                Quartier oldQuartier = Quartier.getQuartier(this.idQuartier);
-                oldQuartier.removeCompteur(this.getNumero());
-            }
-            q.addCompteur(this.getNumero());
-            this.nomQuartier = q.getNomQuartier();
-        }
-
-        this.idQuartier = idQuartier;
-    }
-
-
-
 
     public String toString() {
         return "CompteurFull [numero=" + this.getNumero() + ", libelle=" + this.getLibelle() + ", direction=" + this.getDirection() + ", observation="

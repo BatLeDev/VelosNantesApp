@@ -1,10 +1,14 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
-
+import models.CompteurFull;
 // Controllers import
 import controllers.Rooter;
+import database.DatabaseAccess;
 import controllers.ExporterController;
 import controllers.GraphiqueController;
+
+import java.util.ArrayList;
+
 import controllers.CarteController;
 import controllers.NavbarController;
 
@@ -39,6 +43,9 @@ public class MainApp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+                
+        DatabaseAccess.getQuartiers();
+
         // Creation of the rooter
         rooter = new Rooter(primaryStage);
 
