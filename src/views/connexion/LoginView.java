@@ -1,6 +1,6 @@
 package views.connexion;
 
-import controllers.connexion.LoginController;
+// JavaFX imports
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -11,20 +11,34 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+// Project imports
+import controllers.connexion.LoginController;
 import utilities.Rooter;
 
+/**
+ * This class represents the view of the Login page.
+ * <p> It content a left part with a text and a button to register and right part with a form to login.
+ */
 public class LoginView extends AnchorPane {
     private LoginController loginController;
 
+    // Elements of the view
     private TextField utilisateurField;
     private PasswordField passwordField;
     private Text errorMessage;
     private StackPane errorContainer;
 
+    /**
+     * Initialize elements of the view and create the controller
+     * 
+     * @param rooter The rooter of the application
+     */
     public LoginView(Rooter rooter) {
         this.loginController = new LoginController(rooter, this);
         
-        // Background
+        // ================================== Background ==================================
+        // Banner
         Image banner = new Image("./ressources/images/banner-connexion.png");
         ImageView bannerView = new ImageView(banner);
         bannerView.fitHeightProperty().bind(heightProperty());
@@ -33,7 +47,6 @@ public class LoginView extends AnchorPane {
         widthConstraint.prefWidthProperty().bind(widthProperty().multiply(0.3));
         getChildren().addAll(bannerView, widthConstraint);
 
-        // Foreground
         // Header
         Image logoImage = new Image("./ressources/images/logo-full-white.png");
         ImageView logoImageView = new ImageView(logoImage);
@@ -49,8 +62,8 @@ public class LoginView extends AnchorPane {
         AnchorPane.setTopAnchor(exitBtn, 10.0);
         AnchorPane.setRightAnchor(exitBtn, 10.0);
 
-        // Content
-        // content-left
+        // ================================== Foreground ==================================
+        // ------------------------------ content-left ------------------------------
         Text titleLeft = new Text("Nouveau ici ?");
         titleLeft.getStyleClass().add("title-banner");
 
@@ -71,7 +84,7 @@ public class LoginView extends AnchorPane {
         AnchorPane.setBottomAnchor(contentLeft, 0.0);
         AnchorPane.setLeftAnchor(contentLeft, 77.5);
 
-        // content-right
+        // ------------------------------ content-right ------------------------------
         Text titleRight = new Text("Connectez-vous \u00E0 votre compte !");
         titleRight.getStyleClass().add("title-center");
 
@@ -108,6 +121,12 @@ public class LoginView extends AnchorPane {
         getStyleClass().add("login-view");
     }
 
+    /**
+     * Get the fields of the form
+     * <p> format : {@code [utilisateur, password]}
+     * 
+     * @return The fields of the form in an String[]
+     */
     public String[] getFields() {
         String[] fields = new String[2];
         fields[0] = this.utilisateurField.getText();
@@ -115,8 +134,14 @@ public class LoginView extends AnchorPane {
         return fields;
     }
 
+    /**
+     * Show an error message under the form, with the message in parameter
+     * 
+     * @param message The message to show
+     */
     public void showErrorMessage(String message) {
         this.errorMessage.setText(message);
         this.errorContainer.setVisible(true);
     }
+    
 }

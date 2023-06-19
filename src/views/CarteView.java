@@ -125,8 +125,8 @@ public class CarteView extends BorderPane {
      * @param text The text to show
      * @param row The row of the grid
      */
-    private void addLegendMarker(String markerName, String text, int row) {
-        Image legendImage = new Image("file:src/ressources/images/markers/" + markerName);
+    private void addLegendMarker(String imgName, String text, int row) {
+        Image legendImage = new Image("file:src/ressources/images/markers/" + imgName);
         ImageView legendImageView = new ImageView(legendImage);
         GridPane.setConstraints(legendImageView, 0, row);
         Label legendMarker = new Label(text);
