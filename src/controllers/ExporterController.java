@@ -10,7 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import utilities.Rooter;
-import utilities.WriteFile;
+import utilities.ReadWriteFile;
 
 public class ExporterController  {
     private Rooter rooter;
@@ -45,7 +45,7 @@ public class ExporterController  {
 
             ArrayList<String> contenu = DatabaseAccess.exporterRequete(coches, table);
 
-            WriteFile.writeCsv(WriteFile.fileChooser(), contenu);
+            ReadWriteFile.writeCsv(ReadWriteFile.fileChooser(), contenu);
         }
     }
 

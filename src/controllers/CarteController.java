@@ -1,40 +1,37 @@
 package controllers;
 
+// Java imports
 import java.util.ArrayList;
 
-import database.DatabaseAccess;
+// JavaFX imports
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
+
+// Project imports
+import database.DatabaseAccess;
 import models.CompteurFull;
 import models.Marker;
 import utilities.Rooter;
 import views.CarteView;
 
+/**
+ * This class is the controller of the Carte page.
+ * <p> This class acts as a bridge between the view and the data
+ * 
+ */
 public class CarteController {
     private Rooter rooter;
     private CarteView carteView;
 
+    /**
+     * Initialize the controller
+     * 
+     * @param rooter The rooter of the application
+     * @param carteView The view of the Carte page
+     */
     public CarteController(Rooter rooter, CarteView carteView) {
         this.rooter = rooter;
         this.carteView = carteView;
-    }
-
-    /**
-     * Generate the javascript code to add the markers to the map
-     * @return a list of markers in javascript
-     */
-    public String generateJs() {
-        ArrayList<Marker> markersList = generateMarkers();
-
-        // We convert the list of markers to a javascript string and add the markers to the map
-        String js = "var markersData = [";
-        for (Marker marker : markersList) {
-            js += marker.toJs() + ", ";
-        }
-        js += "];";
-        js += "addMarkers();";
-
-        return js;
     }
 
     /**
@@ -72,14 +69,36 @@ public class CarteController {
         return markersList;
     }
 
+    /**
+     * Generate the javascript code to add the markers to the map
+     * @return a list of markers in javascript
+     */
+    public String generateJs() {
+        ArrayList<Marker> markersList = generateMarkers();
+
+        // We convert the list of markers to a javascript string and add the markers to the map
+        String js = "var markersData = [";
+        for (Marker marker : markersList) {
+            js += marker.toJs() + ", ";
+        }
+        js += "];";
+        js += "addMarkers();";
+
+        return js;
+    }
+
+    /**
+     * This method is called when the page is loaded
+     * 
+     * @param observable not used
+     * @param oldValue not used
+     * @param newValue check if the page is loaded
+     */
     public void webMachineLoaded(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
         if (newValue == Worker.State.SUCCEEDED) {
             System.out.println("Page loaded");
-            
-            // Generate the javascript code
-            String js = this.generateJs();
-
-            carteView.pageLoaded(js);
+            String js = this.generateJs(); // Generate the javascript code
+            carteView.pageLoaded(js); // Update the view
         }
     }
 }

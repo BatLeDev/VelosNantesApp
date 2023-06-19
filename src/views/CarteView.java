@@ -10,17 +10,11 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
-import javafx.concurrent.Worker;
 import javafx.geometry.Insets;
-
-// Java imports
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 
 // Project imports
 import controllers.CarteController;
+import utilities.ReadWriteFile;
 import utilities.Rooter;
 
 /**
@@ -58,7 +52,7 @@ public class CarteView extends BorderPane {
         // Create the map view
         WebView webView = new WebView();
         this.webEngine = webView.getEngine();
-        this.webEngine.loadContent(readHTMLFile(CARTE_HTML_PATH));
+        this.webEngine.loadContent(ReadWriteFile.readHTMLFile(CARTE_HTML_PATH));
 
         // Superposition of the map and the legend
         this.content = new StackPane();
@@ -148,26 +142,4 @@ public class CarteView extends BorderPane {
 
         return legendPane;
     }
-
-    /**
-     * Convert a html file to a string
-     * 
-     * @param filePath Path of the html file
-     * @return The html file converted to a string, executed by the web engine
-     */
-    public String readHTMLFile(String filePath) {
-        StringBuilder content = new StringBuilder();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return content.toString();
-    }
-
 }
