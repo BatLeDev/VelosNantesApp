@@ -10,10 +10,9 @@ import views.connexion.LoginView;
 
 /**
  * This class represents the controller of the Login page.
- * <p> It contains all needed methods to interact with the user and the database
+ * <p> It contains all needed methods to interact with the user and the database (login and get type de compte)
  */
-public class LoginController {
-    private Rooter rooter;
+public class LoginController extends ConnexionController {
     private LoginView loginView;
 
     /**
@@ -23,17 +22,8 @@ public class LoginController {
      * @param loginView The view of the Login page
      */
     public LoginController(Rooter rooter, LoginView loginView) {
-        this.rooter = rooter;
+        super(rooter);
         this.loginView = loginView;
-    }
-
-    /**
-     * Change the page to the Carte page
-     * 
-     * @param event The event triggered when the user click on the exit button
-     */
-    public void exit(ActionEvent event) {
-        rooter.changePage(true, "Carte");
     }
 
     /**
