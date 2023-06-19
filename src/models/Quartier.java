@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * This class save all the quartier in a HashMap, with the id as key
  * Each quartier has a list of compteur id
  */
-public class Quartier {
+public class Quartier implements IModels{
     
     // ----------------------------- static attributes -----------------------------
 
@@ -47,6 +47,24 @@ public class Quartier {
 
     public static String[] getHeaders() {
         return new String[] { "id", "nom", "lgPisteCyclable" };
+    }
+
+    public static ArrayList<String> getQuartiersCSV(ArrayList<String> contenu){
+        if (contenu == null || contenu.isEmpty() ){
+            throw new IllegalArgumentException("models.Quartier.getQuartiersCSV : contenu est null ou vide");
+        }
+
+        ArrayList<String> ret = new ArrayList<String>();
+        String tmp = "";
+        tmp = String.join(";", contenu);
+        ret.add(tmp);
+
+        for (Quartier q : Quartier.quartierList.values()) {
+            tmp = q.toCSV(contenu);
+            System.out.println(tmp);
+            ret.add(tmp);
+        }
+        return ret;
     }
 
     // ----------------------------- attributes -----------------------------
@@ -193,13 +211,28 @@ public class Quartier {
         return ret;
     }
 
-    /**
-     * Get a String representing the quartier in CSV format
-     * 
-     * @return "nomQuartier;idQuartier;lgPisteCyclable"
-     */
-    public String toCSV() {
-        String ret = this.idQuartier + ";" + this.nomQuartier + ";" + this.lgPisteCyclable;
+    // contenu peut contenir : "id", "nom", "lgPisteCyclable"
+    public String toCSV(ArrayList<String> contenu){
+        if (contenu == null || contenu.isEmpty()) {
+            throw new IllegalArgumentException("models.Quartier.toCSV : Le parametre contenu n'est pas valide");
+        }
+        
+        String ret;
+        ArrayList<String> tmp = new ArrayList<String>();
+
+        if (contenu.contains("id")) {
+            tmp.add(this.idQuartier + "");
+        }
+        if (contenu.contains("nom")) {
+            tmp.add(this.nomQuartier);
+        }
+        if (contenu.contains("lgPisteCyclable")) {
+            tmp.add(this.lgPisteCyclable + "");
+        }
+
+        ret = String.join(";", tmp);
         return ret;
     }
+
+
 }

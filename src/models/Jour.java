@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
@@ -69,6 +70,24 @@ public class Jour implements IModels {
  
     public static String[] getHeaders() {
         return new String[] { "Date", "Jour", "Temperature Moyenne" };
+    }
+
+    public static ArrayList<String> getJoursCSV(ArrayList<String> contenu) {
+        if (contenu == null || contenu.isEmpty() ){
+            throw new IllegalArgumentException("models.Jour.getJoursCSV : contenu est null ou vide");
+        }
+
+        ArrayList<String> ret = new ArrayList<String>();
+        String tmp = "";
+        tmp = String.join(";", contenu);
+        ret.add(tmp);
+
+        for (Jour j : Jour.jourList.values()) {
+            tmp = j.toCSV(contenu);
+            ret.add(tmp);
+        }
+
+        return ret;
     }
 
     // ----------------------------- attributes -----------------------------
@@ -211,5 +230,26 @@ public class Jour implements IModels {
         return ret;
     }
 
+    public String toCSV(ArrayList<String> contenu) {
+        if (contenu == null || contenu.isEmpty() ){
+            throw new IllegalArgumentException("models.Jour.toCSV : Le parametre contenu n'est pas valide");
+        }
+
+        String ret;
+        ArrayList<String> tmp = new ArrayList<String>();
+        
+        if (contenu.contains("Date")) {
+            tmp.add(this.date);
+        }
+        if (contenu.contains("Jour")) {
+            tmp.add(this.jour + "");
+        }
+        if (contenu.contains("Temperature Moyenne")) {
+            tmp.add(this.temperatureMoyenne + "");
+        }
+
+        ret = String.join(";", tmp);
+        return ret;
+    }
 
 }

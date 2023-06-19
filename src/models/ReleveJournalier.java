@@ -200,15 +200,44 @@ public class ReleveJournalier implements IModels {
         return releves;
     }
 
-    public static String[] getHeadersSimplified(){
-        return new String[]{"Compteur", "Jour", "RelevesHeures", "PresenceAnomalie"};
+    /**
+     * Get all the RelevetJournalier saved
+     * 
+     * @return an ArrayList of all the ReleveJournalier saved
+     */
+    public static ArrayList<ReleveJournalier> getAllReleves() {
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier>();
+        for (ArrayList<ReleveJournalier> releves : releveJourList.values()) {
+            ret.addAll(releves);
+        }
+        return ret;
     }
 
-        public static String[] getHeaders(){
+
+
+    public static String[] getHeadersSimplified(){
+        return new String[]{"Compteur", "Jour", "RelevesHeures", "PresenceAnomalie", "nbPassageTotal"};
+    }
+
+    public static String[] getHeaders(){
         return new String[]{"Compteur", "Jour", "heure00", "heure01", "heure02", "heure03", "heure04", 
         "heure05", "heure06", "heure07", "heure08", "heure09", "heure10", "heure11", "heure12",
         "heure13", "heure14", "heure15", "heure16", "heure17", "heure18", "heure19", "heure20", 
         "heure21", "heure22", "heure23", "PresenceAnomalie"};
+    }
+
+    public static ArrayList<String> getRelevesCSV (ArrayList<String> contenu){
+        if (contenu == null || contenu.isEmpty() ){
+            throw new IllegalArgumentException("models.ReleveJournalier.getRelevesCSV : Le parametre contenu n'est pas valide");
+        }
+
+        ArrayList<String> ret = new ArrayList<String>();
+        ret.add(String.join(";", contenu));
+
+        for (ReleveJournalier releve : ReleveJournalier.getAllReleves()) {
+            ret.add(releve.toCSV(contenu));
+        }
+        return ret;
     }
 
     // ----------------------------- attributes -----------------------------
@@ -397,6 +426,35 @@ public class ReleveJournalier implements IModels {
         ret += "RelevesHeures : " + Arrays.toString(relevesHeures) + ", ";
         ret += "PresenceAnomalie : " + presenceAnomalie;
         ret += "]";
+        return ret;
+    }
+
+
+    public String toCSV (ArrayList<String> contenu){
+        if (contenu == null || contenu.isEmpty() ){
+            throw new IllegalArgumentException("models.ReleveJournalier.toCSV : Le parametre contenu n'est pas valide");
+        }
+
+        String ret;
+        ArrayList<String> tmp = new ArrayList<String>();
+
+        if (contenu.contains("Compteur")){
+            tmp.add(this.leCompteur + "");
+        }
+        if (contenu.contains("Jour")){
+            tmp.add(this.leJour);
+        }
+        if (contenu.contains("RelevesHeures")){
+            tmp.add(Arrays.toString(this.relevesHeures));
+        }
+        if (contenu.contains("PresenceAnomalie")){
+            tmp.add(this.presenceAnomalie);
+        }
+        if (contenu.contains("nbPassageTotal")){
+            tmp.add(this.getNbPassageTotal() + "");
+        }
+
+        ret = String.join(";", tmp);
         return ret;
     }
 

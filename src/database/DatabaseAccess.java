@@ -12,38 +12,6 @@ import models.*;
 
 public class DatabaseAccess {
 
-    public static void exemple() {
-        try {
-            // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
-
-            String query = "SELECT * FROM Quartier";
-            ResultSet resultSet = statement.executeQuery(query);
-
-            printResult(resultSet);
-
-            resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void printResult(ResultSet resultSet) throws SQLException {
-        while (resultSet.next()) {
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int columnCount = metaData.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                String columnName = metaData.getColumnName(i);
-                Object columnValue = resultSet.getObject(i);
-
-                System.out.println(columnName + " : " + columnValue);
-            }
-            System.out.println();
-        }
-    }
-
     public static ArrayList<CompteurFull> getCompteursWithStats() {
         ArrayList<CompteurFull> compteurs = new ArrayList<CompteurFull>();
 
@@ -85,34 +53,6 @@ public class DatabaseAccess {
         }
 
         return compteurs;
-    }
-
-    public static String[] getQuartiersFromID(int id) {
-        String[] quartiers = new String[2];
-
-        try {
-            // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
-
-            String query = "SELECT * FROM Quartier WHERE id = " + id;
-            ResultSet resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                String quartierName = resultSet.getString("nom");
-                String quartierId = resultSet.getString("code");
-
-                quartiers[0] = quartierName;
-                quartiers[1] = quartierId;
-            }
-
-            resultSet.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return quartiers;
     }
 
     public static ArrayList<String> exporterRequete(ArrayList<String> requete, String table) {

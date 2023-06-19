@@ -43,6 +43,23 @@ public class Compteur implements IModels {
         return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "leQuartier" };
     }
 
+    public static ArrayList<String> getCompteursCSV(ArrayList<String> contenu){
+        if (contenu == null || contenu.isEmpty() ){
+            throw new IllegalArgumentException("models.Compteur.getCompteursCSV : contenu est null ou vide");
+        }
+        
+        ArrayList<String> ret = new ArrayList<String>();
+        String tmp = "";
+        tmp = String.join(";", contenu);
+        ret.add(tmp);
+
+        for (Compteur c : Compteur.compteurList.values()) {
+            tmp = c.toCSV(contenu);
+            System.out.println(tmp);
+            ret.add(tmp);
+        }
+        return ret;
+    }
 
     // ----------------------------- attributes -----------------------------
 
@@ -89,7 +106,7 @@ public class Compteur implements IModels {
     }
 
     public String toString() {
-        return "Compteur " + numero + " : " + libelle + " (" + latitude + ", " + longitude + ")";
+        return "Compteur " + numero + " : " + libelle + " (" + latitude + ", " + longitude + ") " + direction + " " + observation + " " + leQuartier;
     }
 
     public int getNumero() {
@@ -114,6 +131,10 @@ public class Compteur implements IModels {
 
     public String getObservation(){
         return this.observation;
+    }
+
+    public int getQuartier(){
+        return this.leQuartier;
     }
 
     // ----------------------------- setters -----------------------------
@@ -197,6 +218,39 @@ public class Compteur implements IModels {
         }
 
         this.leQuartier = idQuartier;
+    }
+
+    public String toCSV(ArrayList<String> contenu){
+        if (contenu == null || contenu.isEmpty()){
+            throw new IllegalArgumentException("models.Compteur.toCSV : Le contenu ne peut pas être null ou vide");
+        }
+        String ret;
+        ArrayList<String> tmp = new ArrayList<String>();
+
+        if(contenu.contains("numero")){
+            tmp.add(this.getNumero()+"");
+        }
+        if(contenu.contains("libelle")){
+            tmp.add(this.getLibelle());
+        }
+        if(contenu.contains("direction")){
+            tmp.add(this.getDirection());
+        }
+        if(contenu.contains("observation")){
+            tmp.add(this.getObservation());
+        }
+        if(contenu.contains("latitude")){
+            tmp.add(this.getLatitude()+"");
+        }
+        if(contenu.contains("longitude")){
+            tmp.add(this.getLongitude()+"");
+        }
+        if(contenu.contains("quartier")){
+            tmp.add(this.getQuartier()+"");
+        }
+
+        ret = String.join(";", tmp);
+        return ret;
     }
 
 
