@@ -247,7 +247,6 @@ public class ReleveJournalier implements IModels {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("models.ReleveJournalier.constructor : " + e.getMessage());
         }
-
         ReleveJournalier.addReleveJournalier(this);
     }
 

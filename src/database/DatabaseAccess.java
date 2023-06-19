@@ -288,4 +288,60 @@ public class DatabaseAccess {
 
         return jours;
     }
+
+    public static ArrayList<ReleveJournalier> getReleveJournaliers () {
+        ArrayList<ReleveJournalier> releveJournaliers = new ArrayList<ReleveJournalier>();
+
+        try {
+            // Connection to the database
+            Connection connection = DatabaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT * FROM ReleveJournalier";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String date = resultSet.getString("leJour");
+                int numero = resultSet.getInt("leCompteur");
+                int heure00 = resultSet.getInt("heure0");
+                int heure01 = resultSet.getInt("heure1");
+                int heure02 = resultSet.getInt("heure2");
+                int heure03 = resultSet.getInt("heure3");
+                int heure04 = resultSet.getInt("heure4");
+                int heure05 = resultSet.getInt("heure5");
+                int heure06 = resultSet.getInt("heure6");
+                int heure07 = resultSet.getInt("heure7");
+                int heure08 = resultSet.getInt("heure8");
+                int heure09 = resultSet.getInt("heure9");
+                int heure10 = resultSet.getInt("heure10");
+                int heure11 = resultSet.getInt("heure11");
+                int heure12 = resultSet.getInt("heure12");
+                int heure13 = resultSet.getInt("heure13");
+                int heure14 = resultSet.getInt("heure14");
+                int heure15 = resultSet.getInt("heure15");
+                int heure16 = resultSet.getInt("heure16");
+                int heure17 = resultSet.getInt("heure17");
+                int heure18 = resultSet.getInt("heure18");
+                int heure19 = resultSet.getInt("heure19");
+                int heure20 = resultSet.getInt("heure20");
+                int heure21 = resultSet.getInt("heure21");
+                int heure22 = resultSet.getInt("heure22");
+                int heure23 = resultSet.getInt("heure23");
+                String observation = resultSet.getString("probabiliteAnomalie");
+                int[] heures = {heure00, heure01, heure02, heure03, heure04, heure05, heure06,
+                     heure07, heure08, heure09, heure10, heure11, heure12, heure13, heure14, heure15,
+                      heure16, heure17, heure18, heure19, heure20, heure21, heure22, heure23};
+
+                ReleveJournalier releveJournalier = new ReleveJournalier(numero, date, heures, observation);
+                releveJournaliers.add(releveJournalier);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des relevés journaliers" + e.getMessage());
+        }
+
+        return releveJournaliers;
+    }
 }
