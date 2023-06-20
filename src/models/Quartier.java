@@ -45,7 +45,7 @@ public class Quartier implements IModels{
         return Quartier.quartierList.remove(id); // Quartier if found, null if not
     }
 
-    public static String[] getColumns() {
+    public static String[] getHeaders() {
         return new String[] { "id", "nom", "lgPisteCyclable" };
     }
 
@@ -61,7 +61,6 @@ public class Quartier implements IModels{
 
         for (Quartier q : Quartier.quartierList.values()) {
             tmp = q.toCSV(contenu);
-            System.out.println(tmp);
             ret.add(tmp);
         }
         return ret;
