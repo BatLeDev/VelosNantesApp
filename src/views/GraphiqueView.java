@@ -1,11 +1,11 @@
 package views;
 
-import javafx.geometry.Pos;
-
+// Java imports
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import controllers.GraphiqueController;
+// JavaFX imports
+import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
@@ -22,10 +22,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-
-import utilities.DatePickerConverter;
-import utilities.Rooter;
+// Project imports
 import controllers.GraphiqueController;
+import utilities.DatePickerConverter;
 
 /**
  * This class represents the view of the Exporter page.
@@ -33,8 +32,6 @@ import controllers.GraphiqueController;
  */
 public class GraphiqueView extends BorderPane {
     public static final String DATE_FORMAT = "yyyy-MM-dd";
-    private GraphiqueController graphiqueController;
-
     private GraphiqueController graphiqueController;
 
     // Elements of the view

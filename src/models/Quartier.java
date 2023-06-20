@@ -45,7 +45,7 @@ public class Quartier implements IModels{
         return Quartier.quartierList.remove(id); // Quartier if found, null if not
     }
 
-    public static String[] getHeaders() {
+    public static String[] getColumns() {
         return new String[] { "id", "nom", "lgPisteCyclable" };
     }
 
