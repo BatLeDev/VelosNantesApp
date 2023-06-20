@@ -78,8 +78,10 @@ public class ExporterView extends BorderPane {
         toggleGroup.getToggles().add(compteurButton);
         RadioButton releveJournalierButton = new RadioButton("Releve Journalier");
         toggleGroup.getToggles().add(releveJournalierButton);
+        RadioButton quartierButton = new RadioButton("Quartier");
+        toggleGroup.getToggles().add(quartierButton);
 
-        choix.getChildren().addAll(jourButton, compteurButton, releveJournalierButton);
+        choix.getChildren().addAll(jourButton, compteurButton, releveJournalierButton, quartierButton);
 
         ret.getChildren().addAll(source,choix);
 

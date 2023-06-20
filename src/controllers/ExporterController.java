@@ -50,7 +50,9 @@ public class ExporterController  {
 
             } else if (table.equals("Releve Journalier")) {
                 contenu = ReleveJournalier.getRelevesCSV(coches);
-            } 
+            } else if (table.equals("Quartier")) {
+                contenu = Quartier.getQuartiersCSV(coches);
+            }
 
 
             WriteFile.writeCsv(WriteFile.fileChooser(), contenu);
@@ -67,6 +69,8 @@ public class ExporterController  {
 
         } else if (selected.equals("Releve Journalier")){
             this.exporterView.setSelection(ReleveJournalier.getHeadersSimplified());
+        } else if (selected.equals("Quartier")){
+            this.exporterView.setSelection(Quartier.getHeaders());
         }
     }
 
