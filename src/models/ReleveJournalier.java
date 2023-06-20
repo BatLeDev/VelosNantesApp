@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 public class ReleveJournalier implements IModels {
     
@@ -213,7 +214,162 @@ public class ReleveJournalier implements IModels {
         return ret;
     }
 
+    /**
+     * Get all the ReleveJournalier for a day (1-7)
+     * 
+     * @param day the day of the week (1-7)
+     * @param dayMin the minimum day of the week (YYYY-MM-DD)
+     * @param dayMax the maximum day of the week (YYYY-MM-DD)
+     * @return an ArrayList of all the ReleveJournalier for a day
+     */
+    public static ArrayList<ReleveJournalier> getAllRelevesByDayOfAWeek(int day, String dayMin, String dayMax, ArrayList<Integer> compteurs) {
+        if (day < 1 || day > 7 || dayMin == null || dayMax == null)  {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay day must be between 1 and 7");
+        }
+        Jour jourMin = Jour.getJour(dayMin);
+        Jour jourMax = Jour.getJour(dayMax);
+        if (jourMin == null || jourMax == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin or dayMax doesn't exist");
+        }
+        if (jourMin.compareTo(jourMax) > 0) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin must be before dayMax");
+        }
 
+        if (compteurs == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay compteurs must be not null");
+        }
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier>();
+        Set<String> keys = releveJourList.keySet();
+        for (String key : keys) {
+            Jour jour = Jour.getJour(key);
+            if (jour.getJour() == day && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0 ) {
+                ArrayList<ReleveJournalier> releves = releveJourList.get(key);
+                for (ReleveJournalier releve : releves) {
+                    if (compteurs.contains(releve.getLeCompteur())) {
+                        ret.add(releve);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Get all the ReleveJournalier for a day (1-31)
+     * 
+     * @param day the day of the month (1-31)
+     * @param dayMin the minimum day of the month (YYYY-MM-DD)
+     * @param dayMax the maximum day of the month (YYYY-MM-DD)
+     * @return an ArrayList of all the ReleveJournalier for a day
+     */
+    public static ArrayList<ReleveJournalier> getAllRelevesByDayOfAMonth(int day, String dayMin, String dayMax, ArrayList<Integer> compteurs) {
+        if (day < 1 || day > 31 || dayMin == null || dayMax == null)  {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay day must be between 1 and 31");
+        }
+        Jour jourMin = Jour.getJour(dayMin);
+        Jour jourMax = Jour.getJour(dayMax);
+        if (jourMin == null || jourMax == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin or dayMax doesn't exist");
+        }
+        if (jourMin.compareTo(jourMax) > 0) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin must be before dayMax");
+        }
+        if (compteurs == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay compteurs must be not null");
+        }
+
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier>();
+        Set<String> keys = releveJourList.keySet();
+        for (String key : keys) {
+            Jour jour = Jour.getJour(key);
+            if (jour.getJourDuMois() == day && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0) {
+            ArrayList<ReleveJournalier> releves = releveJourList.get(key);
+                for (ReleveJournalier releve : releves) {
+                    if (compteurs.contains(releve.getLeCompteur())) {
+                        ret.add(releve);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Get all the ReleveJournalier for a month (1-12)
+     * 
+     * @param the month of the year (1-12)
+     * 
+     * @return an ArrayList of all the ReleveJournalier for a month
+     */
+    public static ArrayList<ReleveJournalier> getAllRelevesByMonth (int month, String dayMin, String dayMax, ArrayList<Integer> compteurs) {
+        if (month < 1 || month > 12 || dayMin == null || dayMax == null)  {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay day must be between 1 and 31");
+        }
+        Jour jourMin = Jour.getJour(dayMin);
+        Jour jourMax = Jour.getJour(dayMax);
+        if (jourMin == null || jourMax == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin or dayMax doesn't exist");
+        }
+        if (jourMin.compareTo(jourMax) > 0) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin must be before dayMax");
+        }
+        if (compteurs == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay compteurs must be not null");
+        }
+
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier>();
+        Set<String> keys = releveJourList.keySet();
+        for (String key : keys) {
+            Jour jour = Jour.getJour(key);
+            if (jour.getMois() == month && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0) {
+                ArrayList<ReleveJournalier> releves = releveJourList.get(key);
+                for (ReleveJournalier releve : releves) {
+                    if (compteurs.contains(releve.getLeCompteur())) {
+                        ret.add(releve);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Get all the ReleveJournalier for a year
+     * 
+     * @param year the year
+     * @return an ArrayList of all the ReleveJournalier for a year
+     */
+    public static ArrayList<ReleveJournalier> getAllRelevesByYear (int year, String dayMin, String dayMax, ArrayList<Integer> compteurs) {
+        if (year < 1 || dayMin == null || dayMax == null)  {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay day must be between 1 and 31");
+        }
+        Jour jourMin = Jour.getJour(dayMin);
+        Jour jourMax = Jour.getJour(dayMax);
+        if (jourMin == null || jourMax == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin or dayMax doesn't exist");
+        }
+        if (jourMin.compareTo(jourMax) > 0) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay dayMin must be before dayMax");
+        }
+        if (compteurs == null) {
+            throw new IllegalArgumentException("models.ReleveJournalier.getAllRelevesByDay compteurs must be not null");
+        }
+
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier>();
+        Set<String> keys = releveJourList.keySet();
+        for (String key : keys) {
+            Jour jour = Jour.getJour(key);
+            if (jour.getAnnee() == year && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0) {
+                ArrayList<ReleveJournalier> releves = releveJourList.get(key);
+                for (ReleveJournalier releve : releves) {
+                    if (compteurs.contains(releve.getLeCompteur())) {
+                        ret.add(releve);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
 
     public static String[] getHeadersSimplified(){
         return new String[]{"Compteur", "Jour", "RelevesHeures", "PresenceAnomalie", "nbPassageTotal"};

@@ -6,11 +6,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-import database.DatabaseAccess;
-import javafx.beans.value.ObservableValue;
+
 import javafx.event.ActionEvent;
-import javafx.scene.control.Toggle;
 import models.Compteur;
+import models.ReleveJournalier;
 
 public class GraphiqueController {
     
@@ -24,8 +23,6 @@ public class GraphiqueController {
         this.graphiqueView = (GraphiqueView) rooter.getView("Graphique");
         this.compteurs = Compteur.getAll();
         this.setupSelection();
-        this.graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
-        this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);
 
     }
 
@@ -46,31 +43,73 @@ public class GraphiqueController {
     }
 
 
-    public void setupCalques(){
-        ArrayList<String> calquesString = new ArrayList<String>();
-        calquesString.add("Calque 1 (1)");
-        calquesString.add("Calque 2 (2)");
-        calquesString.add("Calque 3 (3)");
-        calquesString.add("Calque 4 (4)");
-
-        graphiqueView.setCompteurCalquePane(calquesString,false);
-        graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
-        graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
-    }
-
     private void requete (ActionEvent event) {
         if (this.checkDate() && this.checkSelection()){
             String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
             String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
-            String typeGraphique = graphiqueView.getTypeGraphiqueComboBox().getValue();
             String dateDebut = graphiqueView.getDateDebut().getValue().toString();
             String dateFin = graphiqueView.getDateFin().getValue().toString();
-            String selection = graphiqueView.getSelection();
-            String selectionCheckBoxes = this.selectionToString();
-            ArrayList<String> ret = DatabaseAccess.getGraphique(typeSomme, typeTemps, typeGraphique, dateDebut, dateFin, selection, selectionCheckBoxes);       
-            System.out.println(ret);
+            ArrayList<Integer> selectionCheckBoxes = this.getSelectionCompteurs();
+
+            ArrayList<String> releves = this.getReleves(typeTemps, typeSomme, dateDebut, dateFin, selectionCheckBoxes);   
+            System.out.println(releves);
         }
 
+    }
+
+    private ArrayList<String> getReleves(String typeTemps, String typeSomme, String dateDebut, String dateFin, ArrayList<Integer> compteurs){
+        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<ReleveJournalier> tmp = new ArrayList<ReleveJournalier>();
+        if (typeTemps.equals("Jour de la Semaine")) {
+            for (int i = 1; i < 8; i++) {
+                int somme = 0;
+                tmp = ReleveJournalier.getAllRelevesByDayOfAWeek(i, dateDebut, dateFin, compteurs);
+                for (ReleveJournalier releve : tmp) {
+                    somme += releve.getNbPassageTotal();
+                }
+                ret.add(i+","+somme);
+            }
+
+        } else if (typeTemps.equals("Jour du Mois")) {
+            for (int i = 1; i < 32; i++) {
+                int somme = 0;
+                tmp = ReleveJournalier.getAllRelevesByDayOfAMonth(i, dateDebut, dateFin, compteurs);
+                for (ReleveJournalier releve : tmp) {
+                    somme += releve.getNbPassageTotal();
+                }
+                ret.add(i+","+somme);
+            }
+
+        } else if (typeTemps.equals("Mois")) {
+            for (int i = 1; i < 13; i++) {
+                int somme = 0;
+                tmp = ReleveJournalier.getAllRelevesByMonth(i, dateDebut, dateFin, compteurs);
+                for (ReleveJournalier releve : tmp) {
+                    somme += releve.getNbPassageTotal();
+                }
+                ret.add(i+","+somme);
+            }
+
+        } else if (typeTemps.equals("Annee")) {
+            for (int i = 2020; i < 2024; i++) {
+                int somme = 0;
+                tmp = ReleveJournalier.getAllRelevesByYear(i, dateDebut, dateFin, compteurs);
+                for (ReleveJournalier releve : tmp) {
+                    somme += releve.getNbPassageTotal();
+                }
+                ret.add(i+","+somme);
+            }
+        }
+
+        if (typeSomme.equals("Moyenne")) {
+            for (int i = 0; i < ret.size(); i++) {
+                String[] tmp2 = ret.get(i).split(",");
+                int somme = Integer.parseInt(tmp2[1]);
+                somme = somme / compteurs.size();
+                ret.set(i, tmp2[0] + "," + somme);
+            }
+        }
+        return ret;
     }
 
     private boolean checkDate() {
@@ -92,34 +131,20 @@ public class GraphiqueController {
         graphiqueView.toutDeselectionner();
     }
 
-    private void calqueCompteursListener(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-        if (this.graphiqueView.getSelection().equals("Compteur")) {
-            this.setupCompteurs();
-            graphiqueView.getCalqueCompteursGroup().getToggles().get(1).setSelected(true);
-
-        } else {
-            this.setupCalques();
-            graphiqueView.getCalqueCompteursGroup().getToggles().get(0).setSelected(true);
-        }
-        this.graphiqueView.getCalqueCompteursGroup().selectedToggleProperty().addListener(this::calqueCompteursListener);
-
-    }
-
 
     private boolean checkSelection() {
         return !graphiqueView.getSelectionCompteurCheckBoxes().isEmpty();
     }
 
-    private String selectionToString(){
-        String ret = "";
+    private ArrayList<Integer> getSelectionCompteurs(){
+        ArrayList<Integer> ret = new ArrayList<Integer>();
         ArrayList<String> result = graphiqueView.getSelectionCompteurCheckBoxes();
-        String string = result.get(0);
-        String tmp = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
-        ret += tmp;
+        String string;
+        String tmp;
         for (int i = 1; i < result.size(); i++) {
             string = result.get(i);
             tmp = string.substring(string.indexOf("(") + 1, string.indexOf(")"));
-            ret += "," + tmp;
+            ret.add(Integer.parseInt(tmp));
         }
         return ret;
     }

@@ -9,7 +9,7 @@ import java.util.HashMap;
  * 
  * This class save all the days in a HashMap, with the date as key and the Jour object as value
  */
-public class Jour implements IModels {
+public class Jour implements IModels, Comparable<Jour> {
 
     // ----------------------------- static attributes -----------------------------
     
@@ -195,20 +195,10 @@ public class Jour implements IModels {
         return this.date;
     }
 
-    /**
-     * Get the day of the week
-     * 
-     * @return the day of the week
-     */
     public double getTemperatureMoyenne() {
         return this.temperatureMoyenne;
     }
 
-    /**
-     * Get the holidays
-     * 
-     * @return the holidays, null if there is no holidays
-     */
     public int getJour() {
         return this.jour;
     }
@@ -216,6 +206,42 @@ public class Jour implements IModels {
 
     
     // ----------------------------- methods -----------------------------
+
+    public int getJourDuMois(){
+        String[] tmp = this.date.split("-");
+        return Integer.parseInt(tmp[2]);
+    } 
+
+    public int getMois() {
+        String[] tmp = this.date.split("-");
+        return Integer.parseInt(tmp[1]);
+    }
+
+    public int getAnnee() {
+        String[] tmp = this.date.split("-");
+        return Integer.parseInt(tmp[0]);
+    }
+
+    public int compareTo(Jour jour) {
+        int ret = 0;
+        if (this.getAnnee() > jour.getAnnee()){
+            ret = 1;
+
+        } else if (this.getAnnee() < jour.getAnnee()){
+            ret = -1;
+        } else if (this.getMois() > jour.getMois()){
+            ret = 1;
+        } else if (this.getMois() < jour.getMois()){
+            ret = -1;
+        } else if (this.getJourDuMois() > jour.getJourDuMois()){
+            ret = 1;
+        } else if (this.getJourDuMois() < jour.getJourDuMois()){
+            ret = -1;
+        }
+        return ret;
+    }
+
+
 
     /**
      * Check if the day is a weekend
