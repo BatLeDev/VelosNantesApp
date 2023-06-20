@@ -39,7 +39,7 @@ public class Compteur implements IModels {
     }
 
 
-    public static String[] getHeaders() {
+    public static String[] getColumns() {
         return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "leQuartier" };
     }
 

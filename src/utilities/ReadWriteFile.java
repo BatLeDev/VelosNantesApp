@@ -47,8 +47,7 @@ public class ReadWriteFile {
      * @return the path of the selected file
      */
     public static String fileChooser() {
-        String ret;
-
+        // Create a window to select a file
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Sélectionner un fichier");
         ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers csv (*.csv)", "*.csv");
@@ -59,11 +58,17 @@ public class ReadWriteFile {
         File currentDir = new File(System.getProperty("user.dir"));
         fileChooser.setInitialDirectory(currentDir);
 
-        ret = fileChooser.showSaveDialog(null).getAbsolutePath();
-        System.out.println(ret);
-        if (ret.length() < 4 || !ret.substring(ret.length() - 4).equals(".csv")) {
-            ret += ".csv";
+        File file = fileChooser.showSaveDialog(null);
+        if (file == null) {
+            throw new NullPointerException("Aucun fichier sélectionné");
         }
+        String ret = file.getAbsolutePath();
+
+        // Add the extension if it is not present
+        if (ret.length() < 4 || !ret.substring(ret.length() - 4).equals(".csv")) {
+            throw new IllegalArgumentException("Le fichier doit être au format csv");
+        }
+
         return ret;
     }
 
