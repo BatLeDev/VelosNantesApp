@@ -11,7 +11,6 @@ import javafx.concurrent.Worker;
 import database.DatabaseAccess;
 import models.CompteurFull;
 import models.Marker;
-import utilities.Rooter;
 import views.CarteView;
 
 /**
@@ -19,17 +18,14 @@ import views.CarteView;
  * <p> This class acts as a bridge between the view and the data
  */
 public class CarteController {
-    // private Rooter rooter;
     private CarteView carteView;
 
     /**
      * Initialize the controller
      * 
-     * @param rooter The rooter of the application
      * @param carteView The view of the Carte page
      */
-    public CarteController(Rooter rooter, CarteView carteView) {
-        // this.rooter = rooter;
+    public CarteController(CarteView carteView) {
         this.carteView = carteView;
     }
 

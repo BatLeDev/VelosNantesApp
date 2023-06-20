@@ -14,8 +14,6 @@ import views.*;
 import views.connexion.*;
 import controllers.ModificationController;
 
-import controllers.ModificationController;
-
 /**
  * This class represents the rooter of the application. It's the principal class because it's used to display all views.
  * <p>Generate all views, allow to change the view displayed, display or hide the navbar, change the permission of the user logged.
@@ -69,7 +67,7 @@ public class Rooter {
         this.views = new HashMap<String, Pane>();
 
         // initialization of pages
-        CarteView carteView = new CarteView(this);
+        CarteView carteView = new CarteView();
         views.put("Carte", carteView);
 
         GraphiqueView graphiqueView = new GraphiqueView();
