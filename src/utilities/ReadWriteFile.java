@@ -60,7 +60,6 @@ public class ReadWriteFile {
         fileChooser.setInitialDirectory(currentDir);
 
         ret = fileChooser.showSaveDialog(null).getAbsolutePath();
-        System.out.println(ret);
         if (ret.length() < 4 || !ret.substring(ret.length() - 4).equals(".csv")) {
             ret += ".csv";
         }

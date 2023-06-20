@@ -55,7 +55,6 @@ public class Compteur implements IModels {
 
         for (Compteur c : Compteur.compteurList.values()) {
             tmp = c.toCSV(contenu);
-            System.out.println(tmp);
             ret.add(tmp);
         }
         return ret;

@@ -61,7 +61,6 @@ public class Quartier implements IModels{
 
         for (Quartier q : Quartier.quartierList.values()) {
             tmp = q.toCSV(contenu);
-            System.out.println(tmp);
             ret.add(tmp);
         }
         return ret;

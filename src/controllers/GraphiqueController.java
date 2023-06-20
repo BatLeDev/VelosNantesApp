@@ -7,42 +7,32 @@ import javafx.event.ActionEvent;
 
 import views.GraphiqueView;
 import utilities.DataChart;
-import utilities.Rooter;
 import models.Compteur;
 import models.Jour;
 import models.ReleveJournalier;
 
 public class GraphiqueController {
-    private Rooter rooter;
     private GraphiqueView graphiqueView;
     ArrayList<Compteur> compteurs;
     
 
-    public GraphiqueController(Rooter rooter) {
-        this.rooter = rooter;
-        this.graphiqueView = (GraphiqueView) rooter.getView("Graphique");
+    public GraphiqueController(GraphiqueView graphiqueView) {
+        this.graphiqueView = graphiqueView;
         this.compteurs = Compteur.getAll();
-        this.setupSelection();
-    }
-
-    public void setupSelection() {
-        graphiqueView.getGenererButton().setOnAction(this::requete);
         this.setupCompteurs();
     }
 
     public void setupCompteurs() {
         ArrayList<String> compteursString = new ArrayList<String>();
-        for (Compteur compteur : this.compteurs) {       
-            String tmp = compteur.getLibelle() + " (" + compteur.getNumero() + ")";     
+        for (Compteur compteur : this.compteurs) {
+            String tmp = compteur.getLibelle() + " (" + compteur.getNumero() + ")";
             compteursString.add(tmp);
-        }  
+        }
         this.graphiqueView.setCompteursPane(compteursString);
-        graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
-        graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
 
-    public void requete (ActionEvent event) {
-        if (this.checkDate() && this.checkSelection()){
+    public void requete(ActionEvent event) {
+        if (this.checkDate() && this.checkSelection()) {
             String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
             String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
             String dateDebut = graphiqueView.getDateDebut().getValue().toString();
@@ -65,7 +55,6 @@ public class GraphiqueController {
 
                     abs.add(Jour.jourDeLaSemaine[i-1]);
                     releves.add(somme);
-                    System.out.println(somme +","+i);
                 }
 
             } else if (typeTemps.equals("Jour du Mois")) {
@@ -126,15 +115,6 @@ public class GraphiqueController {
         }
         return ret;
     }
-
-    private void toutSelectionner(ActionEvent event) {
-        graphiqueView.toutSelectionner();
-    }
-
-    private void toutDeselectionner(ActionEvent event) {
-        graphiqueView.toutDeselectionner();
-    }
-
 
     private boolean checkSelection() {
         return !graphiqueView.getSelectionCompteurCheckBoxes().isEmpty();
