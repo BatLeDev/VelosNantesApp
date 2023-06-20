@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 // Project imports
 import views.*;
 import views.connexion.*;
-
+import controllers.GraphiqueController;
 import controllers.ModificationController;
 
 /**
@@ -71,8 +71,9 @@ public class Rooter {
         CarteView carteView = new CarteView(this);
         views.put("Carte", carteView);
 
-        GraphiqueView graphiqueView = new GraphiqueView(this);
+        GraphiqueView graphiqueView = new GraphiqueView();
         views.put("Graphique", graphiqueView);
+        GraphiqueController graphiqueController = new GraphiqueController(this);
 
         ExporterView exporterView = new ExporterView(this);
         views.put("Exporter", exporterView);

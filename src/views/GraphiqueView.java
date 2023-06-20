@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.geometry.Insets;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -17,23 +18,21 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
-
 import utilities.DatePickerConverter;
 import utilities.Rooter;
-import controllers.GraphiqueController;
 
 /**
  * This class represents the view of the Exporter page.
  * This page is a form to export data.
  */
 public class GraphiqueView extends BorderPane {
+
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    private GraphiqueController graphiqueController;
-
     // Elements of the view
+    private Rooter rooter;
     private ComboBox<String> typeSommeComboBox;
     private ComboBox<String> typeTempsComboBox;
     private DatePicker dateDebut;
@@ -43,15 +42,14 @@ public class GraphiqueView extends BorderPane {
     Button toutDeselectionner;
     private ArrayList<CheckBox> compteurCheckBoxes;
 
+
     /**
      * Constructor
      * This method is called by the rooter to create the view
      * 
      * Initialise the elements of the view
      */
-    public GraphiqueView(Rooter rooter) {
-        this.graphiqueController = new GraphiqueController(rooter, this);
-        
+    public GraphiqueView() {                
         // Creation of the elements of the view
         compteurCheckBoxes = new ArrayList<CheckBox>();
 
@@ -59,11 +57,14 @@ public class GraphiqueView extends BorderPane {
         this.setTop(graphiquePane);
 
         this.genererButton = new Button("Générer");
-        // Ajoute un listener sur le bouton
-        this.genererButton.setOnAction(this.graphiqueController::requete);
         setCenter(this.genererButton);
 
         setAlignment(graphiquePane, Pos.CENTER);
+
+    }
+
+    public Button getGenererButton() {
+        return genererButton;
     }
 
     public ComboBox<String> getTypeSommeComboBox() {
@@ -146,7 +147,8 @@ public class GraphiqueView extends BorderPane {
         return ret;
     }
 
-    public void setCompteurCalquePane(ArrayList<String> contenu, boolean type) {
+
+    public void setCompteursPane(ArrayList<String> contenu) {
         
         this.compteurCheckBoxes = new ArrayList<CheckBox>();
 
@@ -190,6 +192,18 @@ public class GraphiqueView extends BorderPane {
         ret.getChildren().addAll(tmp, compteursVBox);
 
         this.setLeft(ret);
+    }
+
+    public void setGraphesPane(LineChart<String, Number> graphe) {
+        System.out.println("DATE_FORMAT");
+        StackPane graphPane = new StackPane(graphe);
+        graphPane.setStyle("-fx-background-color: cyan;");
+        BorderPane tmp = new BorderPane();
+        tmp.setPadding(new Insets(15, 15, 30, 15));
+        tmp.setCenter(graphPane);
+        tmp.setBottom(this.genererButton);
+        BorderPane.setAlignment(tmp.getBottom(), Pos.CENTER);
+        this.setCenter(tmp);
     }
 
 }

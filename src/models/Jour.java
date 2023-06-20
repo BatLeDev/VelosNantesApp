@@ -21,6 +21,18 @@ public class Jour implements IModels, Comparable<Jour> {
      */
     private static HashMap<String, Jour> jourList = new HashMap<String, Jour>();
 
+    /**
+     * The differents day of the week (Lundi - Dimanche)
+     * index 0 : Lundi , index 6 : Dimanche
+     */
+    public final static String[] jourDeLaSemaine = {"Lundi", "Mardi", "Mercredi","Jeudi", "Vendredi","Samedi","Dimanche"};
+
+    /** 
+     * The differents months of the year (Janvier - Décembre)
+     * index 0 : Javier, index 11 : Décembre
+     */
+    public final static String[] moisDeLAnnee = {"Janvier", "Février", "Mars", "Avril", "Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"};
+
     // ----------------------------- static methods -----------------------------
 
     /**

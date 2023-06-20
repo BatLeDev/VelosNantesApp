@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 
 import views.GraphiqueView;
+import utilities.DataChart;
 import utilities.Rooter;
 import models.Compteur;
+import models.Jour;
 import models.ReleveJournalier;
 
 public class GraphiqueController {
@@ -16,21 +18,25 @@ public class GraphiqueController {
     ArrayList<Compteur> compteurs;
     
 
-    public GraphiqueController(Rooter rooter, GraphiqueView graphiqueView) {
+    public GraphiqueController(Rooter rooter) {
         this.rooter = rooter;
-        this.graphiqueView = graphiqueView;
-
+        this.graphiqueView = (GraphiqueView) rooter.getView("Graphique");
         this.compteurs = Compteur.getAll();
+        this.setupSelection();
+    }
+
+    public void setupSelection() {
+        graphiqueView.getGenererButton().setOnAction(this::requete);
         this.setupCompteurs();
     }
-    
+
     public void setupCompteurs() {
         ArrayList<String> compteursString = new ArrayList<String>();
         for (Compteur compteur : this.compteurs) {       
             String tmp = compteur.getLibelle() + " (" + compteur.getNumero() + ")";     
             compteursString.add(tmp);
         }  
-        graphiqueView.setCompteurCalquePane(compteursString,true);
+        this.graphiqueView.setCompteursPane(compteursString);
         graphiqueView.getToutSelectionner().setOnAction(this::toutSelectionner);
         graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
@@ -41,67 +47,73 @@ public class GraphiqueController {
             String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
             String dateDebut = graphiqueView.getDateDebut().getValue().toString();
             String dateFin = graphiqueView.getDateFin().getValue().toString();
-            ArrayList<Integer> selectionCheckBoxes = this.getSelectionCompteurs();
+            ArrayList<Integer> compteurs = this.getSelectionCompteurs();
 
-            ArrayList<String> releves = this.getReleves(typeTemps, typeSomme, dateDebut, dateFin, selectionCheckBoxes);   
-            System.out.println(releves);
+
+            // Pour chaque possibilite de la sélection, on récupere les valeurs des releves et l'abscisse a afficher pour le graphique
+            ArrayList<Double> releves = new ArrayList<Double>();
+            ArrayList<String> abs = new ArrayList<String>();
+            ArrayList<ReleveJournalier> tmp = new ArrayList<ReleveJournalier>();
+
+            if (typeTemps.equals("Jour de la Semaine")) {
+                for (int i = 1; i < 8; i++) {
+                    double somme = 0;
+                    tmp = ReleveJournalier.getAllRelevesByDayOfAWeek(i, dateDebut, dateFin, compteurs);
+                    for (ReleveJournalier releve : tmp) {
+                        somme += releve.getNbPassageTotal();
+                    }
+
+                    abs.add(Jour.jourDeLaSemaine[i-1]);
+                    releves.add(somme);
+                    System.out.println(somme +","+i);
+                }
+
+            } else if (typeTemps.equals("Jour du Mois")) {
+                for (int i = 1; i < 32; i++) {
+                    double somme = 0;
+                    tmp = ReleveJournalier.getAllRelevesByDayOfAMonth(i, dateDebut, dateFin, compteurs);
+                    for (ReleveJournalier releve : tmp) {
+                        somme += releve.getNbPassageTotal();
+                    }
+                    abs.add(i+"");
+                    releves.add(somme);
+                }
+
+            } else if (typeTemps.equals("Mois")) {
+                for (int i = 1; i < 13; i++) {
+                    double somme = 0;
+                    tmp = ReleveJournalier.getAllRelevesByMonth(i, dateDebut, dateFin, compteurs);
+                    for (ReleveJournalier releve : tmp) {
+                        somme += releve.getNbPassageTotal();
+                    }
+                    abs.add(Jour.moisDeLAnnee[i-1]);
+                    releves.add(somme);
+                }
+
+            } else if (typeTemps.equals("Annee")) {
+                for (int i = 2020; i < 2024; i++) {
+                    double somme = 0;
+                    tmp = ReleveJournalier.getAllRelevesByYear(i, dateDebut, dateFin, compteurs);
+                    for (ReleveJournalier releve : tmp) {
+                        somme += releve.getNbPassageTotal();
+                    }
+                    abs.add(i+"");
+                    releves.add(somme);
+                }
+            }
+
+            if (typeSomme.equals("Moyenne")) {
+                for (int i = 0; i < releves.size(); i++) {
+                    releves.set(i, releves.get(i) / tmp.size());
+                }
+            }
+            this.ajoutGraphe(releves, abs);
         }
-
     }
 
-    private ArrayList<String> getReleves(String typeTemps, String typeSomme, String dateDebut, String dateFin, ArrayList<Integer> compteurs){
-        ArrayList<String> ret = new ArrayList<String>();
-        ArrayList<ReleveJournalier> tmp = new ArrayList<ReleveJournalier>();
-        if (typeTemps.equals("Jour de la Semaine")) {
-            for (int i = 1; i < 8; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByDayOfAWeek(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-
-        } else if (typeTemps.equals("Jour du Mois")) {
-            for (int i = 1; i < 32; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByDayOfAMonth(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-
-        } else if (typeTemps.equals("Mois")) {
-            for (int i = 1; i < 13; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByMonth(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-
-        } else if (typeTemps.equals("Annee")) {
-            for (int i = 2020; i < 2024; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByYear(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-        }
-
-        if (typeSomme.equals("Moyenne")) {
-            for (int i = 0; i < ret.size(); i++) {
-                String[] tmp2 = ret.get(i).split(",");
-                int somme = Integer.parseInt(tmp2[1]);
-                somme = somme / compteurs.size();
-                ret.set(i, tmp2[0] + "," + somme);
-            }
-        }
-        return ret;
+    public void ajoutGraphe (ArrayList<Double> dataReleves, ArrayList<String> nom){
+        DataChart lineChart = new DataChart(dataReleves, nom);
+        this.graphiqueView.setGraphesPane(lineChart.getLineChart());
     }
 
     private boolean checkDate() {

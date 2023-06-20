@@ -42,13 +42,14 @@ public class MainApp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        rooter = new Rooter(primaryStage); // Rooter initialization
 
         // Download Database        
         DatabaseAccess.getQuartiers();
         DatabaseAccess.getCompteurs();
         DatabaseAccess.getJour();
         DatabaseAccess.getReleveJournaliers();
+
+        rooter = new Rooter(primaryStage); // Rooter initialization
 
         // Set the icon of the application
         primaryStage.getIcons().add(new Image("./ressources/images/logo.png"));
