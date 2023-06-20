@@ -48,6 +48,7 @@ public class LoginController extends ConnexionController {
             String typeDeCompte = DatabaseAccess.getTypeDeCompte(fields[0]); // Get type de compte from database
             this.rooter.changePermission(typeDeCompte);
             rooter.changePage(true, "Carte");
+            System.out.println("Login success");
         } else if (checkLogin == 0) {
             loginView.showErrorMessage("Mot de passe incorrect");
         } else {

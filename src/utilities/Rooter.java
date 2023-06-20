@@ -49,6 +49,8 @@ public class Rooter {
      */
     private NavbarView navbarView;
 
+    private String typeDeCompte;
+
     /**
      * This method is called by the MainApp class
      * 
@@ -86,8 +88,7 @@ public class Rooter {
         RegisterView registerView = new RegisterView(this);
         views.put("Register", registerView);
 
-        NavbarController navbarController = new NavbarController(this);
-        this.navbarView = new NavbarView(navbarController);
+        this.navbarView = new NavbarView(this);
 
         // Initialization of the main BorderPane
         this.root = new BorderPane();
@@ -148,16 +149,17 @@ public class Rooter {
      * @throws SecurityException if the calling class isn't LoginController
      */
     public void changePermission(String typeDeCompte) {
-        // Get the name of the calling class
-        String callingClassName = new Throwable().getStackTrace()[1].getClassName();
-
-        // Check if the calling class is LoginController
-        if (!callingClassName.equals("controllers.connexion.LoginController")) {
-            throw new SecurityException(
-                    "utilities.Rooter.changePermission : The calling class isn't LoginController.");
-        }
-
         this.navbarView.updateLogged(typeDeCompte);
+        this.typeDeCompte = typeDeCompte;
+    }
+
+    /**
+     * Get the permission of the user logged
+     * 
+     * @return The permission of the user (null, "Utilisateur", "Elu", "Administrateur")
+     */
+    public String getPermission() {
+        return this.typeDeCompte;
     }
 
 }

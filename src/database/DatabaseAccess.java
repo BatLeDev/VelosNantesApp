@@ -252,7 +252,6 @@ public class DatabaseAccess {
 
                 // Check if password is correct
                 if (BCrypt.checkpw(password, resultSet.getString("motDePasse"))) {
-                    System.out.println("Mot de passe correct !");
                     res = 1;
                 }
             }
