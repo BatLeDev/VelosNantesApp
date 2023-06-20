@@ -6,45 +6,42 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.geometry.Insets;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+
 import utilities.DatePickerConverter;
+import utilities.Rooter;
+import controllers.GraphiqueController;
 
 /**
  * This class represents the view of the Exporter page.
  * This page is a form to export data.
  */
 public class GraphiqueView extends BorderPane {
-
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    private GraphiqueController graphiqueController;
 
     // Elements of the view
     private ComboBox<String> typeSommeComboBox;
     private ComboBox<String> typeTempsComboBox;
-    private ComboBox<String> typeGraphiqueComboBox;
     private DatePicker dateDebut;
     private DatePicker dateFin;
     private Button genererButton;
-    private ToggleGroup calqueCompteursGroup;
     private Button toutSelectionner;
     Button toutDeselectionner;
     private ArrayList<CheckBox> compteurCheckBoxes;
-    private ArrayList<CheckBox> calqueCheckBoxes;
 
     /**
      * Constructor
@@ -52,7 +49,9 @@ public class GraphiqueView extends BorderPane {
      * 
      * Initialise the elements of the view
      */
-    public GraphiqueView() {
+    public GraphiqueView(Rooter rooter) {
+        this.graphiqueController = new GraphiqueController(rooter, this);
+        
         // Creation of the elements of the view
         compteurCheckBoxes = new ArrayList<CheckBox>();
 
@@ -60,13 +59,11 @@ public class GraphiqueView extends BorderPane {
         this.setTop(graphiquePane);
 
         this.genererButton = new Button("Générer");
+        // Ajoute un listener sur le bouton
+        this.genererButton.setOnAction(this.graphiqueController::requete);
         setCenter(this.genererButton);
 
         setAlignment(graphiquePane, Pos.CENTER);
-    }
-
-    public Button getGenererButton() {
-        return genererButton;
     }
 
     public ComboBox<String> getTypeSommeComboBox() {
@@ -77,20 +74,12 @@ public class GraphiqueView extends BorderPane {
         return typeTempsComboBox;
     }
 
-    public ComboBox<String> getTypeGraphiqueComboBox() {
-        return typeGraphiqueComboBox;
-    }
-
     public DatePicker getDateDebut() {
         return dateDebut;
     }
 
     public DatePicker getDateFin() {
         return dateFin;
-    }
-
-    public ToggleGroup getCalqueCompteursGroup() {
-        return calqueCompteursGroup;
     }
 
     public Button getToutSelectionner() {
@@ -113,40 +102,12 @@ public class GraphiqueView extends BorderPane {
         }
     }
 
-    public Toggle getCalqueRadioButton() {
-        return calqueCompteursGroup.getToggles().get(0);
-    }
-
-    public Toggle getCompteurRadioButton() {
-        return calqueCompteursGroup.getToggles().get(1);
-    }
-
     public ArrayList<String> getSelectionCompteurCheckBoxes() {
         ArrayList<String> ret = new ArrayList<String>();
         for (CheckBox checkBox : compteurCheckBoxes) {
             if (checkBox.isSelected()) {
                 ret.add(checkBox.getText());
             }
-        }
-        return ret;
-    }
-
-    public ArrayList<String> getSelectionCalqueCheckBoxes() {
-        ArrayList<String> ret = new ArrayList<String>();
-        for (CheckBox checkBox : calqueCheckBoxes) {
-            if (checkBox.isSelected()) {
-                ret.add(checkBox.getText());
-            }
-        }
-        return ret;
-    }
-
-    public String getSelection() {
-        String ret = "";
-        if (getCalqueRadioButton().isSelected()) {
-            ret = "Calque";
-        } else if (getCompteurRadioButton().isSelected()) {
-            ret = "Compteur";
         }
         return ret;
     }
@@ -177,43 +138,23 @@ public class GraphiqueView extends BorderPane {
         Label par = new Label("  par  ");
 
         this.typeTempsComboBox = new ComboBox<String>();
-        this.typeTempsComboBox.getItems().addAll("Tout", "Jour", "Mois", "Annee");
-        this.typeTempsComboBox.setValue("Tout");
-        
+        this.typeTempsComboBox.getItems().addAll("Jour de la Semaine", "Jour du Mois", "Mois", "Annee");
+        this.typeTempsComboBox.setValue("Jour de la Semaine");
+
         ret.getChildren().addAll(affichage, this.typeSommeComboBox, desReleves, dateDebut, a, dateFin, par,
                 this.typeTempsComboBox);
         return ret;
     }
 
-    private Pane initialiseCalqueCompteursPane() {
-        FlowPane ret = new FlowPane();
-        ret.setStyle("-fx-background-color: pink;");
-
-        this.calqueCompteursGroup = new ToggleGroup();
-        RadioButton calqueRadioButton = new RadioButton("Calques");
-        calqueRadioButton.setToggleGroup(this.calqueCompteursGroup);
-
-        RadioButton compteurRadioButton = new RadioButton("Compteurs");
-        compteurRadioButton.setToggleGroup(this.calqueCompteursGroup);
-
-        ret.getChildren().addAll(calqueRadioButton, compteurRadioButton);
-
-        return ret;
-    }
-
     public void setCompteurCalquePane(ArrayList<String> contenu, boolean type) {
-        if (type) {
-            compteurCheckBoxes = new ArrayList<CheckBox>();
-        } else {
-            calqueCheckBoxes = new ArrayList<CheckBox>();
-        }
+        
+        this.compteurCheckBoxes = new ArrayList<CheckBox>();
+
 
         VBox ret = new VBox();
         ret.setPadding(new Insets(10));
         ret.setSpacing(10);
         ret.setStyle("-fx-background-color: pink;");
-
-        Pane calqueCompteurPane = initialiseCalqueCompteursPane();
 
         HBox tmp = new HBox();
         tmp.setSpacing(10);
@@ -234,11 +175,9 @@ public class GraphiqueView extends BorderPane {
                 i = 0;
                 j++;
             }
-            if (type) {
-                compteurCheckBoxes.add(tmpCompteur);
-            } else {
-                compteurCheckBoxes.add(tmpCompteur);
-            }
+        
+            compteurCheckBoxes.add(tmpCompteur);
+
         }
         VBox compteursVBox = new VBox();
         ScrollPane scrollPane = new ScrollPane(compteursPane);
@@ -248,21 +187,9 @@ public class GraphiqueView extends BorderPane {
         compteursVBox.getChildren().add(scrollPane);
 
         tmp.getChildren().addAll(toutSelectionner, toutDeselectionner);
-        ret.getChildren().addAll(calqueCompteurPane, tmp, compteursVBox);
+        ret.getChildren().addAll(tmp, compteursVBox);
 
         this.setLeft(ret);
-    }
-
-
-    public void setGraphesPane(LineChart<String, Number> graphe) {
-        StackPane graphPane = new StackPane(graphe);
-        graphPane.setStyle("-fx-background-color: cyan;");
-        BorderPane tmp = new BorderPane();
-        tmp.setPadding(new Insets(15, 15, 30, 15));
-        tmp.setCenter(graphPane);
-        tmp.setBottom(this.genererButton);
-        BorderPane.setAlignment(tmp.getBottom(), Pos.CENTER);
-        this.setCenter(tmp);
     }
 
 }

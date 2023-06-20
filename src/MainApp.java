@@ -1,25 +1,23 @@
+// JavaFX imports
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+// Project imports
+import database.DatabaseAccess;
 import utilities.Rooter;
 
-// Controllers import
-import controllers.*;
-import controllers.connexion.*;
-
 /**
- * Main class
- * Run this class to launch the application
- * 
- * This class extends Application from JavaFX
+ * It's the main class, run it to launch the application. 
+ * This class extends Application from JavaFX.
  */
 public class MainApp extends Application {
 
     /**
-     * Rooter instance
-     * Used to change the page displayed
+     * The unique instance of the {@link Rooter} class. It's used to change the
+     * current page.
      */
-    private Rooter rooter;
+    private Rooter rooter; 
 
     /**
      * Main method
@@ -31,15 +29,26 @@ public class MainApp extends Application {
     }
 
     /**
-     * Start method
-     * This method is called by the launch method
+     * Method called by JavaFX when the application is launched.
+     * It's used to initialize the application.
+     * <p>Create : 
+     * <ul>
+     * <li>the {@link Rooter} instance</li>
+     * <li>all objects from the database</li>
+     * <li>show the main page (Carte)</li>
+     * </ul>
      * 
      * @param primaryStage Stage instance (main window, generate by JavaFX)
      */
     @Override
     public void start(Stage primaryStage) {
-        // Creation of the rooter
-        rooter = new Rooter(primaryStage);
+        rooter = new Rooter(primaryStage); // Rooter initialization
+
+        // Download Database        
+        DatabaseAccess.getQuartiers();
+        DatabaseAccess.getCompteurs();
+        DatabaseAccess.getJour();
+        DatabaseAccess.getReleveJournaliers();
 
         // Set the icon of the application
         primaryStage.getIcons().add(new Image("./ressources/images/logo.png"));
@@ -48,20 +57,6 @@ public class MainApp extends Application {
         primaryStage.setMinHeight(800);
         primaryStage.setMaximized(true);
         primaryStage.show();
-
-        // Initialisation of each controller
-        // Isn't necessary to keep the reference of the controller
-        new CarteController(rooter);
-        new GraphiqueController(rooter);
-        new ExporterController(rooter);
-
-        new LoginController(rooter);
-        new RegisterController(rooter);
-
-        new ModificationController(rooter);
-        
-        // Initialisation of the navbar controller
-        new NavbarController(rooter);
 
         // Show the main page (Carte)
         rooter.changePage(true, "Carte");
