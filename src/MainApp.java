@@ -31,6 +31,12 @@ public class MainApp extends Application {
     /**
      * Method called by JavaFX when the application is launched.
      * It's used to initialize the application.
+     * <p>Create : 
+     * <ul>
+     * <li>the {@link Rooter} instance</li>
+     * <li>all objects from the database</li>
+     * <li>show the main page (Carte)</li>
+     * </ul>
      * 
      * @param primaryStage Stage instance (main window, generate by JavaFX)
      */

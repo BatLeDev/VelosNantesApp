@@ -14,7 +14,6 @@ import views.*;
 import views.connexion.*;
 
 import controllers.ModificationController;
-import controllers.NavbarController;
 
 /**
  * This class represents the rooter of the application. It's the principal class because it's used to display all views.

@@ -1,33 +1,9 @@
 package models;
 
-import java.util.ArrayList;
-
+/**
+ * This class represents a compteur with all its stats, use principally for the map
+ */
 public class CompteurFull {
-
-    // ----------------------------- static methods -----------------------------
-
-    /**
-     * Delete a compteur by its id
-     * 
-     * @return the compteur object corresponding to the id
-     */
-    public static Compteur deleteCompteur(int id) {
-        Compteur c = Compteur.compteurList.remove(id);
-        if (c != null) {
-            Quartier quartier = Quartier.getQuartier(c.getNumero());
-            if (quartier != null) {
-                quartier.removeCompteur(id);
-            }
-        }
-        ReleveJournalier.removeAllRelevesOfACompteur(id);
-        return c;
-    }
-
-    public static String[] getHeaders() {
-        return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "idQuartier", "nomQuartier", "nombreJourReleve", "nombreTotalPassage", "moyennePassageParJour", "frequenceErreurs", "nbErreurs", "heureSouventFrequetee" };
-    }
-
-
     // ----------------------------- attributes -----------------------------
     
     private int numero;
@@ -45,12 +21,29 @@ public class CompteurFull {
     private int nbErreurs;
     private String heureSouventFrequetee;
 
+    /**
+     * Constructor
+     * 
+     * @param numero the id of the capteur
+     * @param libelle the name of the capteur
+     * @param direction the direction of the capteur
+     * @param observation the observation of the capteur (Relevage manuelle)
+     * @param latitude the latitude of the capteur
+     * @param longitude the longitude of the capteur
+     * @param idQuartier the id of the quartier of the capteur
+     * @param nomQuartier the name of the quartier of the capteur 
+     * @param nombreJourReleve the number of days the capteur has been releved 
+     * @param nombreTotalPassage the total number of passage of the capteur 
+     * @param moyennePassageParJour the average number of passage per day of the capteur
+     * @param frequenceErreurs the frequency of errors of the capteur (nombreJourReleve/nbErreurs)
+     * @param nbErreurs the number of errors of the capteur
+     * @param heureSouventFrequetee the hour when they are the most passage
+     */
     public CompteurFull(int numero, String libelle, String direction, String observation, double latitude,
             double longitude, int idQuartier, String nomQuartier, int nombreJourReleve,
             int nombreTotalPassage, double moyennePassageParJour, double frequenceErreurs,
             int nbErreurs, String heureSouventFrequetee) {
         
-        //numero, libelle, direction, observation, latitude, longitude
         this.numero = numero;
         this.libelle = libelle;
         this.direction = direction;
@@ -134,6 +127,10 @@ public class CompteurFull {
                 + "]";
     }
 
+    /**
+     * Convert the compteur to a javascript array
+     * @return the compteur in a javascript array
+     */
     public String toJs() {
         return "[\"" + this.getDirection() + "\", " + this.getNumero() + ", " + this.moyennePassageParJour + ", " + this.frequenceErreurs + "]";
     }

@@ -17,10 +17,9 @@ import views.CarteView;
 /**
  * This class is the controller of the Carte page.
  * <p> This class acts as a bridge between the view and the data
- * 
  */
 public class CarteController {
-    private Rooter rooter;
+    // private Rooter rooter;
     private CarteView carteView;
 
     /**
@@ -30,7 +29,7 @@ public class CarteController {
      * @param carteView The view of the Carte page
      */
     public CarteController(Rooter rooter, CarteView carteView) {
-        this.rooter = rooter;
+        // this.rooter = rooter;
         this.carteView = carteView;
     }
 
