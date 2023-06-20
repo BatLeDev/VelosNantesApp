@@ -68,7 +68,7 @@ public class Jour implements IModels, Comparable<Jour> {
     }
 
  
-    public static String[] getHeaders() {
+    public static String[] getColumns() {
         return new String[] { "Date", "Jour", "Temperature Moyenne" };
     }
 

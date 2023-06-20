@@ -371,11 +371,11 @@ public class ReleveJournalier implements IModels {
         return ret;
     }
 
-    public static String[] getHeadersSimplified(){
+    public static String[] getColumnsSimplified(){
         return new String[]{"Compteur", "Jour", "RelevesHeures", "PresenceAnomalie", "nbPassageTotal"};
     }
 
-    public static String[] getHeaders(){
+    public static String[] getColumns(){
         return new String[]{"Compteur", "Jour", "heure00", "heure01", "heure02", "heure03", "heure04", 
         "heure05", "heure06", "heure07", "heure08", "heure09", "heure10", "heure11", "heure12",
         "heure13", "heure14", "heure15", "heure16", "heure17", "heure18", "heure19", "heure20", 
