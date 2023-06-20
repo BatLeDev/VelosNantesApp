@@ -2,6 +2,7 @@ package views;
 
 import java.util.ArrayList;
 
+import controllers.ExporterController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -34,34 +35,14 @@ public class ExporterView extends BorderPane {
      * 
      * Initialise the elements of the view
      */
-    public ExporterView(Rooter rooter) {
-        this.exporterController = new ExporterController(rooter, this);
-        
+    public ExporterView() {
+        this.exporterController = new ExporterController(this);
+
         Pane top = initialiseGenererPane();
         this.setTop(top);
         this.enregistrer = new Button("Enregistrer (csv)");
         this.setBottom(enregistrer);
-
-        Pane bottom = new Pane();
-        this.enregistrer = new Button("Enregistrer (csv)");
-        this.enregistrer.setOnAction(this.exporterController::test);
-        bottom.getChildren().add(enregistrer);
-
-        this.setBottom(bottom);
-    }
-
-    public ArrayList<CheckBox> getSelectedCheckBoxes() {
-        ArrayList<CheckBox> ret = new ArrayList<CheckBox>();
-        for (CheckBox cb : this.checkBoxes) {
-            if (cb.isSelected()) {
-                ret.add(cb);
-            }
-        }
-        return ret;
-    }
-
-    public RadioButton getSelectedRadioButton() {
-        return (RadioButton) this.toggleGroup.getSelectedToggle();
+        this.enregistrer.setOnAction(this.exporterController::enregistrer);
     }
 
     private Pane initialiseGenererPane(){
@@ -83,11 +64,22 @@ public class ExporterView extends BorderPane {
         toggleGroup.getToggles().add(releveJournalierButton);
         RadioButton quartierButton = new RadioButton("Quartier");
         toggleGroup.getToggles().add(quartierButton);
+        toggleGroup.selectedToggleProperty().addListener(this.exporterController::selectionEnregistrer);
 
         choix.getChildren().addAll(jourButton, compteurButton, releveJournalierButton, quartierButton);
 
         ret.getChildren().addAll(source,choix);
 
+        return ret;
+    }
+
+    public ArrayList<CheckBox> getSelectedCheckBoxes() {
+        ArrayList<CheckBox> ret = new ArrayList<CheckBox>();
+        for (CheckBox cb : this.checkBoxes) {
+            if (cb.isSelected()) {
+                ret.add(cb);
+            }
+        }
         return ret;
     }
 

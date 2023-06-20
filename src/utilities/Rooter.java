@@ -74,7 +74,7 @@ public class Rooter {
         GraphiqueView graphiqueView = new GraphiqueView(this);
         views.put("Graphique", graphiqueView);
 
-        ExporterView exporterView = new ExporterView(this);
+        ExporterView exporterView = new ExporterView();
         views.put("Exporter", exporterView);
 
         ModificationController modificationController = new ModificationController(this);
