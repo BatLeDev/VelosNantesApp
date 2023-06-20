@@ -1,6 +1,35 @@
 package models;
 
+import java.util.ArrayList;
+
 public class CompteurFull {
+
+    // ----------------------------- static methods -----------------------------
+
+    /**
+     * Delete a compteur by its id
+     * 
+     * @return the compteur object corresponding to the id
+     */
+    public static Compteur deleteCompteur(int id) {
+        Compteur c = Compteur.compteurList.remove(id);
+        if (c != null) {
+            Quartier quartier = Quartier.getQuartier(c.getNumero());
+            if (quartier != null) {
+                quartier.removeCompteur(id);
+            }
+        }
+        ReleveJournalier.removeAllRelevesOfACompteur(id);
+        return c;
+    }
+
+    public static String[] getHeaders() {
+        return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "idQuartier", "nomQuartier", "nombreJourReleve", "nombreTotalPassage", "moyennePassageParJour", "frequenceErreurs", "nbErreurs", "heureSouventFrequetee" };
+    }
+
+
+    // ----------------------------- attributes -----------------------------
+    
     private int numero;
     private String libelle;
     private String direction;
@@ -20,6 +49,8 @@ public class CompteurFull {
             double longitude, int idQuartier, String nomQuartier, int nombreJourReleve,
             int nombreTotalPassage, double moyennePassageParJour, double frequenceErreurs,
             int nbErreurs, String heureSouventFrequetee) {
+        
+        //numero, libelle, direction, observation, latitude, longitude
         this.numero = numero;
         this.libelle = libelle;
         this.direction = direction;
@@ -36,6 +67,8 @@ public class CompteurFull {
         this.heureSouventFrequetee = heureSouventFrequetee;
     }
 
+
+    // ----------------- Getters ----------------- //
     public int getNumero() {
         return numero;
     }
@@ -93,8 +126,8 @@ public class CompteurFull {
     }
 
     public String toString() {
-        return "CompteurFull [numero=" + numero + ", libelle=" + libelle + ", direction=" + direction + ", observation="
-                + observation + ", latitude=" + latitude + ", longitude=" + longitude + ", idQuartier=" + idQuartier
+        return "CompteurFull [numero=" + this.getNumero() + ", libelle=" + this.getLibelle() + ", direction=" + this.getDirection() + ", observation="
+                + this.getObservation() + ", latitude=" + this.getLatitude() + ", longitude=" + this.getLongitude() + ", idQuartier=" + idQuartier
                 + ", nomQuartier=" + nomQuartier + ", nombreJourReleve=" + nombreJourReleve + ", nombreTotalPassage="
                 + nombreTotalPassage + ", moyennePassageParJour=" + moyennePassageParJour + ", frequenceErreurs="
                 + frequenceErreurs + ", nbErreurs=" + nbErreurs + ", heureSouventFrequetee=" + heureSouventFrequetee
@@ -102,7 +135,7 @@ public class CompteurFull {
     }
 
     public String toJs() {
-        return "[\"" + direction + "\", " + numero + ", " + moyennePassageParJour + ", " + frequenceErreurs + "]";
+        return "[\"" + this.getDirection() + "\", " + this.getNumero() + ", " + this.moyennePassageParJour + ", " + this.frequenceErreurs + "]";
     }
 
 }

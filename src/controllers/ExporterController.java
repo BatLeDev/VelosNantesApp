@@ -1,18 +1,20 @@
-package controllers;
+ackage controllers;
 
 import java.util.ArrayList;
 
-import database.DatabaseAccess;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import views.ExporterView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
+
 import utilities.Rooter;
 import utilities.ReadWriteFile;
+import models.*;
 
 public class ExporterController  {
+
     private Rooter rooter;
     private ExporterView exporterView;
 
@@ -21,101 +23,54 @@ public class ExporterController  {
         this.exporterView = exporterView;
     }
 
-    public void test(ActionEvent action) {
-        if (exporterView.getSelectedCheckBoxes().size() == 0) {
-            System.out.println("Aucune case n'est cochée");
-        } else {
+    public void setupEnregistrer() {
+        this.exporterView.getToggleGroup().selectedToggleProperty().addListener(this::selectionEnregistrer);
+        this.exporterView.getEnregistrer().setOnAction(this::test);
+        this.exporterView.setSelection(Jour.getHeaders());
+    }
+
+    private void test (ActionEvent action) {
+        if (this.exporterView.getSelectedCheckBoxes() != null && this.exporterView.getSelectedCheckBoxes().size() > 0) {
             System.out.println("Les cases cochées sont :");
             ArrayList<String> coches = new ArrayList<String>();
             for (CheckBox cb : exporterView.getSelectedCheckBoxes()) {
                 System.out.println(cb.getText());
                 coches.add(cb.getText());
             }
+
             String table = exporterView.getSelectedRadioButton().getText();
+            ArrayList<String> contenu = new ArrayList<String>();
+
             if (table.equals("Jour")) {
-                coches = this.transformeColonneJour(coches);
+                contenu = Jour.getJoursCSV(coches);
 
             } else if (table.equals("Compteur")) {
-                coches = this.transformeColonneCompteur(coches);
+                contenu = Compteur.getCompteursCSV(coches);
 
             } else if (table.equals("Releve Journalier")) {
-                coches = this.transformeColonneReleveJournalier(coches);
-                table = "vue_ReleveJournalierResume";
-            } 
+                contenu = ReleveJournalier.getRelevesCSV(coches);
+            } else if (table.equals("Quartier")) {
+                contenu = Quartier.getQuartiersCSV(coches);
+            }
 
-            ArrayList<String> contenu = DatabaseAccess.exporterRequete(coches, table);
 
             ReadWriteFile.writeCsv(ReadWriteFile.fileChooser(), contenu);
         }
     }
 
     public void selectionEnregistrer(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-        String selected = this.exporterView.getSelected();
+        String selected = ((RadioButton) exporterView.getToggleGroup().getSelectedToggle()).getText();
         if (selected.equals("Jour")){
-            exporterView.setSelectionJour();
+            this.exporterView.setSelection(Jour.getHeaders());
 
         } else if (selected.equals("Compteur")){
-            exporterView.setSelectionCompteur();
+            this.exporterView.setSelection(Compteur.getHeaders());
 
         } else if (selected.equals("Releve Journalier")){
-            exporterView.setSelectionReleveJournalier();
+            this.exporterView.setSelection(ReleveJournalier.getHeadersSimplified());
+        } else if (selected.equals("Quartier")){
+            this.exporterView.setSelection(Quartier.getHeaders());
         }
     }
-
-    private ArrayList<String> transformeColonneJour(ArrayList<String> contenu){
-        ArrayList<String> colonne = new ArrayList<String>();
-        for (String s : contenu) {
-            if (s.equals("Date")){
-                colonne.add("jourDate");
-            } else if (s.equals("Jour de la semaine")){
-                colonne.add("jourDeSemaine");
-            } else if (s.equals("Temperature")){
-                colonne.add("temperature");
-            }
-        }
-        return colonne;
-    }
-
-    private ArrayList<String> transformeColonneCompteur(ArrayList<String> contenu){
-        ArrayList<String> colonne = new ArrayList<String>();
-        for (String s : contenu) {
-            if (s.equals("Numero")){
-                colonne.add("Numero");
-            } else if (s.equals("Libelle")){
-                colonne.add("libelle");
-            } else if (s.equals("Direction")){
-                colonne.add("direction");
-            } else if (s.equals("Observations")){
-                colonne.add("observations");
-            } else if (s.equals("Longitude")){
-                colonne.add("longitude");
-            } else if (s.equals("Latitude")){
-                colonne.add("latitude");
-            } else if (s.equals("Le Quartier")){
-                colonne.add("leQuartier");
-            }
-        }
-        return colonne;
-    }
-
-    private ArrayList<String> transformeColonneReleveJournalier(ArrayList<String> contenu){
-        ArrayList<String> colonne = new ArrayList<String>();
-        for (String s : contenu) {
-            if (s.equals("Compteur")){
-                colonne.add("leCompteur");
-            } else if (s.equals("Jour")){
-                colonne.add("leJour");
-            } else if (s.equals("Probabilite d'anomalie")){
-                colonne.add("probabiliteAnomalie");
-            } else if (s.equals("Total des releves")){
-                colonne.add("total");
-            } else if (s.equals("Heure la plus frequentee")){
-                colonne.add("heureMax");
-            } else if (s.equals("Passage maximum")){
-                colonne.add("freqHeureMax");
-            }
-        }
-        return colonne;
-    }
-
+    
 }

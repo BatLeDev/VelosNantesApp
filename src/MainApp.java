@@ -16,7 +16,7 @@ public class MainApp extends Application {
      * The unique instance of the {@link Rooter} class. It's used to change the
      * current page.
      */
-    private Rooter rooter;
+    private Rooter rooter; 
 
     /**
      * Main method
@@ -35,8 +35,13 @@ public class MainApp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        // Rooter initialization
-        rooter = new Rooter(primaryStage);
+        rooter = new Rooter(primaryStage); // Rooter initialization
+
+        // Download Database        
+        DatabaseAccess.getQuartiers();
+        DatabaseAccess.getCompteurs();
+        DatabaseAccess.getJour();
+        DatabaseAccess.getReleveJournaliers();
 
         // Set the icon of the application
         primaryStage.getIcons().add(new Image("./ressources/images/logo.png"));
