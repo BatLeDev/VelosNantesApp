@@ -8,7 +8,6 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 
 import models.*;
-
 import utilities.BCrypt;
 
 public class DatabaseAccess {
@@ -167,8 +166,7 @@ public class DatabaseAccess {
 
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement statement = DatabaseConnection.getConnection();
 
             String query = "SELECT * FROM Quartier";
             ResultSet resultSet = statement.executeQuery(query);
@@ -196,8 +194,7 @@ public class DatabaseAccess {
 
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement statement = DatabaseConnection.getConnection();
 
             String query = "SELECT * FROM Jour";
             ResultSet resultSet = statement.executeQuery(query);
@@ -225,8 +222,7 @@ public class DatabaseAccess {
 
         try {
             // Connection to the database
-            Connection connection = DatabaseConnection.getConnection();
-            Statement statement = connection.createStatement();
+            Statement statement = DatabaseConnection.getConnection();
 
             String query = "SELECT * FROM ReleveJournalier";
             ResultSet resultSet = statement.executeQuery(query);

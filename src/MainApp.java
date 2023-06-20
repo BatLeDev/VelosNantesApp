@@ -3,7 +3,8 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-// Utilities import
+// Project imports
+import database.DatabaseAccess;
 import utilities.Rooter;
 
 /**

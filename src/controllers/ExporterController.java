@@ -1,4 +1,4 @@
-ackage controllers;
+package controllers;
 
 import java.util.ArrayList;
 
@@ -23,13 +23,7 @@ public class ExporterController  {
         this.exporterView = exporterView;
     }
 
-    public void setupEnregistrer() {
-        this.exporterView.getToggleGroup().selectedToggleProperty().addListener(this::selectionEnregistrer);
-        this.exporterView.getEnregistrer().setOnAction(this::test);
-        this.exporterView.setSelection(Jour.getHeaders());
-    }
-
-    private void test (ActionEvent action) {
+    public void test (ActionEvent action) {
         if (this.exporterView.getSelectedCheckBoxes() != null && this.exporterView.getSelectedCheckBoxes().size() > 0) {
             System.out.println("Les cases cochées sont :");
             ArrayList<String> coches = new ArrayList<String>();
@@ -59,7 +53,7 @@ public class ExporterController  {
     }
 
     public void selectionEnregistrer(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-        String selected = ((RadioButton) exporterView.getToggleGroup().getSelectedToggle()).getText();
+        String selected = this.exporterView.getSelected();
         if (selected.equals("Jour")){
             this.exporterView.setSelection(Jour.getHeaders());
 

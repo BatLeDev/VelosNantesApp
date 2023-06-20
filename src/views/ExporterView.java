@@ -102,4 +102,7 @@ public class ExporterView extends BorderPane {
         this.setCenter(tmp);
     }
 
+    public String getSelected() {
+        return ((RadioButton) this.toggleGroup.getSelectedToggle()).getText();
+    }
 }

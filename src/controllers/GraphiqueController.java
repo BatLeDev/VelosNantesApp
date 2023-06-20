@@ -11,7 +11,6 @@ import models.Compteur;
 import models.ReleveJournalier;
 
 public class GraphiqueController {
-    
     private Rooter rooter;
     private GraphiqueView graphiqueView;
     ArrayList<Compteur> compteurs;
@@ -22,11 +21,6 @@ public class GraphiqueController {
         this.graphiqueView = graphiqueView;
 
         this.compteurs = Compteur.getAll();
-        this.setupSelection();
-    }
-
-    public void setupSelection() {
-        graphiqueView.getGenererButton().setOnAction(this::requete);
         this.setupCompteurs();
     }
     
@@ -41,7 +35,7 @@ public class GraphiqueController {
         graphiqueView.getToutDeselectionner().setOnAction(this::toutDeselectionner);
     }
 
-    private void requete (ActionEvent event) {
+    public void requete (ActionEvent event) {
         if (this.checkDate() && this.checkSelection()){
             String typeSomme = graphiqueView.getTypeSommeComboBox().getValue();
             String typeTemps = graphiqueView.getTypeTempsComboBox().getValue();
