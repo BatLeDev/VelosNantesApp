@@ -48,19 +48,19 @@ public class CarteView extends BorderPane {
         Label loadingLabel = new Label("Chargement en cours ... (Cela peut dépendre de la connexion internet)");
         this.setCenter(loadingLabel);
 
-        AnchorPane legendPane = this.createLegendPane();
+        // AnchorPane legendPane = this.createLegendPane();
 
-        // Create the map view
-        WebView webView = new WebView();
-        this.webEngine = webView.getEngine();
-        this.webEngine.loadContent(ReadWriteFile.readHTMLFile(CARTE_HTML_PATH));
+        // // Create the map view
+        // WebView webView = new WebView();
+        // this.webEngine = webView.getEngine();
+        // this.webEngine.loadContent(ReadWriteFile.readHTMLFile(CARTE_HTML_PATH));
 
-        // Superposition of the map and the legend
-        this.content = new StackPane();
-        this.content.getChildren().addAll(webView, legendPane);
+        // // Superposition of the map and the legend
+        // this.content = new StackPane();
+        // this.content.getChildren().addAll(webView, legendPane);
 
-        // Listener to know when the map is loaded
-        this.webEngine.getLoadWorker().stateProperty().addListener(this.carteController::webMachineLoaded);
+        // // Listener to know when the map is loaded
+        // this.webEngine.getLoadWorker().stateProperty().addListener(this.carteController::webMachineLoaded);
     }
 
     /**

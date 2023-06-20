@@ -1,9 +1,10 @@
 package views;
 
+// Java imports
 import java.util.ArrayList;
 
-import controllers.ExporterController;
-import javafx.geometry.Insets;
+// JavaFX imports 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -11,11 +12,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+// Project imports
 import controllers.ExporterController;
-import utilities.Rooter;
 
 /**
  * This class represents the view of the Exporter page.
@@ -24,6 +25,7 @@ import utilities.Rooter;
 public class ExporterView extends BorderPane {
     private ExporterController exporterController;
 
+    private HBox choiceTable;
     private ToggleGroup toggleGroup;   
 
     private ArrayList<CheckBox> checkBoxes;
@@ -38,39 +40,42 @@ public class ExporterView extends BorderPane {
     public ExporterView() {
         this.exporterController = new ExporterController(this);
 
-        Pane top = initialiseGenererPane();
-        this.setTop(top);
-        this.enregistrer = new Button("Enregistrer (csv)");
+        // Line 1 : Title
+        Label title = new Label("Générer un fichier csv");
+        title.getStyleClass().add("title");
+
+        // Line 2 : Choice of table / modele
+        initialiseChoiceTable();
+
+        VBox top = new VBox();
+        top.setSpacing(20);
+        top.getChildren().addAll(title, choiceTable);
+        top.setAlignment(Pos.CENTER);
+
+        setTop(top);
+
+        this.enregistrer = new Button("Enregistrer");
         this.setBottom(enregistrer);
         this.enregistrer.setOnAction(this.exporterController::enregistrer);
     }
 
-    private Pane initialiseGenererPane(){
-        VBox ret = new VBox();
-        ret.setPadding(new Insets(10));
-        ret.setSpacing(10);
-        ret.setStyle("-fx-background-color: beige;");
+    private void initialiseChoiceTable() {
+        this.choiceTable = new HBox();
+        this.choiceTable.setAlignment(Pos.CENTER);
+        this.choiceTable.setSpacing(25);
 
-        Label source = new Label("Generer un fichier (a partir de donnees brut)");
-
-        this.toggleGroup = new ToggleGroup();
-        FlowPane choix = new FlowPane();
-        RadioButton jourButton = new RadioButton("Jour");
-        jourButton.setSelected(true);
-        toggleGroup.getToggles().add(jourButton);
-        RadioButton compteurButton = new RadioButton("Compteur");
-        toggleGroup.getToggles().add(compteurButton);
-        RadioButton releveJournalierButton = new RadioButton("Releve Journalier");
-        toggleGroup.getToggles().add(releveJournalierButton);
-        RadioButton quartierButton = new RadioButton("Quartier");
-        toggleGroup.getToggles().add(quartierButton);
+        this.toggleGroup = new ToggleGroup(); // Group of radio buttons
         toggleGroup.selectedToggleProperty().addListener(this.exporterController::selectionEnregistrer);
 
-        choix.getChildren().addAll(jourButton, compteurButton, releveJournalierButton, quartierButton);
+        // Creation of each radio button
+        RadioButton jourButton = new RadioButton("Jour");
+        RadioButton compteurButton = new RadioButton("Compteur");
+        RadioButton quartierButton = new RadioButton("Quartier");
+        RadioButton releveJournalierButton = new RadioButton("Releve Journalier");
+        jourButton.setSelected(true);
 
-        ret.getChildren().addAll(source,choix);
-
-        return ret;
+        toggleGroup.getToggles().addAll(jourButton, compteurButton, quartierButton, releveJournalierButton);
+        this.choiceTable.getChildren().addAll(jourButton, compteurButton, quartierButton, releveJournalierButton);
     }
 
     public ArrayList<CheckBox> getSelectedCheckBoxes() {

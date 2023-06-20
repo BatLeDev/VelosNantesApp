@@ -1,0 +1,17 @@
+.title {
+    -fx-alignment: center;
+    -fx-padding: 15px 0 0 0;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+.radio-button {
+    -fx-font-size: 15;
+}
+
+.radio-button .radio {
+    -fx-border-width: 2px;
+    -fx-border-color: #6807f7;
+    -fx-background-color: white;
+    -fx-border-radius: 20px;
+}
