@@ -1,50 +1,61 @@
 package database;
 
+// SQL imports
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSetMetaData;
 
+// Java imports
 import java.util.ArrayList;
 
+// Project imports
 import models.*;
 import utilities.BCrypt;
 
+/**
+ * This class is used to access the database
+ */
 public class DatabaseAccess {
 
-/*
+    /*
     public static void exemple() {
         try {
             // Connection to the database
             Statement connection = DatabaseConnection.getConnection();
-
+        
             String query = "SELECT * FROM Quartier";
             ResultSet resultSet = connection.executeQuery(query);
-
+        
             printResult(resultSet);
-
+        
             resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-*/
-
+    
     public static void printResult(ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
-
+    
             for (int i = 1; i <= columnCount; i++) {
                 String columnName = metaData.getColumnName(i);
                 Object columnValue = resultSet.getObject(i);
-
+    
                 System.out.println(columnName + " : " + columnValue);
             }
             System.out.println();
         }
     }
+*/
 
+    /**
+     * Get the list of the counters with their statistics
+     * 
+     * @return The list of the counters with their statistics
+     */
     public static ArrayList<CompteurFull> getCompteursWithStats() {
         ArrayList<CompteurFull> compteurs = new ArrayList<CompteurFull>();
 
@@ -148,7 +159,8 @@ public class DatabaseAccess {
                 double longitude = resultSet.getDouble("longitude");
                 int idQuartier = resultSet.getInt("leQuartier");
 
-                Compteur compteur = new Compteur(numero, libelle, direction, observation, latitude, longitude, idQuartier);
+                Compteur compteur = new Compteur(numero, libelle, direction, observation, latitude, longitude,
+                        idQuartier);
                 compteurs.add(compteur);
             }
 
@@ -207,7 +219,7 @@ public class DatabaseAccess {
                 Jour jour = new Jour(date, j, temperatureMoyenne);
                 jours.add(jour);
             }
-                
+
             resultSet.close();
 
         } catch (SQLException e) {
@@ -217,7 +229,7 @@ public class DatabaseAccess {
         return jours;
     }
 
-    public static ArrayList<ReleveJournalier> getReleveJournaliers () {
+    public static ArrayList<ReleveJournalier> getReleveJournaliers() {
         ArrayList<ReleveJournalier> releveJournaliers = new ArrayList<ReleveJournalier>();
 
         try {
@@ -255,9 +267,9 @@ public class DatabaseAccess {
                 int heure22 = resultSet.getInt("heure22");
                 int heure23 = resultSet.getInt("heure23");
                 String observation = resultSet.getString("probabiliteAnomalie");
-                int[] heures = {heure00, heure01, heure02, heure03, heure04, heure05, heure06,
-                     heure07, heure08, heure09, heure10, heure11, heure12, heure13, heure14, heure15,
-                      heure16, heure17, heure18, heure19, heure20, heure21, heure22, heure23};
+                int[] heures = { heure00, heure01, heure02, heure03, heure04, heure05, heure06,
+                        heure07, heure08, heure09, heure10, heure11, heure12, heure13, heure14, heure15,
+                        heure16, heure17, heure18, heure19, heure20, heure21, heure22, heure23 };
 
                 ReleveJournalier releveJournalier = new ReleveJournalier(numero, date, heures, observation);
                 releveJournaliers.add(releveJournalier);
@@ -275,8 +287,8 @@ public class DatabaseAccess {
     /**
      * Check if the username exists and if the password is correct
      * 
-     * @param username
-     * @param password
+     * @param username The username
+     * @param password The password
      * @return -1 if username doesn't exist, 0 if password is incorrect, 1 if all is correct
      */
     public static int checkLogin(String username, String password) {
@@ -335,7 +347,7 @@ public class DatabaseAccess {
     }
 
     /**
-     * Create user account
+     * Create user account (insert into the database)
      * 
      * @param identifiant The username of the account
      * @param motDePasse The password of the account
@@ -354,6 +366,6 @@ public class DatabaseAccess {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }   
+    }
 
 }

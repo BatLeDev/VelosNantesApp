@@ -15,7 +15,6 @@ import javafx.geometry.Insets;
 // Project imports
 import controllers.CarteController;
 import utilities.ReadWriteFile;
-import utilities.Rooter;
 
 /**
  * This class represents the view of the Carte page.
@@ -38,11 +37,9 @@ public class CarteView extends BorderPane {
 
     /**
      * Initialize elements of the view and create the controller
-     * 
-     * @param rooter The rooter of the application
      */
-    public CarteView(Rooter rooter) {
-        this.carteController = new CarteController(rooter, this);
+    public CarteView() {
+        this.carteController = new CarteController(this);
 
         // Show a loading pane while map and markers are loading.
         Label loadingLabel = new Label("Chargement en cours ... (Cela peut dépendre de la connexion internet)");

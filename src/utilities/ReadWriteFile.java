@@ -45,6 +45,8 @@ public class ReadWriteFile {
      * This method opens a file chooser and returns the path of the selected file.
      * 
      * @return the path of the selected file
+     * @throws NullPointerException if no file is selected
+     * @throws IllegalArgumentException if the file is not a csv file
      */
     public static String fileChooser() {
         // Create a window to select a file

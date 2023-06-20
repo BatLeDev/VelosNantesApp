@@ -59,7 +59,7 @@ public class ExporterView extends VBox {
     }
 
     /**
-     * This method initialise the radio buttons and the toggle group.
+     * This method initialise radio buttons and his group.
      */
     private void initialiseChoiceTable() {
         // Creation of each radio button
@@ -104,7 +104,7 @@ public class ExporterView extends VBox {
     }
 
     /**
-     * To get the selected check boxes.
+     * To get the selected list check boxes.
      * 
      * @return ArrayList of text which contains the name of the selected check boxes
      */
