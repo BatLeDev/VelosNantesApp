@@ -112,60 +112,6 @@ public class GraphiqueController {
         this.graphiqueView.setGraphesPane(lineChart.getLineChart());
     }
 
-    private ArrayList<String> getReleves(String typeTemps, String typeSomme, String dateDebut, String dateFin, ArrayList<Integer> compteurs){
-        ArrayList<String> ret = new ArrayList<String>();
-        ArrayList<ReleveJournalier> tmp = new ArrayList<ReleveJournalier>();
-        if (typeTemps.equals("Jour de la Semaine")) {
-            for (int i = 1; i < 8; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByDayOfAWeek(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-
-        } else if (typeTemps.equals("Jour du Mois")) {
-            for (int i = 1; i < 32; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByDayOfAMonth(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-
-        } else if (typeTemps.equals("Mois")) {
-            for (int i = 1; i < 13; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByMonth(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-
-        } else if (typeTemps.equals("Annee")) {
-            for (int i = 2020; i < 2024; i++) {
-                int somme = 0;
-                tmp = ReleveJournalier.getAllRelevesByYear(i, dateDebut, dateFin, compteurs);
-                for (ReleveJournalier releve : tmp) {
-                    somme += releve.getNbPassageTotal();
-                }
-                ret.add(i+","+somme);
-            }
-        }
-
-        if (typeSomme.equals("Moyenne")) {
-            for (int i = 0; i < ret.size(); i++) {
-                String[] tmp2 = ret.get(i).split(",");
-                int somme = Integer.parseInt(tmp2[1]);
-                somme = somme / compteurs.size();
-                ret.set(i, tmp2[0] + "," + somme);
-            }
-        }
-        return ret;
-    }
 
     private boolean checkDate() {
         boolean ret = true;

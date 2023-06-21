@@ -120,7 +120,7 @@ public class GraphiqueView extends BorderPane {
 
         this.typeSommeComboBox = new ComboBox<String>();
         this.typeSommeComboBox.getItems().addAll("Somme", "Moyenne");
-        this.typeSommeComboBox.setValue("Somme");
+        this.typeSommeComboBox.setValue("Moyenne");
 
         Label desReleves = new Label("  des releves, de  ");
 
