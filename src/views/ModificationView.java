@@ -57,6 +57,7 @@ public class ModificationView extends BorderPane {
 
         this.modificationController.setView(this);
         this.selectionGroup.selectedToggleProperty().addListener(this.modificationController::changerTable);
+        this.modificationController.changerTable(null, null, null);
     }
 
     public TableView getTable() {
@@ -65,6 +66,7 @@ public class ModificationView extends BorderPane {
 
     public void setTable(TableView<IModels> table) {
         this.table = table;
+        this.table.setStyle("-fx-font-size: 15px;"); 
         this.setCenter(this.table);
     }
 
