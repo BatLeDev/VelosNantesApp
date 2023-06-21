@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import models.IModels;
 
 /**
  * This class represents the view of the Exporter page.
@@ -17,7 +18,7 @@ public class ModificationView extends BorderPane {
     private ModificationController modificationController;
 
     private ToggleGroup selectionGroup;
-    private TableView table;
+    private TableView<IModels> table;
     private Label message;
 
     public ModificationView(ModificationController modificationController) {
@@ -25,19 +26,24 @@ public class ModificationView extends BorderPane {
         
         this.selectionGroup = new ToggleGroup();
         RadioButton compteurRadioButton = new RadioButton("Compteur");
+
         RadioButton quartierRadioButton = new RadioButton("Quartier");
+        compteurRadioButton.setSelected(true);
+
         RadioButton jourRadioButton = new RadioButton("Jour");
+
         RadioButton releveRadioButton = new RadioButton("Releve Journalier");
+
         compteurRadioButton.setToggleGroup(this.selectionGroup);
         quartierRadioButton.setToggleGroup(this.selectionGroup);
         jourRadioButton.setToggleGroup(this.selectionGroup);
         releveRadioButton.setToggleGroup(this.selectionGroup);
-        compteurRadioButton.setSelected(true);
+
         HBox selectionBox = new HBox(compteurRadioButton, quartierRadioButton, jourRadioButton, releveRadioButton);
         selectionBox.setSpacing(10);
         selectionBox.setAlignment(javafx.geometry.Pos.CENTER);
 
-        this.table = new TableView();
+        this.table = new TableView<IModels>();
 
         this.message = new Label("> ");
         this.message.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
@@ -47,6 +53,22 @@ public class ModificationView extends BorderPane {
         this.setCenter(this.table);
         this.setBottom(this.message);
         this.message.setPrefHeight(50);
+    }
+
+    public TableView<IModels> getTable() {
+        return this.table;
+    }
+
+    public void setTable(TableView<IModels> table) {
+        this.table = table;
+    }
+
+    public String getSelection() {
+        return ((RadioButton) this.selectionGroup.getSelectedToggle()).getText();
+    }
+
+    public void setMessage(String message) {
+        this.message.setText("> " + message);
     }
 
 
