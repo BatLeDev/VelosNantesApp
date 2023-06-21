@@ -4,6 +4,7 @@ import controllers.ModificationController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
@@ -18,7 +19,7 @@ public class ModificationView extends BorderPane {
     private ModificationController modificationController;
 
     private ToggleGroup selectionGroup;
-    private TableView<IModels> table;
+    private TableView table;
     private Label message;
 
     public ModificationView(ModificationController modificationController) {
@@ -43,7 +44,7 @@ public class ModificationView extends BorderPane {
         selectionBox.setSpacing(10);
         selectionBox.setAlignment(javafx.geometry.Pos.CENTER);
 
-        this.table = new TableView<IModels>();
+        this.table = new TableView();
 
         this.message = new Label("> ");
         this.message.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
@@ -53,14 +54,18 @@ public class ModificationView extends BorderPane {
         this.setCenter(this.table);
         this.setBottom(this.message);
         this.message.setPrefHeight(50);
+
+        this.modificationController.setView(this);
+        this.selectionGroup.selectedToggleProperty().addListener(this.modificationController::changerTable);
     }
 
-    public TableView<IModels> getTable() {
+    public TableView getTable() {
         return this.table;
     }
 
     public void setTable(TableView<IModels> table) {
         this.table = table;
+        this.setCenter(this.table);
     }
 
     public String getSelection() {

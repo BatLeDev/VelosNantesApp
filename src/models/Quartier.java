@@ -1,6 +1,9 @@
 package models;
 
 import java.util.HashMap;
+
+import javafx.util.Callback;
+
 import java.util.ArrayList;
 
 /**
@@ -24,6 +27,16 @@ public class Quartier implements IModels{
     private static HashMap<Integer,Quartier> quartierList = new HashMap<Integer,Quartier>();
 
     // ----------------------------- static methods -----------------------------
+
+
+    /**
+     * Get the list of all Quartiers
+     * 
+     * @return an ArrayList of all Quartiers
+     */
+    public static ArrayList<Quartier> getAll() {
+        return new ArrayList<Quartier>(Quartier.quartierList.values());
+    }
 
     /**
      * Get a quartier by his id
