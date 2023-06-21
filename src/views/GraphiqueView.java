@@ -1,10 +1,11 @@
 package views;
 
-import javafx.geometry.Pos;
-
+// Java imports
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+// JavaFX imports
+import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
@@ -20,19 +21,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+// Project imports
+import controllers.GraphiqueController;
 import utilities.DatePickerConverter;
-import utilities.Rooter;
 
 /**
  * This class represents the view of the Exporter page.
  * This page is a form to export data.
  */
 public class GraphiqueView extends BorderPane {
-
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+    private GraphiqueController graphiqueController;
 
     // Elements of the view
-    private Rooter rooter;
     private ComboBox<String> typeSommeComboBox;
     private ComboBox<String> typeTempsComboBox;
     private DatePicker dateDebut;
@@ -49,22 +51,19 @@ public class GraphiqueView extends BorderPane {
      * 
      * Initialise the elements of the view
      */
-    public GraphiqueView() {                
+    public GraphiqueView() {
+        this.graphiqueController = new GraphiqueController(this);
+                
         // Creation of the elements of the view
-        compteurCheckBoxes = new ArrayList<CheckBox>();
-
         Pane graphiquePane = this.initialiseRequetePane();
         this.setTop(graphiquePane);
 
         this.genererButton = new Button("Générer");
+        this.genererButton.setOnAction(this.graphiqueController::requete);
         setCenter(this.genererButton);
 
         setAlignment(graphiquePane, Pos.CENTER);
 
-    }
-
-    public Button getGenererButton() {
-        return genererButton;
     }
 
     public ComboBox<String> getTypeSommeComboBox() {
@@ -91,14 +90,14 @@ public class GraphiqueView extends BorderPane {
         return toutDeselectionner;
     }
 
-    public void toutSelectionner() {
-        for (CheckBox checkBox : compteurCheckBoxes) {
+    private void toutSelectionner() {
+        for (CheckBox checkBox : this.compteurCheckBoxes) {
             checkBox.setSelected(true);
         }
     }
 
-    public void toutDeselectionner() {
-        for (CheckBox checkBox : compteurCheckBoxes) {
+    private void toutDeselectionner() {
+        for (CheckBox checkBox : this.compteurCheckBoxes) {
             checkBox.setSelected(false);
         }
     }
@@ -147,11 +146,8 @@ public class GraphiqueView extends BorderPane {
         return ret;
     }
 
-
     public void setCompteursPane(ArrayList<String> contenu) {
-        
         this.compteurCheckBoxes = new ArrayList<CheckBox>();
-
 
         VBox ret = new VBox();
         ret.setPadding(new Insets(10));
@@ -161,11 +157,15 @@ public class GraphiqueView extends BorderPane {
         HBox tmp = new HBox();
         tmp.setSpacing(10);
         toutSelectionner = new Button("Tout selectionner");
+        toutSelectionner.setOnAction(e -> toutSelectionner());
+
         toutDeselectionner = new Button("Tout déselectionner");
+        toutDeselectionner.setOnAction(e -> toutDeselectionner());
 
         GridPane compteursPane = new GridPane();
         compteursPane.setPadding(new Insets(10));
         compteursPane.setVgap(10);
+
         int i = 0;
         int j = 0;
         for (String string : contenu) {
@@ -177,10 +177,9 @@ public class GraphiqueView extends BorderPane {
                 i = 0;
                 j++;
             }
-        
             compteurCheckBoxes.add(tmpCompteur);
-
         }
+        
         VBox compteursVBox = new VBox();
         ScrollPane scrollPane = new ScrollPane(compteursPane);
         scrollPane.setFitToWidth(true);
@@ -195,7 +194,6 @@ public class GraphiqueView extends BorderPane {
     }
 
     public void setGraphesPane(LineChart<String, Number> graphe) {
-        System.out.println("DATE_FORMAT");
         StackPane graphPane = new StackPane(graphe);
         graphPane.setStyle("-fx-background-color: cyan;");
         BorderPane tmp = new BorderPane();

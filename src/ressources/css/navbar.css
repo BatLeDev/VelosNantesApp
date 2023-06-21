@@ -1,6 +1,7 @@
 .navbar-view {
     -fx-padding: 10px;
     -fx-alignment: center;
+    -fx-background-color : white;
 }
 
 .navbar-box {

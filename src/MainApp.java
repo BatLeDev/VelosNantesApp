@@ -42,8 +42,7 @@ public class MainApp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-
-        // Download Database        
+        // Download Database
         DatabaseAccess.getQuartiers();
         DatabaseAccess.getCompteurs();
         DatabaseAccess.getJour();

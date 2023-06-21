@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 // Project imports
 import views.*;
 import views.connexion.*;
-import controllers.GraphiqueController;
 import controllers.ModificationController;
 
 /**
@@ -68,14 +67,13 @@ public class Rooter {
         this.views = new HashMap<String, Pane>();
 
         // initialization of pages
-        CarteView carteView = new CarteView(this);
+        CarteView carteView = new CarteView();
         views.put("Carte", carteView);
 
         GraphiqueView graphiqueView = new GraphiqueView();
         views.put("Graphique", graphiqueView);
-        GraphiqueController graphiqueController = new GraphiqueController(this);
 
-        ExporterView exporterView = new ExporterView(this);
+        ExporterView exporterView = new ExporterView();
         views.put("Exporter", exporterView);
 
         ModificationController modificationController = new ModificationController(this);
@@ -100,6 +98,7 @@ public class Rooter {
         this.mainScene.getStylesheets().add("file:src/ressources/css/carte.css");
         this.mainScene.getStylesheets().add("file:src/ressources/css/navbar.css");
         this.mainScene.getStylesheets().add("file:src/ressources/css/connexion.css");
+        this.mainScene.getStylesheets().add("file:src/ressources/css/exporter.css");
 
         // Configuration of the main window
         primaryStage.setScene(mainScene);
