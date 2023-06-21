@@ -64,8 +64,10 @@ public class GraphiqueController {
                     }
 
                     abs.add(Jour.jourDeLaSemaine[i-1]);
+                    if (typeSomme.equals("Moyenne")) {
+                        somme = somme / tmp.size();
+                    }
                     releves.add(somme);
-                    System.out.println(somme +","+i);
                 }
 
             } else if (typeTemps.equals("Jour du Mois")) {
@@ -76,6 +78,9 @@ public class GraphiqueController {
                         somme += releve.getNbPassageTotal();
                     }
                     abs.add(i+"");
+                    if (typeSomme.equals("Moyenne")) {
+                        somme = somme / tmp.size();
+                    }
                     releves.add(somme);
                 }
 
@@ -87,6 +92,9 @@ public class GraphiqueController {
                         somme += releve.getNbPassageTotal();
                     }
                     abs.add(Jour.moisDeLAnnee[i-1]);
+                    if (typeSomme.equals("Moyenne")) {
+                        somme = somme / tmp.size();
+                    }
                     releves.add(somme);
                 }
 
@@ -98,15 +106,13 @@ public class GraphiqueController {
                         somme += releve.getNbPassageTotal();
                     }
                     abs.add(i+"");
+                    if (typeSomme.equals("Moyenne")) {
+                        somme = somme / tmp.size();
+                    }
                     releves.add(somme);
                 }
             }
 
-            if (typeSomme.equals("Moyenne")) {
-                for (int i = 0; i < releves.size(); i++) {
-                    releves.set(i, releves.get(i) / tmp.size());
-                }
-            }
             this.ajoutGraphe(releves, abs);
         }
     }
