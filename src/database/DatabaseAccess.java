@@ -376,7 +376,7 @@ public class DatabaseAccess {
         // Connection to the database
         Statement connection = DatabaseConnection.getConnection();
 
-        String query = "INSERT INTO Jour VALUES ('" + jour.getDate() + "', '" + jour.getJour() + jour.getTemperatureMoyenne()+"')";
+        String query = "INSERT INTO Jour VALUES ('" + jour.getDate() + "', '" + jour.getJour() +"','"+jour.getTemperatureMoyenne()+"')";
         connection.executeUpdate(query);
 
      }
