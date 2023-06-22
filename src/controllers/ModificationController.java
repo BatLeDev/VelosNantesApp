@@ -1,12 +1,16 @@
 package controllers;
 
+// Projet import
+import database.DatabaseAccess;
 import views.ModificationView;
 import models.*;
+import utilities.Rooter;
 
+// Java import
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import database.DatabaseAccess;
+// JavaFX import
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,27 +19,18 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.cell.PropertyValueFactory;
-import utilities.Rooter;
-
 
 public class ModificationController  {
-    private Rooter rooter;
     private ModificationView modificationView;
     private ObservableList<IModels> data;
 
-    public ModificationController(Rooter rooter) {
-        this.rooter = rooter;
-    }
-
-    public void setView(ModificationView modificationView) {
+    public ModificationController(ModificationView modificationView) {
         this.modificationView = modificationView;
     }
 
-
     public void changerTable(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue){
         String getSelection = this.modificationView.getSelection();
-        TableView table = new TableView();
-        //if (!this.rooter.getPermission().equals("user")) {}
+        TableView<IModels> table = new TableView<IModels>();
         table.setEditable(true);
 
         try {
@@ -75,7 +70,6 @@ public class ModificationController  {
            this.modificationView.setMessage(e.getMessage());
         }
     }
-
 
     public void ajouter(ActionEvent event){
         IModels model = null;
@@ -137,7 +131,7 @@ public class ModificationController  {
     }
 
     public void supprimer(ActionEvent event){
-        // Récupérer la ligne sélectionnée dans le TableView
+        // Récupérer la ligne sélectionnée dans le TableView<IModels>
         try {
             IModels selected = null;
             String selection = this.modificationView.getSelection();

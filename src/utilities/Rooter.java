@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 // Project imports
 import views.*;
 import views.connexion.*;
-import controllers.ModificationController;
 
 /**
  * This class represents the rooter of the application. 
@@ -78,8 +77,7 @@ public class Rooter {
         ExporterView exporterView = new ExporterView();
         views.put("Exporter", exporterView);
 
-        ModificationController modificationController = new ModificationController(this);
-        ModificationView modificationView = new ModificationView(modificationController);
+        ModificationView modificationView = new ModificationView();
         views.put("Modification", modificationView);
 
         LoginView loginView = new LoginView(this);

@@ -114,8 +114,6 @@ public class GraphiqueView extends BorderPane {
 
     private Pane initialiseRequetePane() {
         FlowPane ret = new FlowPane();
-        ret.setStyle("-fx-background-color: beige;");
-
         Label affichage = new Label("Affichage de la  ");
 
         this.typeSommeComboBox = new ComboBox<String>();
@@ -152,7 +150,6 @@ public class GraphiqueView extends BorderPane {
         VBox ret = new VBox();
         ret.setPadding(new Insets(10));
         ret.setSpacing(10);
-        ret.setStyle("-fx-background-color: pink;");
 
         HBox tmp = new HBox();
         tmp.setSpacing(10);
@@ -195,7 +192,6 @@ public class GraphiqueView extends BorderPane {
 
     public void setGraphesPane(LineChart<String, Number> graphe) {
         StackPane graphPane = new StackPane(graphe);
-        graphPane.setStyle("-fx-background-color: cyan;");
         BorderPane tmp = new BorderPane();
         tmp.setPadding(new Insets(15, 15, 30, 15));
         tmp.setCenter(graphPane);

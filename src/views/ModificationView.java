@@ -1,9 +1,10 @@
 package views;
 
+// Java imports
 import java.util.ArrayList;
 import java.util.Optional;
 
-import controllers.ModificationController;
+// JavaFX imports
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,8 +16,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+
+// Project imports
+import controllers.ModificationController;
 import models.IModels;
-import models.ReleveJournalier;
+
 
 /**
  * This class represents the view of the Exporter page.
@@ -26,37 +30,35 @@ public class ModificationView extends BorderPane {
     private ModificationController modificationController;
 
     private ToggleGroup selectionGroup;
-    private TableView table;
+    private TableView<IModels> table;
     private Label message;
     private ArrayList<TextField> textFields;
     private Button ajouterButton;
     private Button supprimerButton;
 
-    public ModificationView(ModificationController modificationController) {
-        this.modificationController = modificationController;
-        
+    public ModificationView() {
+        this.modificationController = new ModificationController(this);
+
         this.textFields = new ArrayList<TextField>();
 
         this.selectionGroup = new ToggleGroup();
         RadioButton compteurRadioButton = new RadioButton("Compteur");
         compteurRadioButton.setSelected(true);
-
         RadioButton quartierRadioButton = new RadioButton("Quartier");
-
         RadioButton jourRadioButton = new RadioButton("Jour");
-
         RadioButton releveRadioButton = new RadioButton("Releve Journalier");
 
         compteurRadioButton.setToggleGroup(this.selectionGroup);
         quartierRadioButton.setToggleGroup(this.selectionGroup);
         jourRadioButton.setToggleGroup(this.selectionGroup);
         releveRadioButton.setToggleGroup(this.selectionGroup);
+        this.selectionGroup.selectedToggleProperty().addListener(this.modificationController::changerTable);
 
         HBox selectionBox = new HBox(compteurRadioButton, quartierRadioButton, jourRadioButton, releveRadioButton);
         selectionBox.setSpacing(10);
         selectionBox.setAlignment(javafx.geometry.Pos.CENTER);
 
-        this.table = new TableView();
+        this.table = new TableView<IModels>();
 
         this.ajouterButton = new Button("Ajouter");
         this.supprimerButton = new Button("Supprimer");
@@ -70,16 +72,13 @@ public class ModificationView extends BorderPane {
         this.setRight(supprimerButton);
         this.message.setPrefHeight(50);
 
-        this.modificationController.setView(this);
-        this.selectionGroup.selectedToggleProperty().addListener(this.modificationController::changerTable);
         this.ajouterButton.setOnAction(this.modificationController::ajouter);
         this.modificationController.changerTable(null, null, null);
 
-        
         supprimerButton.setOnAction(this.modificationController::supprimer);
     }
 
-    public TableView getTable() {
+    public TableView<IModels> getTable() {
         return this.table;
     }
 
@@ -145,7 +144,5 @@ public class ModificationView extends BorderPane {
         }
         return ret;
     }
-
-
 
 }
