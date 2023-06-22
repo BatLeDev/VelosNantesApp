@@ -5,21 +5,28 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 // JavaFX imports
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 // Project imports
 import controllers.ModificationController;
+import database.DatabaseAccess;
 import models.IModels;
+import utilities.Rooter;
 
 
 /**
@@ -35,6 +42,8 @@ public class ModificationView extends BorderPane {
     private ArrayList<TextField> textFields;
     private Button ajouterButton;
     private Button supprimerButton;
+    private HBox selectionBox;
+    private RadioButton compteRadioButton;
 
     public ModificationView() {
         this.modificationController = new ModificationController(this);
@@ -47,14 +56,17 @@ public class ModificationView extends BorderPane {
         RadioButton quartierRadioButton = new RadioButton("Quartier");
         RadioButton jourRadioButton = new RadioButton("Jour");
         RadioButton releveRadioButton = new RadioButton("Releve Journalier");
+        this.compteRadioButton = new RadioButton("Compte");
 
         compteurRadioButton.setToggleGroup(this.selectionGroup);
         quartierRadioButton.setToggleGroup(this.selectionGroup);
         jourRadioButton.setToggleGroup(this.selectionGroup);
         releveRadioButton.setToggleGroup(this.selectionGroup);
+        this.compteRadioButton.setToggleGroup(this.selectionGroup);
         this.selectionGroup.selectedToggleProperty().addListener(this.modificationController::changerTable);
 
-        HBox selectionBox = new HBox(compteurRadioButton, quartierRadioButton, jourRadioButton, releveRadioButton);
+        this.selectionBox = new HBox(compteurRadioButton, quartierRadioButton, jourRadioButton, releveRadioButton);
+        
         selectionBox.setSpacing(10);
         selectionBox.setAlignment(javafx.geometry.Pos.CENTER);
 
@@ -83,6 +95,7 @@ public class ModificationView extends BorderPane {
     }
 
     public void setTable(TableView<IModels> table) {
+        this.supprimerButton.setVisible(true);
         this.table = table;
 
         BorderPane borderPane = new BorderPane();
@@ -145,4 +158,59 @@ public class ModificationView extends BorderPane {
         return ret;
     }
 
+    public void updatePermissions(String typeDeCompte) {
+        if (typeDeCompte.equals("Administrateur")) {
+            this.selectionBox.getChildren().add(this.compteRadioButton);
+        } else {
+            this.selectionBox.getChildren().remove(this.compteRadioButton);
+        }
+    }
+
+    public void setAccountTable(ArrayList<String[]> comptes) {
+        this.supprimerButton.setVisible(false);
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10); // Espacement horizontal entre les colonnes
+        gridPane.setVgap(10); // Espacement vertical entre les lignes
+        gridPane.setPadding(new Insets(10)); // Marge interne du GridPane
+        
+        // Configuration des contraintes de colonnes pour l'alignement
+        ColumnConstraints col1Constraints = new ColumnConstraints();
+        col1Constraints.setPercentWidth(20);
+        ColumnConstraints col2Constraints = new ColumnConstraints();
+        col2Constraints.setPercentWidth(80);
+        gridPane.getColumnConstraints().addAll(col1Constraints, col2Constraints);
+        
+        int rowIndex = 0; // Indice de ligne
+        
+        for (String[] compte : comptes) {
+            if (compte[0].equals("Public")) { // Ignore le compte public
+                continue;
+            }
+            Label identifiantLabel = new Label(compte[0]);
+            ComboBox<String> typeCompteComboBox = createTypeCompteComboBox(compte[1]);
+
+            typeCompteComboBox.setOnAction(e -> { // Lorsqu'on change le type de compte, on met à jour la base de données
+                DatabaseAccess.updateAccount(compte[0], typeCompteComboBox.getValue());
+                this.setMessage("Le type de compte de " + compte[0] + " a été mis à jour.");
+            });
+            
+            gridPane.addRow(rowIndex, identifiantLabel, typeCompteComboBox);
+            rowIndex++;
+        }
+        
+        this.setCenter(gridPane);
+    }
+    
+    private ComboBox<String> createTypeCompteComboBox(String selectedValue) {
+        ObservableList<String> options = FXCollections.observableArrayList(
+                "Utilisateur",
+                "Elu",
+                "Administrateur");
+
+        ComboBox<String> comboBox = new ComboBox<>(options);
+        comboBox.setValue(selectedValue);
+
+        return comboBox;
+    }
 }

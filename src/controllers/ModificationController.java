@@ -4,7 +4,6 @@ package controllers;
 import database.DatabaseAccess;
 import views.ModificationView;
 import models.*;
-import utilities.Rooter;
 
 // Java import
 import java.sql.SQLException;
@@ -30,45 +29,56 @@ public class ModificationController  {
 
     public void changerTable(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue){
         String getSelection = this.modificationView.getSelection();
-        TableView<IModels> table = new TableView<IModels>();
-        table.setEditable(true);
+        if (getSelection.equals("Compte")){
+            showCompte();
+        } else {
+            TableView<IModels> table = new TableView<IModels>();
+            table.setEditable(true);
 
-        try {
-            String[] tab = new String[0];
-            if (getSelection.equals("Compteur")){
-                tab = Compteur.getColumns();
-                data = FXCollections.observableArrayList(Compteur.getAll());
+            try {
+                String[] tab = new String[0];
+                if (getSelection.equals("Compteur")){
+                    tab = Compteur.getColumns();
+                    data = FXCollections.observableArrayList(Compteur.getAll());
 
-            } else if (getSelection.equals("Quartier")){
-                tab = Quartier.getColumns();
-                data = FXCollections.observableArrayList(Quartier.getAll());
+                } else if (getSelection.equals("Quartier")){
+                    tab = Quartier.getColumns();
+                    data = FXCollections.observableArrayList(Quartier.getAll());
 
-            } else if (getSelection.equals("Jour")){
-                tab = Jour.getColumns();
-                data = FXCollections.observableArrayList(Jour.getAll());
+                } else if (getSelection.equals("Jour")){
+                    tab = Jour.getColumns();
+                    data = FXCollections.observableArrayList(Jour.getAll());
 
-            } else if (getSelection.equals("Releve Journalier")){
-                tab = ReleveJournalier.getColumns();  
-                data = FXCollections.observableArrayList(ReleveJournalier.getAllReleves());
+                } else if (getSelection.equals("Releve Journalier")){
+                    tab = ReleveJournalier.getColumns();  
+                    data = FXCollections.observableArrayList(ReleveJournalier.getAllReleves());
+                }
+
+                this.modificationView.setTextFields(tab);
+                for (String column : tab){
+                    TableColumn col = new TableColumn<>(column);
+                    col.setCellValueFactory(new PropertyValueFactory<>(column));
+
+
+                    col.setMinWidth(100);
+                    table.getColumns().add(col);
+                    
+                }
+                table.setItems(data); 
+
+                this.modificationView.setTable(table);
+
+            } catch (Exception e){
+            this.modificationView.setMessage(e.getMessage());
             }
-
-            this.modificationView.setTextFields(tab);
-            for (String column : tab){
-                TableColumn col = new TableColumn<>(column);
-                col.setCellValueFactory(new PropertyValueFactory<>(column));
-
-
-                col.setMinWidth(100);
-                table.getColumns().add(col);
-                
-            }
-            table.setItems(data); 
-
-            this.modificationView.setTable(table);
-
-        } catch (Exception e){
-           this.modificationView.setMessage(e.getMessage());
         }
+
+    }
+
+    public void showCompte(){
+        ArrayList<String[]> comptes = DatabaseAccess.getAccounts();
+        
+        this.modificationView.setAccountTable(comptes);
     }
 
     public void ajouter(ActionEvent event){

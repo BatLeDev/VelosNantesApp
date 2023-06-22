@@ -47,7 +47,7 @@ public class RegisterController extends ConnexionController {
             if (!fields[1].equals(fields[2])) { // Check if password and confirm password are the same
                 registerView.showErrorMessage("Les mots de passe ne correspondent pas");
             } else {
-                DatabaseAccess.createAcount(fields[0], fields[1], "Utilisateur");
+                DatabaseAccess.createAccount(fields[0], fields[1], "Utilisateur");
                 rooter.changePage(false, "Login");
             }
         }

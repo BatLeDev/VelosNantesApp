@@ -47,8 +47,10 @@ public class Rooter {
      * The navbar displayed (or not) at the top of the main BorderPane
      */
     private NavbarView navbarView;
+    private ModificationView modificationView;
 
     private String typeDeCompte;
+
 
     /**
      * This method is called by the MainApp class
@@ -77,8 +79,8 @@ public class Rooter {
         ExporterView exporterView = new ExporterView();
         views.put("Exporter", exporterView);
 
-        ModificationView modificationView = new ModificationView();
-        views.put("Modification", modificationView);
+        this.modificationView = new ModificationView();
+        views.put("Modification", this.modificationView);
 
         LoginView loginView = new LoginView(this);
         views.put("Login", loginView);
@@ -149,6 +151,11 @@ public class Rooter {
      */
     public void changePermission(String typeDeCompte) {
         this.navbarView.updateLogged(typeDeCompte);
+        // On update que si un admin s'est connecté / déconnecté
+        if ((typeDeCompte != null && typeDeCompte.equals("Administrateur"))
+        || (this.typeDeCompte != null && this.typeDeCompte.equals("Administrateur"))){
+                this.modificationView.updatePermissions(typeDeCompte);
+        }
         this.typeDeCompte = typeDeCompte;
     }
 

@@ -310,7 +310,7 @@ public class DatabaseAccess {
      * @param motDePasse The password of the account
      * @param typeDeCompte The type of the account ("Administrateur", "Utilisateur", "Elu")
      */
-    public static void createAcount(String identifiant, String motDePasse, String typeDeCompte) {
+    public static void createAccount(String identifiant, String motDePasse, String typeDeCompte) {
         try {
             // Connection to the database
             Statement connection = DatabaseConnection.getConnection();
@@ -323,6 +323,57 @@ public class DatabaseAccess {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Change the typeDeCompte of an account
+     * 
+     * @param identifiant The username of the account
+     * @param typeDeCompte The new type of the account
+     */
+    public static void updateAccount(String identifiant, String typeDeCompte) {
+        try {
+            // Connection to the database
+            Statement connection = DatabaseConnection.getConnection();
+
+            String query = "UPDATE Compte SET typeDeCompte = \"" + typeDeCompte + "\" WHERE identifiant = \"" + identifiant + "\";";
+            connection.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get all accounts
+     * 
+     * @return a list of 2 strings arrays (identifiant, typeDeCompte)
+     */
+    public static ArrayList<String[]> getAccounts() {
+        ArrayList<String[]> accounts = new ArrayList<String[]>();
+
+        try {
+            // Connection to the database
+            Statement connection = DatabaseConnection.getConnection();
+
+            String query = "SELECT * FROM Compte";
+            ResultSet resultSet = connection.executeQuery(query);
+
+            while (resultSet.next()) {
+                String identifiant = resultSet.getString("identifiant");
+                String typeDeCompte = resultSet.getString("typeDeCompte");
+
+                String[] account = { identifiant, typeDeCompte };
+                accounts.add(account);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return accounts;
     }
 
     /**
