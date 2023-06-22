@@ -15,14 +15,16 @@ import views.connexion.*;
 import controllers.ModificationController;
 
 /**
- * This class represents the rooter of the application. It's the principal class because it's used to display all views.
- * <p>Generate all views, allow to change the view displayed, display or hide the navbar, change the permission of the user logged.
+ * This class represents the rooter of the application. 
+ * It's used to display all views, change views and store the type of account.
+ * <p>Generate all views, allow to change the view displayed, display or hide the navbar, 
+ * change the permission of the user logged in.
  */
 public class Rooter {
     /**
-     * Main BorderPane
+     * Main {@link BorderPane} of the application
      * <p>His content is changed to display the correct view.
-     * At the top of the BorderPane, the navbar is displayed (or not);
+     * At the top of the {@link BorderPane}, the {@link NavbarView} is displayed (or not)
      * and at the center of the BorderPane, the view is displayed
      */
     private BorderPane root;
@@ -33,7 +35,7 @@ public class Rooter {
     private Scene mainScene;
 
     /**
-     * {@code HashMap} of all views
+     * {@link HashMap} of all views
      * <ul>
      * <li>The key is the title of the view
      * <li>The value is the view
