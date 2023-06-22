@@ -37,6 +37,9 @@ java --module-path lib/javafx-sdk-11/lib --add-modules javafx.web -cp "./class:.
 javadoc -d ./doc --module-path lib/javafx-sdk-11/lib --add-modules javafx.web ./src/*/*/*.java ./src/*/*.java ./src/*.java
 ```
 
+## Utilisation
+- Compte administrateur : `testAdmin` / `T8Ea5rXw2V9s6c`
+
 ## Technologies utilisées
 - [Java](https://www.java.com/fr/)
 - [JavaFX](https://openjfx.io/)
