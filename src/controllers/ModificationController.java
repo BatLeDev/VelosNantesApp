@@ -136,5 +136,68 @@ public class ModificationController  {
         } 
     }
 
+    public void supprimer(ActionEvent event){
+        // Récupérer la ligne sélectionnée dans le TableView
+        try {
+            IModels selected = null;
+            String selection = this.modificationView.getSelection();
+            if (selection.equals("Compteur")){
+                selected = (Compteur) this.modificationView.getTable().getSelectionModel().getSelectedItem();
+                if (selected != null && this.modificationView.newAlertSuppression()){
+                    Compteur compteur = (Compteur) selected;
+                    Compteur.removeCompteur(compteur.getNumero());
+                    for (ReleveJournalier releve : ReleveJournalier.getRelevesByCompteur(compteur.getNumero())){
+                        data.remove(releve);
+                    }
+                    
+                    data.remove(compteur);
+                    DatabaseAccess.deleteCompteur(compteur.getNumero());
+                }
+            
+            } else if (selection.equals("Quartier")){
+                selected = (Quartier) this.modificationView.getTable().getSelectionModel().getSelectedItem();
+                if (selected != null && this.modificationView.newAlertSuppression()){
+                    Quartier quartier = (Quartier) selected;
+                    Quartier.deleteQuartier(quartier.getId());
+                    for (int c : quartier.getCompteursList()){
+                        Compteur compteur = Compteur.getCompteur(c);
+                        data.remove(compteur);
+                    }
+                    data.remove(quartier);
+                    DatabaseAccess.deleteQuartier(quartier.getId());
+                }
+
+            } else if (selection.equals("Jour")){
+                selected = (Jour) this.modificationView.getTable().getSelectionModel().getSelectedItem();
+                if (selected != null && this.modificationView.newAlertSuppression()){
+                    Jour jour = (Jour) selected;
+                    for (ReleveJournalier releve : ReleveJournalier.getRelevesByJour(jour.getDate())){
+                        data.remove(releve);
+                    }
+                    Jour.deleteJour(jour.getDate());
+                    data.remove(jour);
+                    DatabaseAccess.deleteJour(jour.getDate());
+                }
+
+            } else if (selection.equals("Releve Journalier")){
+                selected = (ReleveJournalier) this.modificationView.getTable().getSelectionModel().getSelectedItem();
+                if (selected != null && this.modificationView.newAlertSuppression()){
+                    ReleveJournalier releve = (ReleveJournalier) selected;
+                    ReleveJournalier.removeReleveJournalier(releve.getJour(), releve.getCompteur());
+                    data.remove(releve);
+                    DatabaseAccess.deleteReleveJournalier(releve.getCompteur(), releve.getJour());
+                }
+            }
+
+            this.modificationView.setMessage("Suppression effectuée avec succès");
+
+        } catch (SQLException e){
+            this.modificationView.setMessage(e.getMessage());
+        } catch (Exception e){
+            this.modificationView.setMessage(e.getMessage());
+        }
+
+    }
+
 
 }

@@ -1,10 +1,13 @@
 package views;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import controllers.ModificationController;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
@@ -13,6 +16,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import models.IModels;
+import models.ReleveJournalier;
 
 /**
  * This class represents the view of the Exporter page.
@@ -25,7 +29,8 @@ public class ModificationView extends BorderPane {
     private TableView table;
     private Label message;
     private ArrayList<TextField> textFields;
-    private Button button;
+    private Button ajouterButton;
+    private Button supprimerButton;
 
     public ModificationView(ModificationController modificationController) {
         this.modificationController = modificationController;
@@ -53,7 +58,8 @@ public class ModificationView extends BorderPane {
 
         this.table = new TableView();
 
-        this.button = new Button("Ajouter");
+        this.ajouterButton = new Button("Ajouter");
+        this.supprimerButton = new Button("Supprimer");
 
         this.message = new Label("> ");
         this.message.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
@@ -61,13 +67,16 @@ public class ModificationView extends BorderPane {
         this.setPadding(new Insets(15, 10, 10, 10));
         this.setTop(selectionBox);
         this.setBottom(this.message);
+        this.setRight(supprimerButton);
         this.message.setPrefHeight(50);
 
         this.modificationController.setView(this);
         this.selectionGroup.selectedToggleProperty().addListener(this.modificationController::changerTable);
-        button.setOnAction(this.modificationController::ajouter);
+        this.ajouterButton.setOnAction(this.modificationController::ajouter);
         this.modificationController.changerTable(null, null, null);
 
+        
+        supprimerButton.setOnAction(this.modificationController::supprimer);
     }
 
     public TableView getTable() {
@@ -85,7 +94,7 @@ public class ModificationView extends BorderPane {
         for (TextField textField : this.textFields) {
             hBox.getChildren().add(textField);
         }
-        hBox.getChildren().add(this.button);
+        hBox.getChildren().add(this.ajouterButton);
         borderPane.setBottom(hBox);
 
         this.setCenter(borderPane);
@@ -121,6 +130,20 @@ public class ModificationView extends BorderPane {
         for (TextField textField : this.textFields) {
             textField.clear();
         }
+    }
+
+    public boolean newAlertSuppression() {
+        boolean ret = false;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Supprimer l'élément sélectionné");
+        alert.setContentText("Êtes-vous sûr de vouloir supprimer cet élément ?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            ret = true;
+        }
+        return ret;
     }
 
 

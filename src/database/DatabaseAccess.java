@@ -394,4 +394,62 @@ public class DatabaseAccess {
         connection.executeUpdate(query);
     }
 
+    /**
+     * Delete a Compteur from the database
+     * 
+     * @param numero The number of the Compteur to delete
+     */
+    public static void deleteCompteur(int numero) throws SQLException {
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+        String query = "DELETE FROM ReleveJournalier WHERE leCompteur = '" + numero + "';";
+        connection.executeUpdate(query);
+        query = "DELETE FROM Compteur WHERE numero = '" + numero + "';";
+        connection.executeUpdate(query);
+    }
+
+    /**
+     * Delete a ReleveJournalier from the database
+     * 
+     * @param numero The number of the Compteur of the ReleveJournalier to delete
+     * @param jour The day of the ReleveJournalier to delete
+     */
+    public static void deleteReleveJournalier(int numero, String jour) throws SQLException {
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+
+        String query = "DELETE FROM ReleveJournalier WHERE leCompteur = '" + numero + "' AND leJour = '" + jour + "';";
+        connection.executeUpdate(query);
+    }
+
+    /**
+     * Delete a Jour from the database
+     * 
+     * @param jour The day of the Jour to delete
+     */
+    public static void deleteJour(String jour) throws SQLException {
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+        String query = "DELETE FROM ReleveJournalier WHERE leJour = '" + jour + "'";
+        connection.executeUpdate(query);
+        query = "DELETE FROM Jour WHERE jourDate = '" + jour + "';";
+        connection.executeUpdate(query);
+
+    }
+
+    /**
+     * Delete a Quartier from the database
+     *
+     * @param id The id of the Quartier to delete
+     */
+    public static void deleteQuartier(int id) throws SQLException {
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+        String query = "DELETE FROM Compteur WHERE leQuartier = '" + id + "';";
+        connection.executeUpdate(query);
+        query = "DELETE FROM Quartier WHERE code = '" + id + "';";
+        connection.executeUpdate(query);
+
+    }
+
 }
