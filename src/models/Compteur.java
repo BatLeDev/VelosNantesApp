@@ -19,14 +19,11 @@ public class Compteur implements IModels {
 
     /**
      * Get the list of all compteurs
+     * 
      * @return an ArrayList of all compteurs
      */
     public static ArrayList<Compteur> getAll() {
-        ArrayList<Compteur> ret = new ArrayList<Compteur>();
-        for (Compteur c : Compteur.compteurList.values()) {
-            ret.add(c);
-        }
-        return ret;
+        return new ArrayList<Compteur>(Compteur.compteurList.values());
     }
 
     /**
@@ -38,6 +35,15 @@ public class Compteur implements IModels {
         return Compteur.compteurList.get(id);
     }
 
+    public static void removeCompteur(int id) {
+        Compteur.compteurList.remove(id);
+        ReleveJournalier.removeAllRelevesOfACompteur(id);
+    
+    }
+
+    public static String[] getColumnsSimplified() {
+        return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "le quartier" };
+    }
 
     public static String[] getColumns() {
         return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "leQuartier" };
@@ -132,7 +138,7 @@ public class Compteur implements IModels {
         return this.observation;
     }
 
-    public int getQuartier(){
+    public int getLeQuartier(){
         return this.leQuartier;
     }
 
@@ -244,8 +250,8 @@ public class Compteur implements IModels {
         if(contenu.contains("longitude")){
             tmp.add(this.getLongitude()+"");
         }
-        if(contenu.contains("quartier")){
-            tmp.add(this.getQuartier()+"");
+        if(contenu.contains("le quartier")){
+            tmp.add(this.getLeQuartier()+"");
         }
 
         ret = String.join(";", tmp);

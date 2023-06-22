@@ -36,6 +36,15 @@ public class Jour implements IModels, Comparable<Jour> {
     // ----------------------------- static methods -----------------------------
 
     /**
+     * Get all the Jour objects
+     * 
+     * @return an ArrayList containing all the Jour objects
+     */
+    public static ArrayList<Jour> getAll() {
+        return new ArrayList<Jour>(Jour.jourList.values());
+    }
+
+    /**
      * Get a jour by its date
      * 
      * @param date the date of the jour to get (format : YYYY-MM-DD)
@@ -80,8 +89,12 @@ public class Jour implements IModels, Comparable<Jour> {
     }
 
  
-    public static String[] getColumns() {
+    public static String[] getColumnsSimplified() {
         return new String[] { "Date", "Jour", "Temperature Moyenne" };
+    }
+
+    public static String[] getColumns() {
+        return new String[] { "Date", "Jour", "TemperatureMoyenne" };
     }
 
     public static ArrayList<String> getJoursCSV(ArrayList<String> contenu) {

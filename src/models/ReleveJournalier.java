@@ -32,7 +32,6 @@ public class ReleveJournalier implements IModels {
      */
     private static boolean typeAnomalieValide(String type) {
         boolean ret = true;
-
         if (type != null) {
             ret = false;
             int i = 0;
@@ -73,8 +72,8 @@ public class ReleveJournalier implements IModels {
      * @param releve the ReleveJournalier to add
      */
     private static void addReleveJournalier(ReleveJournalier releve) {
-        int idCompteur = releve.getLeCompteur();
-        String date = releve.getLeJour();
+        int idCompteur = releve.getCompteur();
+        String date = releve.getJour();
 
         if (releveComptList.get(idCompteur) == null) {
             releveComptList.put(idCompteur, new ArrayList<ReleveJournalier>());
@@ -178,7 +177,7 @@ public class ReleveJournalier implements IModels {
         ArrayList<ReleveJournalier> releves = getRelevesByJour(date);
         if (releves != null) {
             for (ReleveJournalier releve : releves) {
-                removeReleveJournalier(date, releve.getLeCompteur());
+                removeReleveJournalier(date, releve.getCompteur());
             }
         }
         return releves;
@@ -195,7 +194,7 @@ public class ReleveJournalier implements IModels {
         ArrayList<ReleveJournalier> releves = getRelevesByCompteur(idCompteur);
         if (releves != null) {
             for (ReleveJournalier releve : releves) {
-                ReleveJournalier.removeReleveJournalier(releve.getLeJour(), idCompteur);
+                ReleveJournalier.removeReleveJournalier(releve.getJour(), idCompteur);
             }
         }
         return releves;
@@ -245,7 +244,7 @@ public class ReleveJournalier implements IModels {
             if (jour.getJour() == day && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0 ) {
                 ArrayList<ReleveJournalier> releves = releveJourList.get(key);
                 for (ReleveJournalier releve : releves) {
-                    if (compteurs.contains(releve.getLeCompteur())) {
+                    if (compteurs.contains(releve.getCompteur())) {
                         ret.add(releve);
                     }
                 }
@@ -285,7 +284,7 @@ public class ReleveJournalier implements IModels {
             if (jour.getJourDuMois() == day && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0) {
             ArrayList<ReleveJournalier> releves = releveJourList.get(key);
                 for (ReleveJournalier releve : releves) {
-                    if (compteurs.contains(releve.getLeCompteur())) {
+                    if (compteurs.contains(releve.getCompteur())) {
                         ret.add(releve);
                     }
                 }
@@ -324,7 +323,7 @@ public class ReleveJournalier implements IModels {
             if (jour.getMois() == month && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0) {
                 ArrayList<ReleveJournalier> releves = releveJourList.get(key);
                 for (ReleveJournalier releve : releves) {
-                    if (compteurs.contains(releve.getLeCompteur())) {
+                    if (compteurs.contains(releve.getCompteur())) {
                         ret.add(releve);
                     }
                 }
@@ -362,7 +361,7 @@ public class ReleveJournalier implements IModels {
             if (jour.getAnnee() == year && jour.compareTo(jourMin) >= 0 && jour.compareTo(jourMax) <= 0) {
                 ArrayList<ReleveJournalier> releves = releveJourList.get(key);
                 for (ReleveJournalier releve : releves) {
-                    if (compteurs.contains(releve.getLeCompteur())) {
+                    if (compteurs.contains(releve.getCompteur())) {
                         ret.add(releve);
                     }
                 }
@@ -372,14 +371,14 @@ public class ReleveJournalier implements IModels {
     }
 
     public static String[] getColumnsSimplified(){
-        return new String[]{"Compteur", "Jour", "RelevesHeures", "PresenceAnomalie", "nbPassageTotal"};
+        return new String[]{"Compteur", "Jour", "RelevesHeures", "Presence Anomalie", "nbPassageTotal"};
     }
 
     public static String[] getColumns(){
         return new String[]{"Compteur", "Jour", "heure00", "heure01", "heure02", "heure03", "heure04", 
         "heure05", "heure06", "heure07", "heure08", "heure09", "heure10", "heure11", "heure12",
         "heure13", "heure14", "heure15", "heure16", "heure17", "heure18", "heure19", "heure20", 
-        "heure21", "heure22", "heure23", "PresenceAnomalie"};
+        "heure21", "heure22", "heure23", "nbPassageTotal", "presenceAnomalie"};
     }
 
     public static ArrayList<String> getRelevesCSV (ArrayList<String> contenu){
@@ -491,7 +490,7 @@ public class ReleveJournalier implements IModels {
      * Get the compteur of the releve
      * @return the compteur id of the releve
      */
-    public int getLeCompteur() {
+    public int getCompteur() {
         return leCompteur;
     }
 
@@ -499,7 +498,7 @@ public class ReleveJournalier implements IModels {
      * Get the day of the releve
      * @return the date of the releve
      */
-    public String getLeJour() {
+    public String getJour() {
         return leJour;
     }
 
@@ -603,7 +602,7 @@ public class ReleveJournalier implements IModels {
         if (contenu.contains("RelevesHeures")){
             tmp.add(Arrays.toString(this.relevesHeures));
         }
-        if (contenu.contains("PresenceAnomalie")){
+        if (contenu.contains("Presence Anomalie")){
             tmp.add(this.presenceAnomalie);
         }
         if (contenu.contains("nbPassageTotal")){
@@ -612,6 +611,107 @@ public class ReleveJournalier implements IModels {
 
         ret = String.join(";", tmp);
         return ret;
+    }
+
+
+
+
+    // ----------------------------- Getteurs des heures (pour la TableView) -----------------------------
+
+    public int getHeure00() {
+        return relevesHeures[0];
+    }
+
+    public int getHeure01() {
+        return relevesHeures[1];
+    }
+
+    public int getHeure02() {
+        return relevesHeures[2];
+    }
+
+    public int getHeure03() {
+        return relevesHeures[3];
+    }   
+
+    public int getHeure04() {
+        return relevesHeures[4];
+    }
+
+    public int getHeure05() {
+        return relevesHeures[5];
+    }   
+
+    public int getHeure06() {
+        return relevesHeures[6];
+    }
+
+    public int getHeure07() {
+        return relevesHeures[7];
+    }
+
+    public int getHeure08() {
+        return relevesHeures[8];
+    }
+
+    public int getHeure09() {
+        return relevesHeures[9];
+    }
+
+    public int getHeure10() {
+        return relevesHeures[10];
+    }
+
+    public int getHeure11() {
+        return relevesHeures[11];
+    }
+
+    public int getHeure12() {
+        return relevesHeures[12];
+    }
+
+    public int getHeure13() {
+        return relevesHeures[13];
+    }
+
+    public int getHeure14() {
+        return relevesHeures[14];
+    }
+
+    public int getHeure15() {
+        return relevesHeures[15];
+    }
+
+    public int getHeure16() {
+        return relevesHeures[16];
+    }
+
+    public int getHeure17() {
+        return relevesHeures[17];
+    }
+
+    public int getHeure18() {
+        return relevesHeures[18];
+    }
+
+    public int getHeure19() {
+        return relevesHeures[19];
+    }
+
+    public int getHeure20() {
+        return relevesHeures[20];
+    }
+
+    public int getHeure21() {
+        return relevesHeures[21];
+    }
+
+    public int getHeure22() {
+        return relevesHeures[22];
+    }
+
+    public int getHeure23() {
+        return relevesHeures[23];
     }
 
 }
