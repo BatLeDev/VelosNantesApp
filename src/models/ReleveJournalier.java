@@ -296,7 +296,10 @@ public class ReleveJournalier implements IModels {
     /**
      * Get all the ReleveJournalier for a month (1-12)
      * 
-     * @param the month of the year (1-12)
+     * @param month the month of the year (1-12)
+     * @param dayMin the minimum day of the month (YYYY-MM-DD)
+     * @param dayMax the maximum day of the month (YYYY-MM-DD)
+     * @param compteurs the list of compteurs to get
      * 
      * @return an ArrayList of all the ReleveJournalier for a month
      */
@@ -407,7 +410,7 @@ public class ReleveJournalier implements IModels {
      * 
      * @param leCompteur the id of the compteur (positive)
      * @param leJour the day of the releve (not null or empty)
-     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
+     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values &gt;= 0)
      * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of TYPE_ANOMALIE)
      */
     public ReleveJournalier(int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
@@ -441,7 +444,7 @@ public class ReleveJournalier implements IModels {
      * can launch an IllegalArgumentException if the parameters are not valid
      * 
      * @param relevesHeures the relevesHeures of the releve (not null, length = 24,
-     *                      all values >= 0)
+     *                      all values &gt;= 0)
      */
     public void setRelevesHeures(int[] relevesHeures) {
         if (!ReleveJournalier.relevesHeuresValide(relevesHeures)) {

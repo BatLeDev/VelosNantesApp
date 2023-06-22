@@ -129,7 +129,6 @@ public class Jour implements IModels, Comparable<Jour> {
      * @param date the date of the jour to create (format : YYYY-MM-DD)
      * @param temperatureMoyenne the average temperature (must be between -40 and 60)
      * @param jour the day of the week ("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
-     * @param vacances the holidays (null if there is no holidays)
      */
     public Jour(String date, int jour, double temperatureMoyenne) {
         if (!Jour.dateValide(date)) {

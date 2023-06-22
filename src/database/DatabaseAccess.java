@@ -379,7 +379,7 @@ public class DatabaseAccess {
     /**
      * Add a new Compter to the database
      * 
-     * @param Compteur The number of the Compteur
+     * @param compteur The number of the Compteur
      */
     public static void addCompteur(Compteur compteur) throws SQLException{
         // Connection to the database
@@ -403,7 +403,7 @@ public class DatabaseAccess {
     /**
      * Add a new ReleveJournalier to the database
      * 
-     * @param ReleveJournalier The ReleveJournalier to add
+     * @param releve The ReleveJournalier to add
      */
     public static void addReleveJournalier(ReleveJournalier releve) throws SQLException {
         // Connection to the database
@@ -420,7 +420,7 @@ public class DatabaseAccess {
     /**
      * Add a new Jour to the database
      * 
-     * @param Jour The Jour to add
+     * @param jour The Jour to add
      */
      public static void addJour(Jour jour) throws SQLException {
         // Connection to the database
@@ -434,7 +434,7 @@ public class DatabaseAccess {
     /**
      * Add a new Quartier to the database
      *
-     * @param Quartier The Quartier to add
+     * @param quartier The Quartier to add
      */
     public static void addQuartier (Quartier quartier) throws SQLException{
         // Connection to the database

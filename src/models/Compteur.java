@@ -83,12 +83,12 @@ public class Compteur implements IModels {
      * 
      * @param id         an integer representing the (unique) id of the compteur (positive)
      * @param libelle    a String representing the libelle of the compteur (not null or empty)
-     * @param sens       a String representing the sens of the compteur (not null or empty)
+     * @param direction  a String representing the sens of the compteur (not null or empty)
      * @param latitude   a double representing the latitude of the compteur
      * @param longitude  a double representing the longitude of the compteur
      * @param idQuartier an integer which is the code of the Quartier, representing the quartier of the compteur
      */
-    public Compteur(int id, String libelle, String direction,String observation, double latitude, double longitude,int idQuartier) {
+    public Compteur(int id, String libelle, String direction, String observation, double latitude, double longitude,int idQuartier) {
         if (id < 0 || compteurList.containsKey(id)) {
             throw new IllegalArgumentException("models.Compteur.constructor : l'id est invalide ( < 0 ou deja existant )");
         }
@@ -159,7 +159,7 @@ public class Compteur implements IModels {
     /**
      * Setter for the sens of the compteur
      * 
-     * @param sens a String representing the sens of the compteur (not null or empty)
+     * @param direction a String representing the sens of the compteur (not null or empty)
      */
     public void setDirection(String direction) {
         if (direction == null || direction.isEmpty()) {
