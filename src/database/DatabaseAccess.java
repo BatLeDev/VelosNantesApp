@@ -326,4 +326,72 @@ public class DatabaseAccess {
         }
     }
 
+    /**
+     * Add a new Compter to the database
+     * 
+     * @param Compteur The number of the Compteur
+     */
+    public static void addCompteur(Compteur compteur) throws SQLException{
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+        String quartier =compteur.getLeQuartier()+"";
+        String observation = compteur.getObservation();
+        if (observation == null) {
+            observation = "NULL";
+        }
+        String query= null;
+        if (quartier.equals("0")) {
+            query = "INSERT INTO Compteur (numero,libelle,direction,observations,longitude,latitude) VALUES ('" + compteur.getNumero() + "', '" + compteur.getLibelle() + "', '" + compteur.getDirection() + "', " + observation + ", '" + compteur.getLatitude() + "', '" + compteur.getLongitude() +"');";
+        } else {
+            query = "INSERT INTO Compteur VALUES ('" + compteur.getNumero() + "', '" + compteur.getLibelle() + "', '" + compteur.getDirection() + "', '" + observation + "', " + compteur.getLatitude() + ", '" + compteur.getLongitude() + "', '" + quartier + "');";
+        }
+        
+       connection.executeUpdate(query);
+        
+    }
+
+    /**
+     * Add a new ReleveJournalier to the database
+     * 
+     * @param ReleveJournalier The ReleveJournalier to add
+     */
+    public static void addReleveJournalier(ReleveJournalier releve) throws SQLException {
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+
+        String anomalie = releve.getPresenceAnomalie();
+        if (anomalie == null) {
+            anomalie = "NULL";
+        }
+        String query = "INSERT INTO ReleveJournalier VALUES ("+ releve.getCompteur() + ", '" + releve.getJour() + "', " + releve.getHeure00() + ", " + releve.getHeure01() + ", " + releve.getHeure02() + ", " + releve.getHeure03() + ", " + releve.getHeure04() + ", " + releve.getHeure05() + ", " + releve.getHeure06() + ", " + releve.getHeure07() + ", " + releve.getHeure08() + ", " + releve.getHeure09() + ", " + releve.getHeure10() + ", " + releve.getHeure11() + ", " + releve.getHeure12() + ", " + releve.getHeure13() + ", " + releve.getHeure14() + ", " + releve.getHeure15() + ", " + releve.getHeure16() + ", " + releve.getHeure17() + ", " + releve.getHeure18() + ", " + releve.getHeure19() + ", " + releve.getHeure20() + ", " + releve.getHeure21() + ", " + releve.getHeure22() + ", " + releve.getHeure23() + ", " + anomalie + ");";
+        connection.executeUpdate(query);
+    }
+
+    /**
+     * Add a new Jour to the database
+     * 
+     * @param Jour The Jour to add
+     */
+     public static void addJour(Jour jour) throws SQLException {
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+
+        String query = "INSERT INTO Jour VALUES ('" + jour.getDate() + "', '" + jour.getJour() + jour.getTemperatureMoyenne()+"')";
+        connection.executeUpdate(query);
+
+     }
+
+    /**
+     * Add a new Quartier to the database
+     *
+     * @param Quartier The Quartier to add
+     */
+    public static void addQuartier (Quartier quartier) throws SQLException{
+        // Connection to the database
+        Statement connection = DatabaseConnection.getConnection();
+
+        String query = "INSERT INTO Quartier VALUES ('" + quartier.getId() + "', '" + quartier.getNom() + "', '" + quartier.getLgPisteCyclable() +"');";
+        connection.executeUpdate(query);
+    }
+
 }

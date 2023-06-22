@@ -32,7 +32,6 @@ public class ReleveJournalier implements IModels {
      */
     private static boolean typeAnomalieValide(String type) {
         boolean ret = true;
-
         if (type != null) {
             ret = false;
             int i = 0;
@@ -714,12 +713,5 @@ public class ReleveJournalier implements IModels {
     public int getHeure23() {
         return relevesHeures[23];
     }
-
-    // ----------------------------- Setteurs des heures (pour la TableView) -----------------------------
-
-    public void setHeure00(int heure00) {
-        relevesHeures[0] = heure00;
-    }
-
 
 }

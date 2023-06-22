@@ -1,11 +1,14 @@
 package views;
 
+import java.util.ArrayList;
+
 import controllers.ModificationController;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -21,15 +24,19 @@ public class ModificationView extends BorderPane {
     private ToggleGroup selectionGroup;
     private TableView table;
     private Label message;
+    private ArrayList<TextField> textFields;
+    private Button button;
 
     public ModificationView(ModificationController modificationController) {
         this.modificationController = modificationController;
         
+        this.textFields = new ArrayList<TextField>();
+
         this.selectionGroup = new ToggleGroup();
         RadioButton compteurRadioButton = new RadioButton("Compteur");
+        compteurRadioButton.setSelected(true);
 
         RadioButton quartierRadioButton = new RadioButton("Quartier");
-        compteurRadioButton.setSelected(true);
 
         RadioButton jourRadioButton = new RadioButton("Jour");
 
@@ -46,18 +53,21 @@ public class ModificationView extends BorderPane {
 
         this.table = new TableView();
 
+        this.button = new Button("Ajouter");
+
         this.message = new Label("> ");
         this.message.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
 
         this.setPadding(new Insets(15, 10, 10, 10));
         this.setTop(selectionBox);
-        this.setCenter(this.table);
         this.setBottom(this.message);
         this.message.setPrefHeight(50);
 
         this.modificationController.setView(this);
         this.selectionGroup.selectedToggleProperty().addListener(this.modificationController::changerTable);
+        button.setOnAction(this.modificationController::ajouter);
         this.modificationController.changerTable(null, null, null);
+
     }
 
     public TableView getTable() {
@@ -66,8 +76,19 @@ public class ModificationView extends BorderPane {
 
     public void setTable(TableView<IModels> table) {
         this.table = table;
-        this.table.setStyle("-fx-font-size: 15px;"); 
-        this.setCenter(this.table);
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(this.table);
+
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        for (TextField textField : this.textFields) {
+            hBox.getChildren().add(textField);
+        }
+        hBox.getChildren().add(this.button);
+        borderPane.setBottom(hBox);
+
+        this.setCenter(borderPane);
     }
 
     public String getSelection() {
@@ -76,6 +97,30 @@ public class ModificationView extends BorderPane {
 
     public void setMessage(String message) {
         this.message.setText("> " + message);
+    }
+
+    public void setTextFields(String ... textFields) {
+        this.textFields = new ArrayList<>();
+        for (String textField : textFields) {
+            TextField textField1 = new TextField();
+            textField1.setPrefWidth(100);
+            textField1.setPromptText(textField);
+            this.textFields.add(textField1);
+        }
+    }
+
+    public ArrayList<String> getTextFields() {
+        ArrayList<String> textFields = new ArrayList<>();
+        for (TextField textField : this.textFields) {
+            textFields.add(textField.getText());
+        }
+        return textFields;
+    }
+
+    public void clearTextFields() {
+        for (TextField textField : this.textFields) {
+            textField.clear();
+        }
     }
 
 

@@ -35,6 +35,11 @@ public class Compteur implements IModels {
         return Compteur.compteurList.get(id);
     }
 
+    public static void removeCompteur(int id) {
+        Compteur.compteurList.remove(id);
+        ReleveJournalier.removeAllRelevesOfACompteur(id);
+    
+    }
 
     public static String[] getColumnsSimplified() {
         return new String[] { "numero", "libelle", "direction", "observation", "latitude", "longitude", "le quartier" };
