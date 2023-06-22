@@ -35,7 +35,6 @@ public class DataChart {
         yAxis.setLabel("Passages");
 
         lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Données avec étiquettes personnalisées");
         
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         for (int i = 0; i < data.size(); i++) {
