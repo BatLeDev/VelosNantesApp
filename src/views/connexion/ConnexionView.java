@@ -37,7 +37,7 @@ public abstract class ConnexionView extends AnchorPane {
      */
     protected void initializeBackground(ConnexionController controller) {
         // --------------------- background banner ---------------------
-        Image banner = new Image("./ressources/images/banner-connexion.png");
+        Image banner = new Image("file:./ressources/images/banner-connexion.png");
         ImageView bannerView = new ImageView(banner);
         bannerView.fitHeightProperty().bind(heightProperty());
         bannerView.setPreserveRatio(true);
@@ -46,7 +46,7 @@ public abstract class ConnexionView extends AnchorPane {
         getChildren().addAll(bannerView, widthConstraint);
 
         // ------------------------------ header ------------------------------
-        Image logoImage = new Image("./ressources/images/logo-full-white.png");
+        Image logoImage = new Image("file:./ressources/images/logo-full-white.png");
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitWidth(200);
         logoImageView.setPreserveRatio(true);
@@ -54,7 +54,7 @@ public abstract class ConnexionView extends AnchorPane {
         getChildren().add(logoImageView);
 
         this.exitBtn = new Button();
-        this.exitBtn.setGraphic(new ImageView(new Image("./ressources/images/exit-black.png")));
+        this.exitBtn.setGraphic(new ImageView(new Image("file:./ressources/images/exit-black.png")));
         this.exitBtn.getStyleClass().add("action-button");
         this.exitBtn.setOnAction(e -> controller.exit(e));
 

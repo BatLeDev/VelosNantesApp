@@ -70,7 +70,7 @@ public class NavbarView extends BorderPane {
         logoutButton.setOnAction(e -> this.navbarController.buttonClicked("Logout"));
 
         // Initialize the logo
-        Image logoImage = new Image("./ressources/images/logo-full.png");
+        Image logoImage = new Image("file:./ressources/images/logo-full.png");
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitWidth(200);
         logoImageView.setPreserveRatio(true);
@@ -78,7 +78,7 @@ public class NavbarView extends BorderPane {
         // Creation of the horizontal box for the navbar buttons
         this.navbarBox = new HBox(10);
 
-        Image rondImg = new Image("./ressources/images/rond.png");
+        Image rondImg = new Image("file:./ressources/images/rond.png");
         ImageView rondObject = new ImageView(rondImg);
         ImageView rondObject2 = new ImageView(rondImg);
         this.rondObject3 = new ImageView(rondImg);

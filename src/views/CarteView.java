@@ -25,7 +25,7 @@ public class CarteView extends BorderPane {
     /**
      * Path of the html file of the map, use an online map with an API
      */
-    private static final String CARTE_HTML_PATH = "src/ressources/html/carte.html";
+    private static final String CARTE_HTML_PATH = "./ressources/html/carte.html";
 
     // Controller of the view
     private CarteController carteController;
@@ -123,7 +123,8 @@ public class CarteView extends BorderPane {
      * @param row The row of the grid
      */
     private void addLegendMarker(String imgName, String text, int row) {
-        Image legendImage = new Image("file:src/ressources/images/markers/" + imgName);
+
+        Image legendImage = new Image("file:./ressources/images/markers/" + imgName);
         ImageView legendImageView = new ImageView(legendImage);
         GridPane.setConstraints(legendImageView, 0, row);
         Label legendMarker = new Label(text);

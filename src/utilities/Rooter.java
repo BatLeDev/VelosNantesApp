@@ -97,10 +97,10 @@ public class Rooter {
         this.mainScene = new Scene(root);
 
         // Add CSS Files
-        this.mainScene.getStylesheets().add("file:src/ressources/css/carte.css");
-        this.mainScene.getStylesheets().add("file:src/ressources/css/navbar.css");
-        this.mainScene.getStylesheets().add("file:src/ressources/css/connexion.css");
-        this.mainScene.getStylesheets().add("file:src/ressources/css/exporter.css");
+        this.mainScene.getStylesheets().add("file:./ressources/css/carte.css");
+        this.mainScene.getStylesheets().add("file:./ressources/css/navbar.css");
+        this.mainScene.getStylesheets().add("file:./ressources/css/connexion.css");
+        this.mainScene.getStylesheets().add("file:./ressources/css/exporter.css");
 
         // Configuration of the main window
         primaryStage.setScene(mainScene);

@@ -51,7 +51,7 @@ public class MainApp extends Application {
         rooter = new Rooter(primaryStage); // Rooter initialization
 
         // Set the icon of the application
-        primaryStage.getIcons().add(new Image("./ressources/images/logo.png"));
+        primaryStage.getIcons().add(new Image("file:./ressources/images/logo.png"));
         primaryStage.setTitle("VelosNantes");
         primaryStage.setMinWidth(1200);
         primaryStage.setMinHeight(800);
