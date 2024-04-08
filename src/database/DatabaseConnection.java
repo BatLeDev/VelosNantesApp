@@ -10,9 +10,11 @@ import java.sql.SQLException;
  * This class is used create a connection to the database.
  */
 public class DatabaseConnection {
-    private static final String DB_URL = "jdbc:mysql://31.39.13.59:6543/velosNantes";
-    private static final String DB_USER = "lecteur";
-    private static final String DB_PASSWORD = "Est-ce que c'est bon pour vous ?";
+
+    // TODO - Use environment variables to store the database credentials.
+    private static final String DB_URL = "";
+    private static final String DB_USER = "";
+    private static final String DB_PASSWORD = "";
 
     /**
      * Create a connection to the database.

@@ -26,8 +26,6 @@ import javafx.scene.layout.HBox;
 import controllers.ModificationController;
 import database.DatabaseAccess;
 import models.IModels;
-import utilities.Rooter;
-
 
 /**
  * This class represents the view of the Exporter page.

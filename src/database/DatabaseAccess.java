@@ -17,39 +17,6 @@ import utilities.BCrypt;
  */
 public class DatabaseAccess {
 
-    /*
-    public static void exemple() {
-        try {
-            // Connection to the database
-            Statement connection = DatabaseConnection.getConnection();
-        
-            String query = "SELECT * FROM Quartier";
-            ResultSet resultSet = connection.executeQuery(query);
-        
-            printResult(resultSet);
-        
-            resultSet.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public static void printResult(ResultSet resultSet) throws SQLException {
-        while (resultSet.next()) {
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            int columnCount = metaData.getColumnCount();
-    
-            for (int i = 1; i <= columnCount; i++) {
-                String columnName = metaData.getColumnName(i);
-                Object columnValue = resultSet.getObject(i);
-    
-                System.out.println(columnName + " : " + columnValue);
-            }
-            System.out.println();
-        }
-    }
-*/
-
     /**
      * Get the list of the counters with their statistics
      * 
